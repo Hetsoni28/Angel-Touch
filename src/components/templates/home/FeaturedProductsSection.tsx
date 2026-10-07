@@ -8,7 +8,7 @@ const placeholderProducts = [
     category: 'Skin Care',
     description: 'A lightweight facial oil blending pure saffron and sandalwood to restore natural luminosity.',
     slug: 'kesar-radiance-oil',
-    image: '/images/ayurvedic_hero_editorial_1791405719098.jpg',
+    image: '/images/kesar_radiance_oil.jpg',
   },
   {
     id: '2',

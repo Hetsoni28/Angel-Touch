@@ -15,11 +15,11 @@ export function ThreeExperiencesSection() {
           The Angel Touch Collection
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 items-stretch">
 
           {/* 01: PRODUCTS */}
-          <div className="flex flex-col">
-            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6" style={{ height: '320px' }}>
+          <div className="flex flex-col bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
+            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] max-h-[240px]">
               <img
                 src="/images/ayurvedic_herbal_body_scrub_1791405717151.jpg"
                 alt="Ayurvedic products"
@@ -27,37 +27,41 @@ export function ThreeExperiencesSection() {
               />
             </div>
             <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">01 — Products</p>
-            <h3 className="text-[1.2rem] font-medium text-[#1e2228] mb-2 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
               Thoughtfully crafted Ayurvedic products.
             </h3>
-            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-5">
+            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
               Pure botanical formulations made with traditional methods. Designed to nourish, protect, and restore.
             </p>
-            <Link href="/shop" className="at-link">Explore Products →</Link>
+            <div className="pt-3 border-t border-[#dde7dd]/50">
+              <Link href="/shop" className="at-link">Explore Products →</Link>
+            </div>
           </div>
 
-          {/* 02: TREATMENTS — slightly taller image for rhythm */}
-          <div className="flex flex-col md:pt-8">
-            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6" style={{ height: '300px' }}>
+          {/* 02: TREATMENTS */}
+          <div className="flex flex-col bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
+            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] max-h-[240px]">
               <img
-                src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900&auto=format&fit=crop&q=80"
+                src="/images/ayurvedic_abhyanga.jpg"
                 alt="Ayurvedic treatments"
                 className="w-full h-full object-cover"
               />
             </div>
             <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">02 — Treatments</p>
-            <h3 className="text-[1.2rem] font-medium text-[#1e2228] mb-2 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
               Personalised healing and beauty treatments.
             </h3>
-            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-5">
+            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
               Rooted in the Angel Touch approach — careful, considered therapies that respect both body and tradition.
             </p>
-            <Link href="/treatments" className="at-link">Explore Treatments →</Link>
+            <div className="pt-3 border-t border-[#dde7dd]/50">
+              <Link href="/treatments" className="at-link">Explore Treatments →</Link>
+            </div>
           </div>
 
           {/* 03: LEARNING */}
-          <div className="flex flex-col md:pt-16">
-            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6" style={{ height: '280px' }}>
+          <div className="flex flex-col bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
+            <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] max-h-[240px]">
               <img
                 src="/images/ayurvedic_cosmetics_workspace_1791405719662.jpg"
                 alt="Ayurvedic product-making classes"
@@ -65,13 +69,15 @@ export function ThreeExperiencesSection() {
               />
             </div>
             <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">03 — Learning</p>
-            <h3 className="text-[1.2rem] font-medium text-[#1e2228] mb-2 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
               Learn the art of Ayurvedic formulation.
             </h3>
-            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-5">
+            <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
               Focused, intimate product-making classes that give you the knowledge to create your own natural beauty products.
             </p>
-            <Link href="/classes" className="at-link">Explore Classes →</Link>
+            <div className="pt-3 border-t border-[#dde7dd]/50">
+              <Link href="/classes" className="at-link">Explore Classes →</Link>
+            </div>
           </div>
 
         </div>

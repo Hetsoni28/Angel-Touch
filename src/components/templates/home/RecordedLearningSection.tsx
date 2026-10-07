@@ -9,7 +9,7 @@ export function RecordedLearningSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
           {/* Image */}
-          <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom" style={{ height: '400px' }}>
+          <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px]">
             <img
               src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
               alt="Ayurvedic formulation notes and botanical ingredients"

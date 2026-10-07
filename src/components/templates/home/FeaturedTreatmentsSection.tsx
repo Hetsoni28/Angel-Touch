@@ -9,7 +9,7 @@ const placeholderTreatments = [
     description:
       'A warm herbal oil full-body massage following Ayurvedic technique, designed to nourish the skin, ease muscle tension, and support the body\'s natural cleansing process.',
     slug: 'abhyanga',
-    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900&auto=format&fit=crop&q=80',
+    image: '/images/ayurvedic_abhyanga.jpg',
   },
   {
     id: '2',

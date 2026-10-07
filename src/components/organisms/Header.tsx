@@ -25,11 +25,7 @@ export function Header() {
 
   return (
     <>
-      <header
-        className={`sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] transition-all duration-300 ${
-          scrolled ? 'shadow-sm bg-[#faf8f2]/98 backdrop-blur-md' : 'bg-[#faf8f2]'
-        }`}
-      >
+      <header className="sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
         <div className="max-w-screen-xl mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
           
           {/* ── LOGO ── */}

@@ -20,8 +20,8 @@ const InstagramIcon = ({ className }: { className?: string }) => (
 export function SocialSection() {
   const gridImages = [
     {
-      src: '/images/ayurvedic_hero_editorial_1791405719098.jpg',
-      alt: 'Raw saffron, sandalwood, and botanical oils on ivory travertine',
+      src: '/images/ayurvedic_abhyanga.jpg',
+      alt: 'Traditional Ayurvedic Abhyanga herbal oil preparation with fresh herbs',
     },
     {
       src: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg',

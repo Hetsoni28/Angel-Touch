@@ -20,8 +20,8 @@ export function AboutSection() {
           </div>
 
           {/* Content — aligned to top edge of portrait */}
-          <div className="lg:col-span-7 flex flex-col pt-1">
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4">
+          <div className="lg:col-span-7 flex flex-col">
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4 leading-none pt-1">
               About & Founder
             </p>
             <h2
