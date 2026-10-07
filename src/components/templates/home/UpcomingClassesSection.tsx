@@ -11,7 +11,8 @@ const placeholderClasses = [
     enrolled: 18,
     price: '₹1,499',
     slug: 'kumkumadi-formulation',
-    image: 'https://images.unsplash.com/photo-1611079830811-865ff4428d17?w=800&auto=format&fit=crop&q=80',
+    description: 'Learn the sacred, multi-stage process of infusing pure Kashmiri saffron, sandalwood, and botanical extracts into golden Ayurvedic face oil.',
+    image: '/images/ayurvedic_masterclass.jpg',
   },
   {
     id: '2',
@@ -22,76 +23,95 @@ const placeholderClasses = [
     enrolled: 8,
     price: '₹1,999',
     slug: 'botanical-hair-elixirs',
-    image: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg',
+    description: 'Master the art of cold-infusing amla, bhringraj, and hibiscus into intensive hair and scalp conditioning oils for everyday hair wellness.',
+    image: '/images/ayurvedic_cosmetics_workspace_1791405719662.jpg',
   },
 ]
 
 export function UpcomingClassesSection() {
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
 
         {/* Header */}
-        <div className="max-w-2xl mb-12 md:mb-14">
-          <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">Live Masterclasses</p>
-          <h2
-            className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2] mb-4"
-            style={{ fontFamily: 'var(--font-heading)' }}
-          >
-            Learn the craft behind the ritual.
-          </h2>
-          <p className="text-[15px] text-[#5c5a58] leading-relaxed">
-            Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
+          <div className="max-w-xl">
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">
+              Live Masterclasses
+            </p>
+            <h2
+              className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Learn the craft behind the ritual.
+            </h2>
+            <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
+              Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch — led by Heena Thaker.
+            </p>
+          </div>
+          <Link href="/classes" className="at-link shrink-0">
+            See full schedule →
+          </Link>
         </div>
 
-        {/* Class list */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-4xl">
+        {/* Class list — balanced 2-column editorial cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {placeholderClasses.map((cls) => {
             const spotsLeft = cls.capacity - cls.enrolled
             const isFull = spotsLeft <= 0
             return (
-              <article key={cls.id} className="group flex flex-col">
-                {/* Fixed height image */}
-                <div className="overflow-hidden bg-[#faf8f2] img-zoom mb-5" style={{ height: '220px' }}>
-                  <img src={cls.image} alt={cls.title} className="w-full h-full object-cover" />
+              <article key={cls.id} className="group flex flex-col bg-[#faf8f2] border border-[#dde7dd]/80 p-6 sm:p-8">
+                {/* Image */}
+                <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] max-h-[250px]">
+                  <img
+                    src={cls.image}
+                    alt={cls.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
                 {/* Meta row */}
-                <div className="flex items-start justify-between mb-3 pb-3 border-b border-[#dde7dd]">
+                <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#dde7dd]/80">
                   <div>
-                    <p className="text-[11px] tracking-[0.16em] text-[#5c5a58] uppercase">{cls.date}</p>
+                    <p className="text-[11px] tracking-[0.16em] text-[#1e2228] font-medium uppercase">{cls.date}</p>
                     <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-0.5">{cls.time}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[17px] font-medium text-[#1e2228]">{cls.price}</p>
-                    <p className={`text-[10px] tracking-[0.14em] uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
-                      {isFull ? 'Sold out' : `${spotsLeft} / ${cls.capacity} seats`}
+                    <p className="text-[1.2rem] font-medium text-[#1e2228]">{cls.price}</p>
+                    <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
+                      {isFull ? 'Sold out' : `${spotsLeft} of ${cls.capacity} seats left`}
                     </p>
                   </div>
                 </div>
 
+                {/* Title */}
                 <h3
-                  className="text-[1.1rem] font-medium text-[#1e2228] mb-3 leading-snug"
+                  className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] mb-3 leading-snug"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   {cls.title}
                 </h3>
 
-                {!isFull ? (
-                  <Link href={`/classes/${cls.slug}`} className="at-link at-link-green">
-                    View Class →
-                  </Link>
-                ) : (
-                  <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">Join waitlist →</span>
-                )}
+                {/* Description */}
+                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
+                  {cls.description}
+                </p>
+
+                {/* CTA */}
+                <div className="pt-2 border-t border-[#dde7dd]/60 flex items-center justify-between">
+                  {!isFull ? (
+                    <Link href={`/classes/${cls.slug}`} className="at-link at-link-green">
+                      View Class →
+                    </Link>
+                  ) : (
+                    <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">
+                      Join waitlist →
+                    </span>
+                  )}
+                </div>
               </article>
             )
           })}
-        </div>
-
-        <div className="mt-10">
-          <Link href="/classes" className="at-link">See full schedule →</Link>
         </div>
 
       </div>

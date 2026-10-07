@@ -60,11 +60,13 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.15;
 }
 
-/* Subtle link underline animation */
+/* Subtle link underline animation — fit-content and self-start prevent full-width stretching */
 .at-link {
   position: relative;
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
+  width: fit-content;
   gap: 6px;
   font-size: 11px;
   font-weight: 600;
