@@ -21,10 +21,10 @@ export function Button({
   const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50'
   
   const variants = {
-    primary: 'bg-emerald-600 text-white hover:bg-emerald-700',
-    secondary: 'bg-orange-100 text-orange-800 hover:bg-orange-200',
-    outline: 'border border-emerald-600 text-emerald-600 hover:bg-emerald-50',
-    ghost: 'hover:bg-slate-100 text-slate-700',
+    primary: 'bg-primary text-white hover:bg-primary-dark',
+    secondary: 'bg-accent text-heading hover:bg-[#e0b56b]', // slightly darker accent for hover
+    outline: 'border-2 border-primary text-primary hover:bg-primary-light',
+    ghost: 'hover:bg-primary-light text-body hover:text-heading',
   }
 
   const sizes = {

@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary Colors */
+  --brand-primary: #2E7A3A;
+  --brand-dark: #1E5F2E;
+  --brand-sage: #5C8F60;
+  --brand-light: #E9F3E9;
+
+  /* Accent Colors */
+  --accent-gold: #EDC179;
+  --accent-beige: #F6E7C8;
+
+  /* Neutral Colors */
+  --neutral-white: #FFFFFF;
+  --neutral-ivory: #FAF8F2;
+  --neutral-border: #DDE7DD;
+
+  /* Text Colors */
+  --text-heading: #1E2228;
+  --text-body: #5C5A58;
+  --text-muted: #8A8D87;
+
+  /* Status Colors */
+  --status-success: #22A06B;
+  --status-error: #E55353;
+  --status-warning: #F4C85B;
+
+  /* Base */
+  --background: var(--neutral-ivory);
+  --foreground: var(--text-body);
 }
 
 @theme inline {
+  --color-primary: var(--brand-primary);
+  --color-primary-dark: var(--brand-dark);
+  --color-sage: var(--brand-sage);
+  --color-primary-light: var(--brand-light);
+  
+  --color-accent: var(--accent-gold);
+  --color-accent-light: var(--accent-beige);
+  
+  --color-white: var(--neutral-white);
+  --color-ivory: var(--neutral-ivory);
+  --color-border: var(--neutral-border);
+  
+  --color-heading: var(--text-heading);
+  --color-body: var(--text-body);
+  --color-muted: var(--text-muted);
+  
+  --color-success: var(--status-success);
+  --color-error: var(--status-error);
+  --color-warning: var(--status-warning);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base resets applying the brand colors */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-heading);
 }

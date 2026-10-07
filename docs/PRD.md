@@ -59,3 +59,4 @@
 4. **Auth Flow:** Build login/register pages.
 5. **Customer Portal:** Dashboard to view enrolled classes and Zoom links.
 6. **Payment Flow:** Integrate Razorpay webhook and checkout.
+
