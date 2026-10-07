@@ -1,27 +1,58 @@
-/*
- * SOCIAL / INSTAGRAM — minimal visual grid.
- * Note: images should be replaced with real social content from the client.
- */
+import Link from 'next/link'
+
+const InstagramIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+)
+
 export function SocialSection() {
-  // These are editorial placeholder images — replace with real Instagram feed
   const gridImages = [
-    { src: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500&auto=format&fit=crop&q=80', alt: 'Botanical products' },
-    { src: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg', alt: 'Herbal scrub' },
-    { src: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=500&auto=format&fit=crop&q=80', alt: 'Learning class' },
-    { src: '/images/ayurvedic_herbal_clay_powder_1791405720188.jpg', alt: 'Herbal clay' },
-    { src: '/images/ayurvedic_hero_editorial_1791405719098.jpg', alt: 'Ayurvedic ingredients' },
-    { src: 'https://images.unsplash.com/photo-1611079830811-865ff4428d17?w=500&auto=format&fit=crop&q=80', alt: 'Class workshop' },
+    {
+      src: '/images/ayurvedic_hero_editorial_1791405719098.jpg',
+      alt: 'Raw saffron, sandalwood, and botanical oils on ivory travertine',
+    },
+    {
+      src: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg',
+      alt: 'Handcrafted herbal scrub in artisanal ceramic vessel',
+    },
+    {
+      src: '/images/ayurvedic_masterclass.jpg',
+      alt: 'Hands blending botanical extracts during product-making masterclass',
+    },
+    {
+      src: '/images/ayurvedic_herbal_clay_powder_1791405720188.jpg',
+      alt: 'Neem and tulsi cleansing clay with ceramic apothecary jar',
+    },
+    {
+      src: '/images/ayurvedic_hair_elixir.jpg',
+      alt: 'Ashwagandha hair elixir with amla, hibiscus, and botanical herbs',
+    },
   ]
 
   return (
-    <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]">
+    <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
 
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 md:mb-14">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">Instagram</p>
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">
+              Instagram
+            </p>
             <h2
-              className="text-[1.8rem] md:text-[2rem] font-medium text-[#1e2228]"
+              className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Follow the Angel Touch journey.
@@ -37,17 +68,25 @@ export function SocialSection() {
           </a>
         </div>
 
-        {/* 6-image grid */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
+        {/* 5-Image Curated Lookbook Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {gridImages.map((img, i) => (
             <a
               key={i}
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="aspect-square overflow-hidden bg-[#e9f3e9] img-zoom block"
+              className="group relative aspect-square overflow-hidden bg-[#e9f3e9] border border-[#dde7dd]/60 block"
             >
-              <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              {/* Subtle hover overlay with Instagram icon */}
+              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <InstagramIcon className="w-6 h-6 text-white" />
+              </div>
             </a>
           ))}
         </div>
