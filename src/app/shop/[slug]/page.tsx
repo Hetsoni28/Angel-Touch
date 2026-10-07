@@ -79,16 +79,16 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
 
   return (
     <div className="bg-[#faf8f2] min-h-screen">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
-        <Link href="/shop" className="at-link mb-10 md:mb-16">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 py-12 md:py-20">
+        <Link href="/shop" className="at-link mb-8 md:mb-12 inline-block">
           &larr; Back to Shop
         </Link>
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
           
-          <div className="order-1 lg:col-span-5 lg:col-start-1 xl:col-start-2">
-            <FadeIn className="w-full relative mx-auto max-w-md lg:max-w-none">
-              <div className="relative w-full aspect-[3/4] md:aspect-4/5 bg-[#e9f3e9] overflow-hidden rounded-sm border border-[#dde7dd]/50">
+          <div className="order-1">
+            <FadeIn>
+              <div className="relative w-full aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm border border-[#dde7dd]/50">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={mainImage} 
@@ -99,7 +99,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
             </FadeIn>
           </div>
 
-          <div className="order-2 flex flex-col pt-4 lg:pt-10 lg:col-span-5 lg:col-start-7 xl:col-start-8">
+          <div className="order-2 flex flex-col pt-0 md:pt-4">
             <FadeIn delay={0.1}>
               <p className="text-[11px] tracking-[0.2em] font-semibold text-[#5c8f60] uppercase mb-4">
                 {product.category || 'Product'}
