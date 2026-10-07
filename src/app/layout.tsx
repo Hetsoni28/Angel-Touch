@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/organisms/Header";
+import { Footer } from "@/components/organisms/Footer";
 
-// Elegant serif font for headings and the brand name - matches the brand palette's stylistic tone
 const playfairDisplay = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
@@ -10,7 +11,6 @@ const playfairDisplay = Playfair_Display({
   display: "swap",
 });
 
-// Clean, modern sans-serif for body text and UI elements
 const dmSans = DM_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -20,7 +20,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Angel Touch by Heena Thaker",
-  description: "Natural Beauty, Healthy You. Explore Ayurvedic products, treatments, and product-making classes.",
+  description:
+    "Natural Beauty, Healthy You. Explore Ayurvedic products, treatments, and product-making classes.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +30,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${playfairDisplay.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-ivory text-body">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
