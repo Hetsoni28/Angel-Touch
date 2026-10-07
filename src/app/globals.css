@@ -2,29 +2,29 @@
 
 :root {
   /* Primary Colors */
-  --brand-primary: #2E7A3A;
-  --brand-dark: #1E5F2E;
-  --brand-sage: #5C8F60;
-  --brand-light: #E9F3E9;
+  --brand-primary: #2e7a3a;
+  --brand-dark: #1e5f2e;
+  --brand-sage: #5c8f60;
+  --brand-light: #e9f3e9;
 
   /* Accent Colors */
-  --accent-gold: #EDC179;
-  --accent-beige: #F6E7C8;
+  --accent-gold: #edc179;
+  --accent-beige: #f6e7c8;
 
   /* Neutral Colors */
-  --neutral-white: #FFFFFF;
-  --neutral-ivory: #FAF8F2;
-  --neutral-border: #DDE7DD;
+  --neutral-white: #ffffff;
+  --neutral-ivory: #faf8f2;
+  --neutral-border: #dde7dd;
 
   /* Text Colors */
-  --text-heading: #1E2228;
-  --text-body: #5C5A58;
-  --text-muted: #8A8D87;
+  --text-heading: #1e2228;
+  --text-body: #5c5a58;
+  --text-muted: #8a8d87;
 
   /* Status Colors */
-  --status-success: #22A06B;
-  --status-error: #E55353;
-  --status-warning: #F4C85B;
+  --status-success: #22a06b;
+  --status-error: #e55353;
+  --status-warning: #f4c85b;
 
   /* Base */
   --background: var(--neutral-ivory);
@@ -36,18 +36,18 @@
   --color-primary-dark: var(--brand-dark);
   --color-sage: var(--brand-sage);
   --color-primary-light: var(--brand-light);
-  
+
   --color-accent: var(--accent-gold);
   --color-accent-light: var(--accent-beige);
-  
+
   --color-white: var(--neutral-white);
   --color-ivory: var(--neutral-ivory);
   --color-border: var(--neutral-border);
-  
+
   --color-heading: var(--text-heading);
   --color-body: var(--text-body);
   --color-muted: var(--text-muted);
-  
+
   --color-success: var(--status-success);
   --color-error: var(--status-error);
   --color-warning: var(--status-warning);
@@ -65,6 +65,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-heading);
 }

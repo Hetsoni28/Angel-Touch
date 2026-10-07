@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '../atoms/Button'
+import { cn } from '@/lib/utils'
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
