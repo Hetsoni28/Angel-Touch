@@ -1,11 +1,11 @@
 import { client } from '@/sanity/lib/client'
 import { ALL_PRODUCTS_QUERY, ALL_CATEGORIES_QUERY } from '@/sanity/lib/queries'
-import { ShopHero } from '@/components/templates/shop/ShopHero'
+import { ShopHero } from '@/components/organisms/ShopHero'
 import { CategoryNavigation } from '@/components/molecules/CategoryNavigation'
 import { ProductGrid } from '@/components/organisms/ProductGrid'
-import { FeaturedProduct } from '@/components/templates/shop/FeaturedProduct'
-import { BrandPhilosophy } from '@/components/templates/shop/BrandPhilosophy'
-import { ShopCTA } from '@/components/templates/shop/ShopCTA'
+import { FeaturedProduct } from '@/components/organisms/FeaturedProduct'
+import { BrandPhilosophy } from '@/components/organisms/BrandPhilosophy'
+import { ShopCTA } from '@/components/organisms/ShopCTA'
 
 export const instant = false
 
