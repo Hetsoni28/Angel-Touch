@@ -59,7 +59,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
 
   // TODO: Remove fallback once CMS is populated
   if (!product) {
-    product = (fallbackProducts as any)[params.slug]
+    product = (fallbackProducts as Record<string, { name: string; category: string; images: string[]; description: string; ingredients: string; usage: string }>)[params.slug]
   }
 
   if (!product) {
@@ -88,7 +88,8 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
           
           <div className="order-1">
             <FadeIn>
-              <div className="relative w-full aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm border border-[#dde7dd]/50">
+              <div className="relative w-full aspect-4/5 bg-[#e9f3e9] overflow-hidden rounded-sm border border-[#dde7dd]/50">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={mainImage} 
                   alt={product.name}

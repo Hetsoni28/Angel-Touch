@@ -67,7 +67,7 @@ export default async function ShopPage() {
     categories = fallbackCategories
   }
 
-  const featuredProduct = products.find((p: any) => p.featured)
+  const featuredProduct = products.find((p: { featured?: boolean }) => p.featured)
 
   return (
     <div className="bg-[#faf8f2] min-h-screen">
@@ -85,7 +85,7 @@ export default async function ShopPage() {
             </p>
           </div>
           {products.length > 0 && (
-            <p className="text-[12px] font-semibold tracking-[0.1em] text-[#8a8d87] uppercase">
+            <p className="text-[12px] font-semibold tracking-widest text-[#8a8d87] uppercase">
               {products.length} {products.length === 1 ? 'product' : 'products'}
             </p>
           )}

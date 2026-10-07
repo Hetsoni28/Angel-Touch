@@ -34,6 +34,7 @@ export function ShopHero() {
           <div className="order-1 lg:order-2">
             <FadeIn direction="none" delay={0.1} className="w-full">
               <div className="relative w-full aspect-16/9 lg:aspect-[21/10] bg-[#e9f3e9] overflow-hidden rounded-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src="/images/shop_hero.jpg" 
                   alt="Ayurvedic beauty ingredients and products on warm ivory stone"

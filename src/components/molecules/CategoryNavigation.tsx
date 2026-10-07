@@ -4,7 +4,14 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
-function CategoryNavContent({ categories }: { categories: any[] }) {
+export interface CategoryProps {
+  _id: string;
+  slug: string;
+  name: string;
+  [key: string]: unknown;
+}
+
+function CategoryNavContent({ categories }: { categories: CategoryProps[] }) {
   const searchParams = useSearchParams()
   const currentCat = searchParams.get('category') || 'all'
 
@@ -37,7 +44,7 @@ function CategoryNavContent({ categories }: { categories: any[] }) {
   )
 }
 
-export function CategoryNavigation({ categories }: { categories: any[] }) {
+export function CategoryNavigation({ categories }: { categories: CategoryProps[] }) {
   if (!categories || categories.length === 0) return null
 
   return (

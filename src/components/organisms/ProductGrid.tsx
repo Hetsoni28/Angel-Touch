@@ -4,7 +4,18 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { ProductCard } from '@/components/molecules/ProductCard'
 
-function GridContent({ products }: { products: any[] }) {
+export interface ShopProduct {
+  _id: string;
+  name?: string;
+  slug?: { current: string } | string;
+  category?: string;
+  imageUrl?: string;
+  description?: string;
+  featured?: boolean;
+  [key: string]: unknown;
+}
+
+function GridContent({ products }: { products: ShopProduct[] }) {
   const searchParams = useSearchParams()
   const currentCat = searchParams.get('category') || 'all'
 
@@ -34,7 +45,7 @@ function GridContent({ products }: { products: any[] }) {
   )
 }
 
-export function ProductGrid({ products }: { products: any[] }) {
+export function ProductGrid({ products }: { products: ShopProduct[] }) {
   return (
     <Suspense fallback={<div className="min-h-[40vh]" />}>
       <GridContent products={products} />

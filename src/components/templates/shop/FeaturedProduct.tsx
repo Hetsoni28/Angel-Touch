@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { type ProductCardProps } from '@/components/molecules/ProductCard'
 
-export function FeaturedProduct({ product }: { product: any }) {
+export function FeaturedProduct({ product }: { product: ProductCardProps }) {
   if (!product) return null
 
   return (
@@ -35,7 +36,7 @@ export function FeaturedProduct({ product }: { product: any }) {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <Link href={`/shop/${product.slug}`} className="at-link at-link-green">
+              <Link href={`/shop/${typeof product.slug === 'object' ? product.slug?.current : product.slug}`} className="at-link at-link-green">
                 View Product &rarr;
               </Link>
             </FadeIn>
@@ -44,6 +45,7 @@ export function FeaturedProduct({ product }: { product: any }) {
           <div className="order-1 lg:order-2">
             <FadeIn direction="none" delay={0.2} className="w-full">
               <div className="relative w-full aspect-4/5 bg-[#faf8f2] overflow-hidden rounded-sm border border-[#dde7dd]/50">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={product.imageUrl || '/images/featured_lifestyle.jpg'} 
                   alt={product.name}
