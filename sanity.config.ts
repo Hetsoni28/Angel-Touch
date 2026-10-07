@@ -11,3 +11,4 @@ export default defineConfig({
     types: [], // We will add our schemas here shortly
   },
 })
+
