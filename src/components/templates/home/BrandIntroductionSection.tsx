@@ -15,9 +15,6 @@ export function BrandIntroductionSection() {
 
       {/* ── CONTENT CONTAINER ── */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        
-        {/* Fine vertical gold divider */}
-        <div className="w-px h-10 bg-[#edc179] mx-auto mb-8 opacity-80" />
 
         {/* Eyebrow */}
         <p className="text-[10px] font-semibold tracking-[0.35em] text-[#5c8f60] uppercase mb-6">
