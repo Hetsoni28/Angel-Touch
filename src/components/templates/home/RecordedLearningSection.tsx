@@ -2,12 +2,14 @@ import Link from 'next/link'
 
 export function RecordedLearningSection() {
   return (
-    <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]">
+    <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        
+        {/* ── ALIGNED TOP: items-start lines up image and text horizontally ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* Image — fixed max height */}
-          <div className="overflow-hidden bg-[#e9f3e9] img-zoom" style={{ height: '420px' }}>
+          {/* Image */}
+          <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom" style={{ height: '400px' }}>
             <img
               src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
               alt="Ayurvedic formulation notes and botanical ingredients"
@@ -16,8 +18,10 @@ export function RecordedLearningSection() {
           </div>
 
           {/* Content */}
-          <div className="flex flex-col justify-center">
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4">Recorded Library</p>
+          <div className="flex flex-col pt-1">
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4">
+              Recorded Library
+            </p>
             <h2
               className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2] mb-5"
               style={{ fontFamily: 'var(--font-heading)' }}
@@ -46,6 +50,7 @@ export function RecordedLearningSection() {
           </div>
 
         </div>
+
       </div>
     </section>
   )
