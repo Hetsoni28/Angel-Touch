@@ -18,64 +18,77 @@ const placeholderTreatments = [
     description:
       'A continuous, rhythmic flow of warm medicated oil over the forehead — a deeply calming Ayurvedic experience traditionally used to support mental clarity and reduce accumulated stress.',
     slug: 'shirodhara',
-    image: 'https://images.unsplash.com/photo-1559567890-4f2c8f29ca0a?w=900&auto=format&fit=crop&q=80',
+    image: '/images/ayurvedic_shirodhara.jpg',
   },
 ]
 
 export function FeaturedTreatmentsSection() {
   return (
-    <section className="bg-[#faf8f2] py-20 md:py-28">
+    <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
 
         {/* Intro */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-14 md:mb-16">
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">Treatments</p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
+          <div className="max-w-xl">
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">
+              Treatments
+            </p>
             <h2
-              className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
+              className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Personal care, thoughtfully approached.
             </h2>
-          </div>
-          <div className="flex flex-col lg:justify-end">
-            <p className="text-[15px] text-[#5c5a58] leading-relaxed mb-4">
-              Each treatment at Angel Touch is a considered, personalised experience drawing on authentic Ayurvedic practice.
+            <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
+              Each treatment at Angel Touch is a considered, personalised experience drawing on authentic Ayurvedic practice and applied with dedicated care.
             </p>
-            <Link href="/treatments" className="at-link self-start">View all treatments →</Link>
           </div>
+          <Link href="/treatments" className="at-link shrink-0">
+            View all treatments →
+          </Link>
         </div>
 
-        {/* Treatment items — editorial service menu */}
-        <div className="flex flex-col border-t border-[#dde7dd]">
+        {/* Treatment Grid — balanced 2-column editorial cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {placeholderTreatments.map((t) => (
-            <div key={t.id} className="group grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 border-b border-[#dde7dd] py-10 md:py-12 items-start">
-              {/* Image — fixed height */}
-              <div className="md:col-span-3 overflow-hidden bg-[#e9f3e9] img-zoom" style={{ height: '180px' }}>
-                <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+            <article key={t.id} className="group flex flex-col bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
+              {/* Image */}
+              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] max-h-[260px]">
+                <img
+                  src={t.image}
+                  alt={t.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
-              {/* Text */}
-              <div className="md:col-span-8 md:col-start-5 flex flex-col justify-center">
-                <div className="flex items-center gap-4 mb-2">
-                  <h3
-                    className="text-[1.3rem] md:text-[1.5rem] font-medium text-[#1e2228] leading-snug"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {t.name}
-                  </h3>
-                  <span className="shrink-0 text-[10px] tracking-[0.14em] text-[#8a8d87] uppercase border border-[#dde7dd] px-2.5 py-1">
-                    {t.duration}
-                  </span>
-                </div>
-                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-5 max-w-xl">
-                  {t.description}
-                </p>
-                <Link href={`/treatments/${t.slug}#enquire`} className="at-link at-link-green self-start">
+              {/* Meta */}
+              <div className="flex items-center justify-between gap-4 mb-3">
+                <h3
+                  className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] leading-snug"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {t.name}
+                </h3>
+                <span className="shrink-0 text-[10px] tracking-[0.14em] text-[#5c8f60] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
+                  {t.duration}
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
+                {t.description}
+              </p>
+
+              {/* CTA */}
+              <div className="pt-2 border-t border-[#dde7dd]/60">
+                <Link
+                  href={`/treatments/${t.slug}#enquire`}
+                  className="at-link at-link-green"
+                >
                   Enquire / Book →
                 </Link>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
