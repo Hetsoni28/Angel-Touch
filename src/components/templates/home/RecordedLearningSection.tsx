@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FadeIn } from '@/components/ui/FadeIn'
+import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function RecordedLearningSection() {
   return (

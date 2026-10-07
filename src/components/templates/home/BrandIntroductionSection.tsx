@@ -1,4 +1,4 @@
-import { FadeIn } from '@/components/ui/FadeIn'
+import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function BrandIntroductionSection() {
   return (

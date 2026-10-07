@@ -43,3 +43,4 @@ export function FadeIn({ children, delay = 0, direction = 'up', fullWidth = fals
     </motion.div>
   )
 }
+
