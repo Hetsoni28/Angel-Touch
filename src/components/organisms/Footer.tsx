@@ -21,11 +21,11 @@ const nav = {
 export function Footer() {
   return (
     <footer className="bg-white border-t border-[#dde7dd] pt-20 pb-12">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 mb-20">
 
-          {/* Brand column */}
+          {}
           <div className="md:col-span-4 lg:col-span-3">
             <Link href="/" className="block mb-6">
               <img src="/logo.svg" alt="Angel Touch" className="h-8 w-auto" />
@@ -33,7 +33,7 @@ export function Footer() {
             <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-xs mb-8">
               Natural beauty rooted in Ayurvedic tradition. Products, treatments and masterclasses by Heena Thaker.
             </p>
-            {/* Socials */}
+            {}
             <div className="flex items-center gap-5">
               {[
                 { label: 'Instagram', href: 'https://instagram.com' },
@@ -52,7 +52,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
+          {}
           <div className="md:col-span-3 md:col-start-6">
             <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Navigation</h4>
             <ul className="flex flex-col gap-3.5">
@@ -66,7 +66,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Support */}
+          {}
           <div className="md:col-span-3">
             <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Support</h4>
             <ul className="flex flex-col gap-3.5">
@@ -80,7 +80,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {}
           <div className="md:col-span-2 lg:col-span-2">
             <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Contact</h4>
             <ul className="flex flex-col gap-3.5 text-[13px] text-[#5c5a58]">
@@ -99,8 +99,8 @@ export function Footer() {
 
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-[#dde7dd] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#8a8d87] tracking-[0.1em] uppercase">
+        {}
+        <div className="border-t border-[#dde7dd] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#8a8d87] tracking-widest uppercase">
           <p>© 2026 Angel Touch by Heena Thaker. All rights reserved.</p>
           <p>Crafted with care in India.</p>
         </div>

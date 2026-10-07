@@ -1,5 +1,9 @@
+'use client'
+
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { CardSkeleton } from '@/components/molecules/Card'
 
 // TODO: Replace with Sanity CMS query
 const placeholderProducts = [
@@ -30,11 +34,17 @@ const placeholderProducts = [
 ]
 
 export function FeaturedProductsSection() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <section className="bg-white py-20 md:py-28">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
-
-        {/* Header row */}
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-14">
           <FadeIn delay={0.1}>
             <h2
@@ -48,43 +58,48 @@ export function FeaturedProductsSection() {
             </p>
           </FadeIn>
           <FadeIn delay={0.2} direction="none">
-            <Link href="/shop" className="at-link shrink-0">View all products →</Link>
+            <Link href="/shop" className="at-link shrink-0">View all products &rarr;</Link>
           </FadeIn>
         </div>
 
-        {/* Product grid — all same height, controlled proportions */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
-          {placeholderProducts.map((product, index) => (
-            <FadeIn key={product.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-              <article className="group flex flex-col h-full">
-                {/* Fixed-height image container */}
-                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[4/3] max-h-[250px]">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category}</p>
-                <h3
-                  className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  {product.name}
-                </h3>
-                <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 flex-grow">
-                  {product.description}
-                </p>
-                <Link href={`/shop/${product.slug}#enquire`} className="at-link at-link-green">
-                  Enquire About Product →
-                </Link>
-              </article>
-            </FadeIn>
-          ))}
+          {loading ? (
+            <>
+              <CardSkeleton className="aspect-4/3" />
+              <CardSkeleton className="aspect-4/3" />
+              <CardSkeleton className="aspect-4/3" />
+            </>
+          ) : (
+            placeholderProducts.map((product, index) => (
+              <FadeIn key={product.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+                <article className="group flex flex-col h-full">
+                  <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-4/3">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category}</p>
+                  <h3
+                    className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    {product.name}
+                  </h3>
+                  <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow">
+                    {product.description}
+                  </p>
+                  <Link href={`/shop/${product.slug}#enquire`} className="at-link at-link-green">
+                    Enquire About Product &rarr;
+                  </Link>
+                </article>
+              </FadeIn>
+            ))
+          )}
         </div>
 
       </div>
     </section>
   )
 }
-

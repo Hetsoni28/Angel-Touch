@@ -5,7 +5,7 @@ export function FinalCTASection() {
   return (
     <section className="relative bg-[#faf8f2] py-28 md:py-40 border-t border-[#dde7dd] overflow-hidden">
 
-      {/* ── FULL-BLEED BOTANICAL BACKGROUND ── */}
+      {}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none select-none"
         aria-hidden="true"
@@ -17,8 +17,8 @@ export function FinalCTASection() {
         />
       </div>
 
-      {/* ── CONTENT ── */}
-      <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-10">
+      {}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         <div className="max-w-3xl">
 
           <FadeIn delay={0.1}>

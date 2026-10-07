@@ -31,11 +31,11 @@ export function WhyChooseUsSection() {
 
   return (
     <section className="bg-white py-24 md:py-32 border-t border-[#dde7dd]">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-10">
 
-          {/* Left — headline */}
+          {}
           <div className="lg:col-span-1">
             <FadeIn delay={0.1}>
               <h2
@@ -47,7 +47,7 @@ export function WhyChooseUsSection() {
             </FadeIn>
           </div>
 
-          {/* Right — 4 principles in a 2×2 grid */}
+          {}
           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-x-14 sm:gap-y-12 lg:pl-10">
             {principles.map((p, index) => (
               <FadeIn key={p.n} delay={0.1 * (index + 2)}>

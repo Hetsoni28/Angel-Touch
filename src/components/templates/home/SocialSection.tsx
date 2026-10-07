@@ -44,9 +44,9 @@ export function SocialSection() {
 
   return (
     <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]/70">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-        {/* Header */}
+        {}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 md:mb-14">
           <FadeIn delay={0.1}>
             <div>
@@ -70,7 +70,7 @@ export function SocialSection() {
           </FadeIn>
         </div>
 
-        {/* 5-Image Curated Lookbook Grid */}
+        {}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {gridImages.map((img, i) => (
             <FadeIn key={i} delay={0.1 * (i + 1)}>
@@ -85,7 +85,7 @@ export function SocialSection() {
                   alt={img.alt}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Subtle hover overlay with Instagram icon */}
+                {}
                 <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <InstagramIcon className="w-6 h-6 text-white" />
                 </div>

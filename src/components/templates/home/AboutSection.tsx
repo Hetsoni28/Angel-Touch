@@ -4,15 +4,15 @@ import { FadeIn } from '@/components/atoms/FadeIn'
 export function AboutSection() {
   return (
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        {/* ── ALIGNED TOP: items-start lines up the image top and text top in a single clean horizontal line ── */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
-          {/* Portrait */}
+          {}
           <div className="lg:col-span-5 flex justify-center lg:justify-start">
             <FadeIn delay={0.1}>
-              <div className="w-full max-w-[340px] aspect-[4/5] overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom">
+              <div className="w-full max-w-85 aspect-4/5 overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom">
                 <img
                   src="/images/founder_heena_thaker.jpg"
                   alt="Heena Thaker — Founder of Angel Touch"
@@ -22,7 +22,7 @@ export function AboutSection() {
             </FadeIn>
           </div>
 
-          {/* Content — aligned to top edge of portrait */}
+          {}
           <div className="lg:col-span-7 flex flex-col">
             <FadeIn delay={0.2}>
               <h2

@@ -1,5 +1,6 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
+import { Skeleton } from '@/components/atoms/Skeleton'
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>
 
@@ -28,22 +29,10 @@ export function CardFooter({ className, ...props }: CardProps) {
   return <div className={cn("flex items-center p-6 pt-0", className)} {...props} />
 }
 
-export function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn("animate-pulse rounded-md bg-muted/50 bg-[#e9f3e9]", className)}
-      {...props}
-    />
-  )
-}
-
 export function CardSkeleton({ className }: { className?: string }) {
   return (
     <Card className={cn("overflow-hidden", className)}>
-      <Skeleton className="h-[200px] w-full rounded-none" />
+      <Skeleton className="h-50 w-full rounded-none" />
       <CardHeader>
         <Skeleton className="h-4 w-1/3 mb-2" />
         <Skeleton className="h-6 w-3/4" />

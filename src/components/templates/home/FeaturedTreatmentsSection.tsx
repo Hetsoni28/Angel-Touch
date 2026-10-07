@@ -26,9 +26,9 @@ const placeholderTreatments = [
 export function FeaturedTreatmentsSection() {
   return (
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-        {/* Intro */}
+        {}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
           <FadeIn delay={0.1}>
             <div className="max-w-xl">
@@ -50,13 +50,13 @@ export function FeaturedTreatmentsSection() {
           </FadeIn>
         </div>
 
-        {/* Treatment Grid — balanced 2-column editorial cards */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {placeholderTreatments.map((t, index) => (
             <FadeIn key={t.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
               <article className="group flex flex-col h-full bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
-                {/* Image */}
-                <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] max-h-[260px]">
+                {}
+                <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-16/10">
                   <img
                     src={t.image}
                     alt={t.name}
@@ -64,7 +64,7 @@ export function FeaturedTreatmentsSection() {
                   />
                 </div>
 
-                {/* Meta */}
+                {}
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <h3
                     className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] leading-snug"
@@ -77,12 +77,12 @@ export function FeaturedTreatmentsSection() {
                   </span>
                 </div>
 
-                {/* Description */}
-                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
+                {}
+                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow">
                   {t.description}
                 </p>
 
-                {/* CTA */}
+                {}
                 <div className="pt-2 border-t border-[#dde7dd]/60">
                   <Link
                     href={`/treatments/${t.slug}#enquire`}

@@ -26,14 +26,14 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-        <div className="max-w-screen-xl mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
           
-          {/* ── LOGO ── */}
+          {}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2">
             <img src="/logo.svg" alt="Angel Touch" className="h-9 w-auto object-contain" />
           </Link>
 
-          {/* ── NAVIGATION (DESKTOP) ── */}
+          {}
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             <Link
               href="/"
@@ -52,7 +52,7 @@ export function Header() {
             ))}
           </nav>
 
-          {/* ── RIGHT ACTIONS ── */}
+          {}
           <div className="flex items-center gap-5">
             <button
               aria-label="Search"
@@ -85,7 +85,7 @@ export function Header() {
         </div>
       </header>
 
-      {/* ── MOBILE MENU OVERLAY ── */}
+      {}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-[#faf8f2] flex flex-col pt-[80px]">
           <nav className="flex flex-col px-8 py-8 gap-5 border-b border-[#dde7dd]">

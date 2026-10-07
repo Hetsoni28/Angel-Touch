@@ -4,14 +4,14 @@ import { FadeIn } from '@/components/atoms/FadeIn'
 export function RecordedLearningSection() {
   return (
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        {/* ── ALIGNED TOP: items-start lines up image and text horizontally ── */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* Image */}
+          {}
           <FadeIn delay={0.1}>
-            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px]">
+            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-4/3 max-h-[340px]">
               <img
                 src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
                 alt="Ayurvedic formulation notes and botanical ingredients"
@@ -20,7 +20,7 @@ export function RecordedLearningSection() {
             </div>
           </FadeIn>
 
-          {/* Content */}
+          {}
           <div className="flex flex-col pt-1">
             <FadeIn delay={0.2}>
               <h2
