@@ -10,11 +10,6 @@ export function HeroSection() {
         {/* ── LEFT: Text Content ── */}
         <div className="lg:col-span-6 xl:col-span-6 relative z-10 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 py-16 lg:py-12">
           
-          {/* Eyebrow */}
-          <p className="text-[10px] sm:text-[11px] font-semibold tracking-[0.35em] text-[#5c8f60] uppercase mb-6 md:mb-7">
-            Angel Touch by Heena Thaker
-          </p>
-
           {/* Headline */}
           <h1
             className="text-[2.6rem] sm:text-[3.4rem] lg:text-[4rem] xl:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08] mb-6 md:mb-7"

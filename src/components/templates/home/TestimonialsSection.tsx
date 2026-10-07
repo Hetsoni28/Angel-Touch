@@ -12,9 +12,6 @@ export function TestimonialsSection() {
   return (
     <section className="bg-white py-24 md:py-32 border-t border-[#dde7dd]">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
-        <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-16">
-          Client Words
-        </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 max-w-5xl">
           {testimonials.map((t, i) => (
             <div key={i} className="flex flex-col">

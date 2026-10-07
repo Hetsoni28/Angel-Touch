@@ -21,9 +21,6 @@ export function AboutSection() {
 
           {/* Content — aligned to top edge of portrait */}
           <div className="lg:col-span-7 flex flex-col">
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4 leading-none pt-1">
-              About & Founder
-            </p>
             <h2
               className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.15] mb-5"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}

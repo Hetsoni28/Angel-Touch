@@ -10,11 +10,6 @@ export function ThreeExperiencesSection() {
     <section className="bg-[#faf8f2] py-20 md:py-28">
       <div className="max-w-screen-xl mx-auto px-6 md:px-10">
 
-        {/* Section label */}
-        <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-14 md:mb-16">
-          The Angel Touch Collection
-        </p>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 items-stretch">
 
           {/* 01: PRODUCTS */}

@@ -48,9 +48,6 @@ export function SocialSection() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 md:mb-14">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">
-              Instagram
-            </p>
             <h2
               className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}

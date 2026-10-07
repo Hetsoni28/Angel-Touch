@@ -20,9 +20,6 @@ export function FinalCTASection() {
       <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-10">
         <div className="max-w-3xl">
 
-          <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-6">
-            Begin Here
-          </p>
           <h2
             className="text-[2rem] md:text-[3rem] lg:text-[3.4rem] font-medium text-[#1e2228] leading-[1.15] mb-8"
             style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}

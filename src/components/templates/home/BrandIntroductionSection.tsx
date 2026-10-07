@@ -16,11 +16,6 @@ export function BrandIntroductionSection() {
       {/* ── CONTENT CONTAINER ── */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
 
-        {/* Eyebrow */}
-        <p className="text-[10px] font-semibold tracking-[0.35em] text-[#5c8f60] uppercase mb-6">
-          The Philosophy
-        </p>
-
         {/* Statement */}
         <h2
           className="text-[2.2rem] sm:text-[2.8rem] md:text-[3.4rem] font-medium text-[#1e2228] leading-[1.2] mb-8"

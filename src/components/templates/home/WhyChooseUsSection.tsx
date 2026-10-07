@@ -33,11 +33,8 @@ export function WhyChooseUsSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-10">
 
-          {/* Left — label + headline */}
+          {/* Left — headline */}
           <div className="lg:col-span-1">
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-5">
-              Philosophy
-            </p>
             <h2
               className="text-[2rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}
