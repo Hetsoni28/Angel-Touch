@@ -1,32 +1,63 @@
 import Link from 'next/link'
-import { ArrowRight, Leaf } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
 
 export function FinalCTASection() {
   return (
-    <section className="py-20 gradient-dark">
-      <div className="container mx-auto px-4 md:px-8 text-center">
-        <Leaf className="h-12 w-12 text-accent mx-auto mb-6 opacity-80" />
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-5" style={{ fontFamily: 'var(--font-heading)' }}>
-          Start Your Natural Wellness Journey
-        </h2>
-        <p className="text-white/75 max-w-xl mx-auto mb-8 leading-relaxed">
-          Explore our Ayurvedic products, book a treatment, or join a class. Your journey to natural beauty and holistic wellness starts here.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/shop">
-            <Button variant="secondary" size="lg" className="gap-2">
-              Shop Now <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Link href="/auth/register">
-            <Button size="lg" className="gap-2 bg-white text-primary hover:bg-ivory">
-              Create Account
-            </Button>
-          </Link>
+    <section className="relative bg-[#faf8f2] py-28 md:py-40 border-t border-[#dde7dd] overflow-hidden">
+
+      {/* ── FULL-BLEED BOTANICAL BACKGROUND ── */}
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none select-none"
+        aria-hidden="true"
+      >
+        <img
+          src="/hero-image.svg"
+          alt=""
+          className="w-full h-full object-cover object-center opacity-[0.2]"
+        />
+      </div>
+
+      {/* ── CONTENT ── */}
+      <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-10">
+        <div className="max-w-3xl">
+
+          <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-6">
+            Begin Here
+          </p>
+          <h2
+            className="text-[2rem] md:text-[3rem] lg:text-[3.4rem] font-medium text-[#1e2228] leading-[1.15] mb-8"
+            style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
+          >
+            Begin your<br />Angel Touch journey.
+          </h2>
+          <span className="gold-rule mb-8 block" />
+          <p className="text-[17px] text-[#5c5a58] leading-relaxed max-w-lg mb-12">
+            Explore our curated Ayurvedic products, discover personalised treatments, or join an upcoming product-making masterclass.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/shop"
+              className="inline-flex items-center justify-center px-8 py-3.5 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+            >
+              Explore Products
+            </Link>
+            <Link
+              href="/treatments"
+              className="inline-flex items-center justify-center px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+            >
+              Explore Treatments
+            </Link>
+            <Link
+              href="/classes"
+              className="inline-flex items-center justify-center px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+            >
+              Explore Classes
+            </Link>
+          </div>
+
         </div>
       </div>
+
     </section>
   )
 }
-

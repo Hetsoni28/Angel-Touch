@@ -1,150 +1,111 @@
 import Link from 'next/link'
-import { Leaf, Mail, Phone, MapPin } from 'lucide-react'
 
-// Custom SVGs for removed lucide brand icons
-const InstagramIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-  </svg>
-)
-
-const FacebookIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-  </svg>
-)
-
-const YoutubeIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M2.5 7.1C2.5 7.1 2 9.5 2 12c0 2.5.5 4.9.5 4.9A2.8 2.8 0 0 0 4.6 19c2.1.6 7.4.6 7.4.6s5.3 0 7.4-.6a2.8 2.8 0 0 0 2.1-2.1c.5-2.4.5-4.9.5-4.9s0-2.5-.5-4.9A2.8 2.8 0 0 0 19.4 5C17.3 4.4 12 4.4 12 4.4s-5.3 0-7.4.6A2.8 2.8 0 0 0 2.5 7.1z"/>
-    <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
-  </svg>
-)
-
-const footerLinks = {
-  explore: [
-    { href: '/shop', label: 'Shop Products' },
-    { href: '/treatments', label: 'Treatments' },
-    { href: '/classes', label: 'Live Classes' },
-    { href: '/classes/recorded', label: 'Recorded Classes' },
-    { href: '/membership', label: 'Membership' },
+const nav = {
+  shop: [
+    { label: 'Shop', href: '/shop' },
+    { label: 'Treatments', href: '/treatments' },
+    { label: 'Classes', href: '/classes' },
+    { label: 'Recorded Classes', href: '/classes/recorded' },
+    { label: 'Membership', href: '/membership' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
   ],
-  company: [
-    { href: '/about', label: 'About Heena Thaker' },
-    { href: '/contact', label: 'Contact Us' },
-    { href: '/auth/login', label: 'Customer Login' },
-  ],
-  legal: [
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms of Service' },
-    { href: '/refund', label: 'Refund Policy' },
+  support: [
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
+    { label: 'Refund & Cancellation', href: '/refund' },
   ],
 }
 
-const socials = [
-  { href: 'https://instagram.com', label: 'Instagram', icon: InstagramIcon },
-  { href: 'https://facebook.com', label: 'Facebook', icon: FacebookIcon },
-  { href: 'https://youtube.com', label: 'YouTube', icon: YoutubeIcon },
-]
-
 export function Footer() {
   return (
-    <footer className="bg-heading text-white">
-      {/* Main Footer */}
-      <div className="container mx-auto px-4 md:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-white border-t border-[#dde7dd] pt-20 pb-12">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
 
-          {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center mb-4">
-              <img src="/logo.svg" alt="Angel Touch" className="h-10 w-auto object-contain brightness-0 invert" />
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 mb-20">
+
+          {/* Brand column */}
+          <div className="md:col-span-4 lg:col-span-3">
+            <Link href="/" className="block mb-6">
+              <img src="/logo.svg" alt="Angel Touch" className="h-8 w-auto" />
             </Link>
-            <p className="text-sm text-white/70 leading-relaxed mb-5">
-              Natural Beauty. Healthy You. Discover Ayurvedic products, healing treatments, and expert-led classes by Heena Thaker.
+            <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-xs mb-8">
+              Natural beauty rooted in Ayurvedic tradition. Products, treatments and masterclasses by Heena Thaker.
             </p>
             {/* Socials */}
-            <div className="flex gap-3">
-              {socials.map(({ href, label, icon: Icon }) => (
+            <div className="flex items-center gap-5">
+              {[
+                { label: 'Instagram', href: 'https://instagram.com' },
+                { label: 'Facebook', href: 'https://facebook.com' },
+              ].map(s => (
                 <a
-                  key={label}
-                  href={href}
+                  key={s.label}
+                  href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={label}
-                  className="p-2 rounded-full bg-white/10 hover:bg-accent hover:text-heading transition-colors"
+                  className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#8a8d87] hover:text-[#2e7a3a] transition-colors"
                 >
-                  <Icon className="h-4 w-4" />
+                  {s.label}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Explore Links */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-accent mb-4">Explore</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.explore.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
+          {/* Navigation */}
+          <div className="md:col-span-3 md:col-start-6">
+            <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Navigation</h4>
+            <ul className="flex flex-col gap-3.5">
+              {nav.shop.map(item => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Company Links */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-accent mb-4">Company</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
+          {/* Support */}
+          <div className="md:col-span-3">
+            <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Support</h4>
+            <ul className="flex flex-col gap-3.5">
+              {nav.support.map(item => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-accent mb-4">Contact</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2.5 text-sm text-white/70">
-                <Mail className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
-                <span>hello@angeltouch.in</span>
+          {/* Contact */}
+          <div className="md:col-span-2 lg:col-span-2">
+            <h4 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e2228] uppercase mb-6">Contact</h4>
+            <ul className="flex flex-col gap-3.5 text-[13px] text-[#5c5a58]">
+              <li>
+                <a href="mailto:hello@angeltouch.in" className="hover:text-[#2e7a3a] transition-colors break-all">
+                  hello@angeltouch.in
+                </a>
               </li>
-              <li className="flex items-start gap-2.5 text-sm text-white/70">
-                <Phone className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
-                <span>+91 98765 43210</span>
-              </li>
-              <li className="flex items-start gap-2.5 text-sm text-white/70">
-                <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
-                <span>India</span>
+              <li>
+                <a href="tel:+919876543210" className="hover:text-[#2e7a3a] transition-colors">
+                  +91 98765 43210
+                </a>
               </li>
             </ul>
           </div>
 
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="container mx-auto px-4 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
+        {/* Bottom bar */}
+        <div className="border-t border-[#dde7dd] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#8a8d87] tracking-[0.1em] uppercase">
           <p>© 2026 Angel Touch by Heena Thaker. All rights reserved.</p>
-          <div className="flex gap-4">
-            {footerLinks.legal.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-white transition-colors">
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          <p>Crafted with care in India.</p>
         </div>
+
       </div>
     </footer>
   )
 }
-

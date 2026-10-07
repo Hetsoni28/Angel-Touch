@@ -1,80 +1,100 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
 
-// TODO: Replace with Sanity query
+// TODO: Replace with Sanity CMS query
 const placeholderClasses = [
-  { id: '1', title: 'Ayurvedic Hair Oil Making', date: 'Nov 15, 2026', time: '11:00 AM IST', price: 1499, capacity: 20, enrolled: 14, slug: 'hair-oil-making' },
-  { id: '2', title: 'Kumkumadi Serum Workshop', date: 'Nov 22, 2026', time: '3:00 PM IST', price: 1999, capacity: 20, enrolled: 20, slug: 'kumkumadi-serum' },
-  { id: '3', title: 'Herbal Skincare Masterclass', date: 'Dec 1, 2026', time: '11:00 AM IST', price: 2499, capacity: 15, enrolled: 6, slug: 'herbal-skincare' },
+  {
+    id: '1',
+    title: 'Traditional Kumkumadi Formulation',
+    date: '15 November 2026',
+    time: '11:00 AM IST',
+    capacity: 20,
+    enrolled: 18,
+    price: '₹1,499',
+    slug: 'kumkumadi-formulation',
+    image: 'https://images.unsplash.com/photo-1611079830811-865ff4428d17?w=800&auto=format&fit=crop&q=80',
+  },
+  {
+    id: '2',
+    title: 'Botanical Hair Elixirs Workshop',
+    date: '02 December 2026',
+    time: '2:00 PM IST',
+    capacity: 15,
+    enrolled: 8,
+    price: '₹1,999',
+    slug: 'botanical-hair-elixirs',
+    image: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg',
+  },
 ]
 
 export function UpcomingClassesSection() {
   return (
-    <section className="py-20 bg-primary text-white">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
-          <div>
-            <p className="text-sm font-medium text-accent uppercase tracking-widest mb-2">Live Classes</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'var(--font-heading)' }}>
-              Upcoming Classes
-            </h2>
-          </div>
-          <Link href="/classes">
-            <Button variant="secondary" size="sm" className="gap-1 shrink-0">
-              View All Classes <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
+    <section className="bg-white py-20 md:py-28">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+
+        {/* Header */}
+        <div className="max-w-2xl mb-12 md:mb-14">
+          <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">Live Masterclasses</p>
+          <h2
+            className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2] mb-4"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
+            Learn the craft behind the ritual.
+          </h2>
+          <p className="text-[15px] text-[#5c5a58] leading-relaxed">
+            Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Class list */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-4xl">
           {placeholderClasses.map((cls) => {
             const spotsLeft = cls.capacity - cls.enrolled
-            const isFull = spotsLeft === 0
+            const isFull = spotsLeft <= 0
             return (
-              <div key={cls.id} className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-colors">
-                <div className="flex justify-between items-start mb-4">
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${isFull ? 'bg-error/20 text-red-200' : 'bg-success/20 text-green-200'}`}>
-                    {isFull ? 'Full' : `${spotsLeft} spots left`}
-                  </span>
-                  <span className="text-xl font-bold text-accent">₹{cls.price.toLocaleString('en-IN')}</span>
+              <article key={cls.id} className="group flex flex-col">
+                {/* Fixed height image */}
+                <div className="overflow-hidden bg-[#faf8f2] img-zoom mb-5" style={{ height: '220px' }}>
+                  <img src={cls.image} alt={cls.title} className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2" style={{ fontFamily: 'var(--font-heading)' }}>
+
+                {/* Meta row */}
+                <div className="flex items-start justify-between mb-3 pb-3 border-b border-[#dde7dd]">
+                  <div>
+                    <p className="text-[11px] tracking-[0.16em] text-[#5c5a58] uppercase">{cls.date}</p>
+                    <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-0.5">{cls.time}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[17px] font-medium text-[#1e2228]">{cls.price}</p>
+                    <p className={`text-[10px] tracking-[0.14em] uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
+                      {isFull ? 'Sold out' : `${spotsLeft} / ${cls.capacity} seats`}
+                    </p>
+                  </div>
+                </div>
+
+                <h3
+                  className="text-[1.1rem] font-medium text-[#1e2228] mb-3 leading-snug"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
                   {cls.title}
                 </h3>
-                <p className="text-sm text-white/70 mb-1">{cls.date}</p>
-                <p className="text-sm text-white/70 mb-5">{cls.time}</p>
 
-                {/* Capacity bar */}
-                <div className="mb-5">
-                  <div className="flex justify-between text-xs text-white/60 mb-1">
-                    <span>{cls.enrolled} enrolled</span>
-                    <span>{cls.capacity} total</span>
-                  </div>
-                  <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-accent rounded-full"
-                      style={{ width: `${(cls.enrolled / cls.capacity) * 100}%` }}
-                    />
-                  </div>
-                </div>
-
-                <Link href={`/classes/${cls.slug}`}>
-                  <Button
-                    variant={isFull ? 'ghost' : 'secondary'}
-                    size="sm"
-                    className="w-full justify-center"
-                    disabled={isFull}
-                  >
-                    {isFull ? 'Join Waitlist' : 'Purchase Class'}
-                  </Button>
-                </Link>
-              </div>
+                {!isFull ? (
+                  <Link href={`/classes/${cls.slug}`} className="at-link at-link-green">
+                    View Class →
+                  </Link>
+                ) : (
+                  <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">Join waitlist →</span>
+                )}
+              </article>
             )
           })}
         </div>
+
+        <div className="mt-10">
+          <Link href="/classes" className="at-link">See full schedule →</Link>
+        </div>
+
       </div>
     </section>
   )
 }
-

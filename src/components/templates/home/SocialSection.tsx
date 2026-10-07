@@ -1,54 +1,57 @@
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
-
-const InstagramIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-  </svg>
-)
-
-
-
+/*
+ * SOCIAL / INSTAGRAM — minimal visual grid.
+ * Note: images should be replaced with real social content from the client.
+ */
 export function SocialSection() {
+  // These are editorial placeholder images — replace with real Instagram feed
+  const gridImages = [
+    { src: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500&auto=format&fit=crop&q=80', alt: 'Botanical products' },
+    { src: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg', alt: 'Herbal scrub' },
+    { src: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=500&auto=format&fit=crop&q=80', alt: 'Learning class' },
+    { src: '/images/ayurvedic_herbal_clay_powder_1791405720188.jpg', alt: 'Herbal clay' },
+    { src: '/images/ayurvedic_hero_editorial_1791405719098.jpg', alt: 'Ayurvedic ingredients' },
+    { src: 'https://images.unsplash.com/photo-1611079830811-865ff4428d17?w=500&auto=format&fit=crop&q=80', alt: 'Class workshop' },
+  ]
+
   return (
-    <section className="py-20 bg-white border-t border-border">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
-          <div className="max-w-xl text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
-              <InstagramIcon className="h-5 w-5 text-accent" />
-              <p className="text-sm font-medium text-primary uppercase tracking-widest">Follow Us</p>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-heading mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
-              Join Our Community on Instagram
+    <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-3">Instagram</p>
+            <h2
+              className="text-[1.8rem] md:text-[2rem] font-medium text-[#1e2228]"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Follow the Angel Touch journey.
             </h2>
-            <p className="text-body leading-relaxed">
-              Stay updated with daily Ayurvedic tips, new product launches, behind-the-scenes of our product-making classes, and natural wellness inspiration.
-            </p>
           </div>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <Button variant="outline" size="lg" className="gap-2">
-              @AngelTouchByHeena <ArrowRight className="h-4 w-4" />
-            </Button>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="at-link self-start sm:self-end shrink-0"
+          >
+            Follow on Instagram →
           </a>
         </div>
 
-        {/* Instagram Grid Placeholder */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 md:mt-0">
-          {[
-            '1611077544346-bf5287f3b8b6',
-            '1608248593858-a83eb5003551',
-            '1556228578-0d85b1a4d571',
-            '1608248543803-ba4f8c70ae0b'
-          ].map((id, index) => (
-            <a key={index} href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="aspect-square rounded-xl overflow-hidden group">
-              <img src={`https://images.unsplash.com/photo-${id}?w=400&auto=format&fit=crop&q=80`} alt="Instagram post" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+        {/* 6-image grid */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
+          {gridImages.map((img, i) => (
+            <a
+              key={i}
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-square overflow-hidden bg-[#e9f3e9] img-zoom block"
+            >
+              <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
             </a>
           ))}
         </div>
+
       </div>
     </section>
   )

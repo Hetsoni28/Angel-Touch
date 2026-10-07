@@ -1,37 +1,53 @@
 import Link from 'next/link'
-import { ArrowRight, Leaf } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
 
 export function AboutSection() {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-sm font-medium text-primary uppercase tracking-widest mb-3">About</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-heading mb-5" style={{ fontFamily: 'var(--font-heading)' }}>
-              Meet Heena Thaker
+    <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+          {/* Portrait - graceful, controlled size */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[380px]">
+              <div className="overflow-hidden aspect-[4/5] max-h-[480px] bg-[#e9f3e9] shadow-sm border border-[#dde7dd]/80 img-zoom">
+                <img
+                  src="/images/founder_heena_thaker.jpg"
+                  alt="Heena Thaker — Founder of Angel Touch"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              {/* Subtle gold accent frame */}
+              <div className="absolute -bottom-3 -right-3 w-full h-full border border-[#edc179]/40 pointer-events-none -z-10" />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="lg:col-span-7 flex flex-col justify-center lg:pl-6">
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-[#5c8f60] uppercase mb-4">
+              About & Founder
+            </p>
+            <h2
+              className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.15] mb-5"
+              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
+            >
+              Beauty with intention.
             </h2>
-            <p className="text-body leading-relaxed mb-4">
-              Angel Touch was born from Heena Thaker&apos;s passion for Ayurvedic wellness and natural beauty. With years of study and practice in traditional Ayurvedic formulations, Heena brings ancient wisdom into modern everyday life.
-            </p>
-            <p className="text-body leading-relaxed mb-8">
-              Every product is handcrafted with care, every treatment is personalised, and every class is taught with love — to empower you to take charge of your own natural wellbeing.
-            </p>
-            <Link href="/about">
-              <Button variant="outline" size="md" className="gap-2">
-                Our Story <ArrowRight className="h-4 w-4" />
-              </Button>
+            <span className="gold-rule mb-7" />
+            <div className="flex flex-col gap-4 mb-8 text-[15px] text-[#5c5a58] leading-[1.8] max-w-xl">
+              <p>
+                Angel Touch was founded by Heena Thaker, whose passion for Ayurvedic wellness and natural beauty stems from years of dedicated study and hands-on practice in traditional formulation.
+              </p>
+              <p>
+                Every product, treatment and class offered at Angel Touch reflects the same intention — to bring ancient Ayurvedic knowledge into everyday life in a form that is honest, accessible and truly effective.
+              </p>
+            </div>
+            <Link href="/about" className="at-link self-start">
+              Discover our story →
             </Link>
           </div>
 
-          {/* Placeholder portrait */}
-          <div className="rounded-2xl overflow-hidden h-80 md:h-96 relative shadow-lg">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop&q=80" alt="Heena Thaker" className="w-full h-full object-cover" />
-          </div>
         </div>
       </div>
     </section>
   )
 }
-

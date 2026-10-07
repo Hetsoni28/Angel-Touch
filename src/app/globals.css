@@ -1,103 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  /* ==========================================
-     ANGEL TOUCH — BRAND COLOR PALETTE
-     ========================================== */
-
-  /* Primary Colors */
-  --brand-primary: #2e7a3a;       /* Logo / Buttons / Main Brand */
-  --brand-dark: #1e5f2e;          /* Headings / Active States */
-  --brand-sage: #5c8f60;          /* Secondary Elements / Icons */
-  --brand-light: #e9f3e9;         /* Section Backgrounds / Soft UI */
-
-  /* Accent Colors */
-  --accent-gold: #edc179;         /* Accents / Highlights / CTA Secondary */
-  --accent-beige: #f6e7c8;        /* Badges / Tags / Soft Accents */
-
-  /* Neutral Colors */
-  --neutral-white: #ffffff;       /* Main Background */
-  --neutral-ivory: #faf8f2;       /* Section Background */
-  --neutral-border: #dde7dd;      /* Borders / Dividers */
-
-  /* Text Colors */
-  --text-heading: #1e2228;        /* Main Headings */
-  --text-body: #5c5a58;           /* Paragraphs */
-  --text-muted: #8a8d87;          /* Labels / Secondary Text */
-
-  /* Status Colors */
-  --status-success: #22a06b;
-  --status-error: #e55353;
-  --status-warning: #f4c85b;
-
-  /* Base */
+  --brand-primary: #2e7a3a;
+  --brand-dark: #1e5f2e;
+  --brand-sage: #5c8f60;
+  --brand-light: #e9f3e9;
+  --accent-gold: #edc179;
+  --accent-beige: #f6e7c8;
+  --neutral-white: #ffffff;
+  --neutral-ivory: #faf8f2;
+  --neutral-border: #dde7dd;
+  --text-heading: #1e2228;
+  --text-body: #5c5a58;
+  --text-muted: #8a8d87;
   --background: var(--neutral-ivory);
   --foreground: var(--text-body);
 }
 
-/* stylelint-disable-next-line at-rule-no-unknown -- @theme is a valid Tailwind v4 directive */
+/* stylelint-disable-next-line at-rule-no-unknown */
 @theme inline {
-  /* Colors */
   --color-primary: var(--brand-primary);
   --color-primary-dark: var(--brand-dark);
   --color-sage: var(--brand-sage);
   --color-primary-light: var(--brand-light);
-
   --color-accent: var(--accent-gold);
   --color-accent-light: var(--accent-beige);
-
   --color-white: var(--neutral-white);
   --color-ivory: var(--neutral-ivory);
   --color-border: var(--neutral-border);
-
   --color-heading: var(--text-heading);
   --color-body: var(--text-body);
   --color-muted: var(--text-muted);
-
-  --color-success: var(--status-success);
-  --color-error: var(--status-error);
-  --color-warning: var(--status-warning);
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  /* Fonts */
-  --font-heading: var(--font-heading);   /* Playfair Display — for h1, h2, brand name */
-  --font-sans: var(--font-sans);         /* DM Sans — for body, buttons, UI */
+  --font-heading: var(--font-heading);
+  --font-sans: var(--font-sans);
 }
 
-/* ==========================================
-   BASE STYLES
-   ========================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), Georgia, serif;
   color: var(--text-heading);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+/* Subtle link underline animation */
+.at-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.2s ease, gap 0.2s ease;
 }
 
-/* ==========================================
-   GRADIENT UTILITIES
-   ========================================== */
-
-/* Subtle hero background gradient from the brand guide */
-.gradient-hero {
-  background: linear-gradient(135deg, #f1f7f1 0%, #faf8f2 100%);
+.at-link:hover {
+  color: var(--brand-primary);
+  gap: 10px;
 }
 
-/* Dark section (Primary Green background) */
-.gradient-dark {
-  background: var(--brand-primary);
-  color: #ffffff;
+.at-link-green {
+  color: var(--brand-primary);
 }
 
-/* Accent section (Light Beige background) */
-.gradient-accent {
-  background: var(--accent-beige);
+.at-link-green:hover {
+  color: var(--brand-dark);
+}
+
+/* Gold divider */
+.gold-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--accent-gold);
+  display: block;
+}
+
+/* Image hover zoom (applied to wrappers) */
+.img-zoom img {
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.img-zoom:hover img {
+  transform: scale(1.04);
+}
+
+/* Section fade-in utility */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
