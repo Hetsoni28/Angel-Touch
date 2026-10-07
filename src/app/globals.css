@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
 :root {
+  /* ==========================================
+     ANGEL TOUCH — BRAND COLOR PALETTE
+     ========================================== */
+
   /* Primary Colors */
-  --brand-primary: #2e7a3a;
-  --brand-dark: #1e5f2e;
-  --brand-sage: #5c8f60;
-  --brand-light: #e9f3e9;
+  --brand-primary: #2e7a3a;       /* Logo / Buttons / Main Brand */
+  --brand-dark: #1e5f2e;          /* Headings / Active States */
+  --brand-sage: #5c8f60;          /* Secondary Elements / Icons */
+  --brand-light: #e9f3e9;         /* Section Backgrounds / Soft UI */
 
   /* Accent Colors */
-  --accent-gold: #edc179;
-  --accent-beige: #f6e7c8;
+  --accent-gold: #edc179;         /* Accents / Highlights / CTA Secondary */
+  --accent-beige: #f6e7c8;        /* Badges / Tags / Soft Accents */
 
   /* Neutral Colors */
-  --neutral-white: #ffffff;
-  --neutral-ivory: #faf8f2;
-  --neutral-border: #dde7dd;
+  --neutral-white: #ffffff;       /* Main Background */
+  --neutral-ivory: #faf8f2;       /* Section Background */
+  --neutral-border: #dde7dd;      /* Borders / Dividers */
 
   /* Text Colors */
-  --text-heading: #1e2228;
-  --text-body: #5c5a58;
-  --text-muted: #8a8d87;
+  --text-heading: #1e2228;        /* Main Headings */
+  --text-body: #5c5a58;           /* Paragraphs */
+  --text-muted: #8a8d87;          /* Labels / Secondary Text */
 
   /* Status Colors */
   --status-success: #22a06b;
@@ -32,6 +36,7 @@
 }
 
 @theme inline {
+  /* Colors */
   --color-primary: var(--brand-primary);
   --color-primary-dark: var(--brand-dark);
   --color-sage: var(--brand-sage);
@@ -54,22 +59,44 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Fonts */
+  --font-heading: var(--font-heading);   /* Playfair Display — for h1, h2, brand name */
+  --font-sans: var(--font-sans);         /* DM Sans — for body, buttons, UI */
 }
 
-/* Base resets applying the brand colors */
+/* ==========================================
+   BASE STYLES
+   ========================================== */
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), Georgia, serif;
   color: var(--text-heading);
+  font-weight: 600;
+}
+
+/* ==========================================
+   GRADIENT UTILITIES
+   ========================================== */
+
+/* Subtle hero background gradient from the brand guide */
+.gradient-hero {
+  background: linear-gradient(135deg, #f1f7f1 0%, #faf8f2 100%);
+}
+
+/* Dark section (Primary Green background) */
+.gradient-dark {
+  background: var(--brand-primary);
+  color: #ffffff;
+}
+
+/* Accent section (Light Beige background) */
+.gradient-accent {
+  background: var(--accent-beige);
 }
