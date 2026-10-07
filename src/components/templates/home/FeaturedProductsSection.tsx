@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { FadeIn } from '@/components/ui/FadeIn'
 
 // TODO: Replace with Sanity CMS query
 const placeholderProducts = [
@@ -35,7 +36,7 @@ export function FeaturedProductsSection() {
 
         {/* Header row */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-14">
-          <div>
+          <FadeIn delay={0.1}>
             <h2
               className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}
@@ -45,36 +46,40 @@ export function FeaturedProductsSection() {
             <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed max-w-md">
               Formulated from botanical ingredients drawn from Ayurvedic tradition. Crafted to integrate into your daily care.
             </p>
-          </div>
-          <Link href="/shop" className="at-link shrink-0">View all products →</Link>
+          </FadeIn>
+          <FadeIn delay={0.2} direction="none">
+            <Link href="/shop" className="at-link shrink-0">View all products →</Link>
+          </FadeIn>
         </div>
 
         {/* Product grid — all same height, controlled proportions */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
-          {placeholderProducts.map((product) => (
-            <article key={product.id} className="group flex flex-col">
-              {/* Fixed-height image container */}
-              <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[4/3] max-h-[250px]">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category}</p>
-              <h3
-                className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
-                style={{ fontFamily: 'var(--font-heading)' }}
-              >
-                {product.name}
-              </h3>
-              <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 flex-grow">
-                {product.description}
-              </p>
-              <Link href={`/shop/${product.slug}#enquire`} className="at-link at-link-green">
-                Enquire About Product →
-              </Link>
-            </article>
+          {placeholderProducts.map((product, index) => (
+            <FadeIn key={product.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+              <article className="group flex flex-col h-full">
+                {/* Fixed-height image container */}
+                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[4/3] max-h-[250px]">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category}</p>
+                <h3
+                  className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {product.name}
+                </h3>
+                <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 flex-grow">
+                  {product.description}
+                </p>
+                <Link href={`/shop/${product.slug}#enquire`} className="at-link at-link-green">
+                  Enquire About Product →
+                </Link>
+              </article>
+            </FadeIn>
           ))}
         </div>
 
@@ -82,3 +87,4 @@ export function FeaturedProductsSection() {
     </section>
   )
 }
+

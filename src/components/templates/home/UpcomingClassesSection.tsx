@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { FadeIn } from '@/components/ui/FadeIn'
 
 // TODO: Replace with Sanity CMS query
 const placeholderClasses = [
@@ -35,78 +36,84 @@ export function UpcomingClassesSection() {
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
-          <div className="max-w-xl">
-            <h2
-              className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Learn the craft behind the ritual.
-            </h2>
-            <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-              Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch — led by Heena Thaker.
-            </p>
-          </div>
-          <Link href="/classes" className="at-link shrink-0">
-            See full schedule →
-          </Link>
+          <FadeIn delay={0.1}>
+            <div className="max-w-xl">
+              <h2
+                className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Learn the craft behind the ritual.
+              </h2>
+              <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
+                Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch — led by Heena Thaker.
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.2} direction="none">
+            <Link href="/classes" className="at-link shrink-0">
+              See full schedule →
+            </Link>
+          </FadeIn>
         </div>
 
         {/* Class list — balanced 2-column editorial cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {placeholderClasses.map((cls) => {
+          {placeholderClasses.map((cls, index) => {
             const spotsLeft = cls.capacity - cls.enrolled
             const isFull = spotsLeft <= 0
             return (
-              <article key={cls.id} className="group flex flex-col bg-[#faf8f2] border border-[#dde7dd]/80 p-6 sm:p-8">
-                {/* Image */}
-                <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] max-h-[250px]">
-                  <img
-                    src={cls.image}
-                    alt={cls.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Meta row */}
-                <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#dde7dd]/80">
-                  <div>
-                    <p className="text-[11px] tracking-[0.16em] text-[#1e2228] font-medium uppercase">{cls.date}</p>
-                    <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-0.5">{cls.time}</p>
+              <FadeIn key={cls.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+                <article className="group flex flex-col h-full bg-[#faf8f2] border border-[#dde7dd]/80 p-6 sm:p-8">
+                  {/* Image */}
+                  <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] max-h-[250px]">
+                    <img
+                      src={cls.image}
+                      alt={cls.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <div className="text-right">
-                    <p className="text-[1.2rem] font-medium text-[#1e2228]">{cls.price}</p>
-                    <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
-                      {isFull ? 'Sold out' : `${spotsLeft} of ${cls.capacity} seats left`}
-                    </p>
+
+                  {/* Meta row */}
+                  <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#dde7dd]/80">
+                    <div>
+                      <p className="text-[11px] tracking-[0.16em] text-[#1e2228] font-medium uppercase">{cls.date}</p>
+                      <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-0.5">{cls.time}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[1.2rem] font-medium text-[#1e2228]">{cls.price}</p>
+                      <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
+                        {isFull ? 'Sold out' : `${spotsLeft} of ${cls.capacity} seats left`}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Title */}
-                <h3
-                  className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] mb-3 leading-snug"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  {cls.title}
-                </h3>
+                  {/* Title */}
+                  <h3
+                    className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] mb-3 leading-snug"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    {cls.title}
+                  </h3>
 
-                {/* Description */}
-                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
-                  {cls.description}
-                </p>
+                  {/* Description */}
+                  <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 flex-grow">
+                    {cls.description}
+                  </p>
 
-                {/* CTA */}
-                <div className="pt-2 border-t border-[#dde7dd]/60 flex items-center justify-between">
-                  {!isFull ? (
-                    <Link href={`/classes/${cls.slug}`} className="at-link at-link-green">
-                      View Class →
-                    </Link>
-                  ) : (
-                    <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">
-                      Join waitlist →
-                    </span>
-                  )}
-                </div>
-              </article>
+                  {/* CTA */}
+                  <div className="pt-2 border-t border-[#dde7dd]/60 flex items-center justify-between">
+                    {!isFull ? (
+                      <Link href={`/classes/${cls.slug}`} className="at-link at-link-green">
+                        View Class →
+                      </Link>
+                    ) : (
+                      <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">
+                        Join waitlist →
+                      </span>
+                    )}
+                  </div>
+                </article>
+              </FadeIn>
             )
           })}
         </div>
@@ -115,3 +122,4 @@ export function UpcomingClassesSection() {
     </section>
   )
 }
+

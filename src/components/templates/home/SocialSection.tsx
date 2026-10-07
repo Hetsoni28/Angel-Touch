@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { FadeIn } from '@/components/ui/FadeIn'
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg
@@ -47,44 +48,49 @@ export function SocialSection() {
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 md:mb-14">
-          <div>
-            <h2
-              className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
-              style={{ fontFamily: 'var(--font-heading)' }}
+          <FadeIn delay={0.1}>
+            <div>
+              <h2
+                className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Follow the Angel Touch journey.
+              </h2>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.2} direction="none">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="at-link self-start sm:self-end shrink-0"
             >
-              Follow the Angel Touch journey.
-            </h2>
-          </div>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="at-link self-start sm:self-end shrink-0"
-          >
-            Follow on Instagram →
-          </a>
+              Follow on Instagram →
+            </a>
+          </FadeIn>
         </div>
 
         {/* 5-Image Curated Lookbook Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {gridImages.map((img, i) => (
-            <a
-              key={i}
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative aspect-square overflow-hidden bg-[#e9f3e9] border border-[#dde7dd]/60 block"
-            >
-              <img
-                src={img.src}
-                alt={img.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              {/* Subtle hover overlay with Instagram icon */}
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <InstagramIcon className="w-6 h-6 text-white" />
-              </div>
-            </a>
+            <FadeIn key={i} delay={0.1 * (i + 1)}>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative aspect-square overflow-hidden bg-[#e9f3e9] border border-[#dde7dd]/60 block"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Subtle hover overlay with Instagram icon */}
+                <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <InstagramIcon className="w-6 h-6 text-white" />
+                </div>
+              </a>
+            </FadeIn>
           ))}
         </div>
 
@@ -92,3 +98,4 @@ export function SocialSection() {
     </section>
   )
 }
+
