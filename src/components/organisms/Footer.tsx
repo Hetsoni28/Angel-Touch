@@ -28,7 +28,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-4">
             <Link href="/" className="block mb-6">
-              <img src="/logo.svg" alt="Angel Touch" className="h-8 w-auto" />
+              <img src="/logo.svg" alt="Angel Touch" className="h-16 w-auto" />
             </Link>
             <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-xs mb-4">
               Women-only salon & wellness centre in Satellite, Ahmedabad. Products, treatments and skincare academy courses by Heena Thaker.
