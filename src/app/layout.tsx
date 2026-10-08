@@ -19,6 +19,8 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+import { Toaster } from '@/components/atoms/Toaster'
+
 export const metadata: Metadata = {
   title: "Angel Touch by Heena Thaker",
   description:
@@ -36,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         <Footer />
         <FloatingWhatsApp />
+        <Toaster />
       </body>
     </html>
   );

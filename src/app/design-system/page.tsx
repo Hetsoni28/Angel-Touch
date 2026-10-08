@@ -1,4 +1,4 @@
-import React from 'react'
+import { toast } from 'sonner'
 import { Badge } from '@/components/atoms/Badge'
 import { Button } from '@/components/atoms/Button'
 import { Skeleton } from '@/components/atoms/Skeleton'
@@ -24,6 +24,40 @@ export default function DesignSystemPage() {
           </h1>
           <p className="text-[#5c5a58]">A live preview of all the global UI components built for Angel Touch.</p>
         </header>
+
+        {/* Notifications */}
+        <section>
+          <h2 className="text-[1.5rem] font-medium text-[#1e2228] mb-6 border-b border-[#dde7dd] pb-2" style={{ fontFamily: 'var(--font-heading)' }}>0. Toast Notifications</h2>
+          <div className="flex flex-wrap gap-4">
+            <Button 
+              variant="outline" 
+              onClick={() => toast('Payment Successful', { description: 'You have been enrolled in the masterclass.' })}
+            >
+              Show Default Toast
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => toast.success('Profile Updated', { description: 'Your changes have been saved.' })}
+            >
+              Show Success Toast
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => toast.error('Payment Failed', { description: 'Please check your card details and try again.' })}
+            >
+              Show Error Toast
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => toast('Class Reminder', { 
+                description: 'The Kumkumadi Masterclass starts in 30 minutes.',
+                action: { label: 'Join Zoom', onClick: () => console.log('Joined') }
+              })}
+            >
+              Show Action Toast
+            </Button>
+          </div>
+        </section>
 
         {/* Badges */}
         <section>
