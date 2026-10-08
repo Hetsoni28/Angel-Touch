@@ -9,6 +9,36 @@ const initialState: AuthActionResult = { success: false }
 export function RegisterForm() {
   const [state, action, isPending] = useActionState(registerAction, initialState)
 
+  // ── Success: email confirmation sent ──
+  if (state.success && state.message) {
+    return (
+      <div className="w-full max-w-md mx-auto text-center">
+        <div className="mb-8 flex justify-center">
+          <div className="w-16 h-16 rounded-full bg-[#e9f3e9] flex items-center justify-center">
+            <svg className="w-8 h-8 text-[#2e7a3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+        <h2
+          className="text-[1.8rem] font-medium text-[#1e2228] leading-[1.1] mb-4"
+          style={{ fontFamily: 'var(--font-heading)' }}
+        >
+          Check your inbox
+        </h2>
+        <p className="text-[14px] text-[#5c5a58] leading-[1.8] mb-8">
+          {state.message}
+        </p>
+        <p className="text-[12px] text-[#8a8d87]">
+          Didn&apos;t receive it? Check your spam folder, or{' '}
+          <button onClick={() => window.location.reload()} className="text-[#2e7a3a] underline">
+            try again
+          </button>.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full max-w-md mx-auto">
       

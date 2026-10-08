@@ -1,12 +1,5 @@
 'use server'
 
-/**
- * Authentication Server Actions
- * ─────────────────────────────────────────────
- * All mutations to auth state go through here.
- * Server Actions run on the server — cookies are managed safely.
- */
-
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
@@ -34,7 +27,8 @@ const LoginSchema = z.object({
 
 export type AuthActionResult = {
   success: boolean
-  error?: string
+  message?: string        // success message (e.g. check your email)
+  error?: string          // global error message
   fieldErrors?: Record<string, string[]>
 }
 
@@ -43,14 +37,14 @@ export type AuthActionResult = {
 /**
  * Registers a new customer.
  *
- * Flow:
+ * Flow (with email confirmation ON):
  *   1. Validate input
- *   2. Create Supabase Auth user (email + password)
- *   3. DB trigger auto-creates profiles row with is_admin = FALSE
- *   4. Redirect to /account on success
+ *   2. Create Supabase Auth user
+ *   3. Supabase sends confirmation email automatically
+ *   4. User must click the link — cannot login until verified
+ *   5. DB trigger auto-creates profile on email confirmation
  *
- * Role is set to CUSTOMER by default in the DB trigger.
- * It can only be elevated to ADMIN via a server-side service-role action.
+ * Role is always CUSTOMER (is_admin = FALSE) — set by DB trigger.
  */
 export async function registerAction(
   _prevState: AuthActionResult,
@@ -62,7 +56,6 @@ export async function registerAction(
     password: formData.get('password') as string,
   }
 
-  // Validate
   const parsed = RegisterSchema.safeParse(rawData)
   if (!parsed.success) {
     return {
@@ -72,35 +65,40 @@ export async function registerAction(
   }
 
   const { fullName, email, password } = parsed.data
-
   const supabase = await createClient()
 
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      // Passed to handle_new_user() trigger via raw_user_meta_data
-      data: {
-        full_name: fullName,
-      },
+      data: { full_name: fullName },
+      // After clicking the confirmation link, user is redirected here
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   })
 
   if (error) {
-    // Translate Supabase error messages to user-friendly text
-    if (error.message.includes('already registered')) {
-      return { success: false, error: 'An account with this email already exists. Please log in.' }
+    if (error.message.toLowerCase().includes('already registered')) {
+      return {
+        success: false,
+        error: 'An account with this email already exists. Please sign in.',
+      }
     }
     return { success: false, error: error.message }
   }
 
-  redirect('/account')
+  // Don't redirect immediately — user must verify email first
+  return {
+    success: true,
+    message: `We've sent a confirmation link to ${email}. Please check your inbox and click the link to activate your account.`,
+  }
 }
 
 // ── Login ─────────────────────────────────────────────────────
 
 /**
- * Signs in an existing user with email + password.
+ * Signs in an existing user.
+ * Supabase will automatically reject login if email is not confirmed.
  */
 export async function loginAction(
   _prevState: AuthActionResult,
@@ -120,20 +118,26 @@ export async function loginAction(
   }
 
   const { email, password } = parsed.data
-
   const supabase = await createClient()
 
   const { error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    // Never reveal whether email or password was wrong
+    // Supabase returns "Email not confirmed" if user hasn't verified
+    if (error.message.toLowerCase().includes('email not confirmed')) {
+      return {
+        success: false,
+        error: 'Please verify your email first. Check your inbox for the confirmation link.',
+      }
+    }
+    // Generic message — never reveal which field was wrong
     return {
       success: false,
       error: 'Invalid email or password. Please try again.',
     }
   }
 
-  // Redirect based on role — read from DB, never from client
+  // Read role from DB — never from client
   const { data: profile } = await supabase
     .from('profiles')
     .select('is_admin')
@@ -148,9 +152,6 @@ export async function loginAction(
 
 // ── Logout ────────────────────────────────────────────────────
 
-/**
- * Signs out the current user and clears the session cookie.
- */
 export async function logoutAction(): Promise<void> {
   const supabase = await createClient()
   await supabase.auth.signOut()
