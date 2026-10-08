@@ -44,3 +44,17 @@ export const ALL_MASTERCLASSES_QUERY = groq`
     price
   } | order(date asc)
 `
+
+export const MASTERCLASS_BY_SLUG_QUERY = groq`
+  *[_type == "masterclass" && slug.current == $slug][0] {
+    _id,
+    title,
+    "imageUrl": image.asset->url,
+    description,
+    whatYouWillLearn,
+    whatIsIncluded,
+    date,
+    duration,
+    price
+  }
+`
