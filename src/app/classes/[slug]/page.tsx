@@ -6,11 +6,29 @@ import { Button } from '@/components/atoms/Button'
 import { Badge } from '@/components/atoms/Badge'
 import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
+import { Metadata } from 'next'
 
 export const instant = false // Replaces revalidate in Next.js 16
 
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params
+  const masterclass = await client.fetch(MASTERCLASS_BY_SLUG_QUERY, { slug: resolvedParams.slug })
+  
+  if (!masterclass) {
+    return { title: 'Class Not Found | Angel Touch' }
+  }
+
+  return {
+    title: `${masterclass.title} | Angel Touch Masterclasses`,
+    description: masterclass.shortDescription || 'Join our Ayurvedic product-making masterclass.',
+    openGraph: {
+      images: [masterclass.imageUrl],
+    }
+  }
 }
 
 export default async function MasterclassDetailPage({ params }: Props) {

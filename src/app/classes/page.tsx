@@ -6,9 +6,13 @@ import { Button } from '@/components/atoms/Button'
 import { EmptyState } from '@/components/molecules/EmptyState'
 import Image from 'next/image'
 import Link from 'next/link'
-
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+
+export const metadata = {
+  title: 'Masterclasses | Angel Touch',
+  description: 'Learn the craft behind the ritual. Focused classes designed to teach you how Ayurvedic products are made.',
+}
 
 export const instant = false // Replaces revalidate in Next.js 16
 
