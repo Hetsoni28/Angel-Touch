@@ -1,3 +1,5 @@
+'use client'
+
 import { toast } from 'sonner'
 import { Badge } from '@/components/atoms/Badge'
 import { Button } from '@/components/atoms/Button'
@@ -8,10 +10,6 @@ import { EmptyState } from '@/components/molecules/EmptyState'
 import { ErrorState } from '@/components/molecules/ErrorState'
 import { Loading } from '@/components/molecules/Loading'
 import { Pagination } from '@/components/molecules/Pagination'
-
-export const metadata = {
-  title: 'Design System | Angel Touch',
-}
 
 export default function DesignSystemPage() {
   return (
