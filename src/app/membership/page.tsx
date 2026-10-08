@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Unlock unlimited access to our recorded vault of premium Ayurvedic formulation masterclasses.',
 }
 
+export const instant = false
+
 export default async function MembershipPage() {
   const plans = await client.fetch(`
     *[_type == "membershipPlan"] | order(price asc) {
