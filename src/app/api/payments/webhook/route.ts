@@ -51,16 +51,16 @@ export async function POST(req: NextRequest) {
       const payment = event.payload.payment.entity
       const { userId, type, referenceId } = payment.notes
 
-      // Record the payment in our ledger
-      await serviceSupabase.from('payments').insert({
-        user_id: userId,
+      // Record the payment in our ledger (upsert to update the pending record created in create-order)
+      await serviceSupabase.from('payments').upsert({
         razorpay_order_id: payment.order_id,
+        user_id: userId,
         razorpay_payment_id: payment.id,
-        amount: payment.amount,
+        amount: payment.amount / 100, // Razorpay amount is in paise, DB expects INR
         currency: payment.currency,
         status: 'succeeded',
         payment_type: type,
-      })
+      }, { onConflict: 'razorpay_order_id' })
 
       // Fetch user email for notifications
       const { data: profile } = await serviceSupabase
