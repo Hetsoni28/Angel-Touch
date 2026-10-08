@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Search, User, Menu, X } from 'lucide-react'
@@ -16,6 +17,7 @@ const navLinks = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -37,19 +39,30 @@ export function Header() {
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             <Link
               href="/"
-              className="text-[12px] font-semibold text-[#1e2228] hover:text-[#2e7a3a] tracking-[0.14em] uppercase transition-colors"
+              className={`text-[12px] tracking-[0.14em] uppercase transition-colors ${
+                pathname === '/'
+                  ? 'font-semibold text-[#1e2228]'
+                  : 'font-medium text-[#5c5a58] hover:text-[#2e7a3a]'
+              }`}
             >
               Home
             </Link>
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-[12px] font-medium text-[#5c5a58] hover:text-[#2e7a3a] tracking-[0.14em] uppercase transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname.startsWith(link.href)
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-[12px] tracking-[0.14em] uppercase transition-colors ${
+                    isActive
+                      ? 'font-semibold text-[#1e2228]'
+                      : 'font-medium text-[#5c5a58] hover:text-[#2e7a3a]'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </nav>
 
           {}
