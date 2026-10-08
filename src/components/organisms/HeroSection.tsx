@@ -3,7 +3,7 @@ import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function HeroSection() {
   return (
-    <section className="relative w-full bg-[#faf8f2] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60 pt-16 pb-20 md:pt-24 md:pb-32">
+    <section className="relative w-full bg-[#faf8f2] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60 pt-16 pb-20 md:pt-24 md:pb-32 bg-[url('/images/hero_background.png')] bg-cover bg-center bg-no-repeat">
       <div className="max-w-7xl mx-auto px-6 md:px-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
         <div className="relative z-10 flex flex-col justify-center">
