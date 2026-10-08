@@ -70,12 +70,21 @@ export function Header() {
 
           {}
           <div className="flex items-center gap-5">
-            <button
-              aria-label="Search"
-              className="hidden sm:flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors p-1"
-            >
-              <Search strokeWidth={1.75} className="w-[18px] h-[18px]" />
-            </button>
+            <form action="/search" method="GET" className="hidden sm:flex items-center group relative">
+              <input
+                type="text"
+                name="q"
+                placeholder="Search..."
+                className="w-0 opacity-0 group-hover:w-48 group-hover:opacity-100 group-hover:px-3 focus:w-48 focus:opacity-100 focus:px-3 transition-all duration-300 ease-out h-8 bg-transparent border-b border-[#dde7dd] text-[12px] text-[#1e2228] placeholder-[#a8a8a8] outline-none absolute right-7 top-1/2 -translate-y-1/2"
+              />
+              <button
+                type="submit"
+                aria-label="Search"
+                className="flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors p-1 z-10 bg-[#faf8f2]"
+              >
+                <Search strokeWidth={1.75} className="w-[18px] h-[18px]" />
+              </button>
+            </form>
             <Link
               href="/customer/dashboard"
               aria-label="Dashboard"
