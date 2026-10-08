@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/molecules/EmptyState'
 import { ErrorState } from '@/components/molecules/ErrorState'
 import { Loading } from '@/components/molecules/Loading'
 import { Pagination } from '@/components/molecules/Pagination'
+import { PaymentFailure, AccessDenied, NoClassesPurchased, SomethingWentWrong } from '@/components/organisms/FeedbackStates'
 
 export default function DesignSystemPage() {
   return (
@@ -134,6 +135,32 @@ export default function DesignSystemPage() {
             </div>
             <div>
               <Pagination currentPage={2} totalPages={5} />
+            </div>
+          </div>
+        </section>
+
+        {/* Domain-Specific Feedback States */}
+        <section>
+          <h2 className="text-[1.5rem] font-medium text-[#1e2228] mb-2 border-b border-[#dde7dd] pb-2" style={{ fontFamily: 'var(--font-heading)' }}>6. Domain Feedback States</h2>
+          <p className="text-[13px] text-[#8a8d87] mb-10">These are used in the dashboard, class pages, and recording player.</p>
+          <div className="space-y-10">
+            <div>
+              <p className="text-[11px] font-semibold text-[#8a8d87] tracking-widest uppercase mb-4">Payment Failure</p>
+              <PaymentFailure onRetry={() => toast('Retrying payment...')} />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-[#8a8d87] tracking-widest uppercase mb-4">Access Denied (Recording)</p>
+              <AccessDenied />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <p className="text-[11px] font-semibold text-[#8a8d87] tracking-widest uppercase mb-4">No Classes Purchased</p>
+                <NoClassesPurchased />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-[#8a8d87] tracking-widest uppercase mb-4">Something Went Wrong</p>
+                <SomethingWentWrong onRetry={() => toast('Retrying...')} />
+              </div>
             </div>
           </div>
         </section>
