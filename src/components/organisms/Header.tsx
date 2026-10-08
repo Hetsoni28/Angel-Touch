@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'Shop', href: '/shop' },
   { label: 'Treatments', href: '/treatments' },
   { label: 'Classes', href: '/classes' },
+  { label: 'Recordings', href: '/recordings' },
   { label: 'Membership', href: '/membership' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
