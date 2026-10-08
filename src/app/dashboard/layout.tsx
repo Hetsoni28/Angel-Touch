@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   ]
 
   return (
-    <div className="min-h-screen bg-[#faf8f2] py-12 md:py-16">
+    <div className="min-h-screen bg-[#faf8f2] py-12 pb-32 md:py-16 md:pb-16">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
         <div className="mb-10">
@@ -25,8 +25,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
           
-          {/* Sidebar */}
-          <aside className="w-full md:w-64 lg:w-72 flex-shrink-0">
+          {/* Desktop Sidebar */}
+          <aside className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
             <nav className="flex flex-col gap-2 sticky top-32">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
@@ -60,6 +60,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </div>
             </nav>
           </aside>
+
+          {/* Mobile Bottom Bar */}
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#dde7dd] z-50 flex justify-around items-center px-2 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href
+              const Icon = item.icon
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex flex-col items-center justify-center p-2 min-w-[64px] ${
+                    isActive ? 'text-[#2e7a3a]' : 'text-[#8a8d87]'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 mb-1 ${isActive ? 'fill-[#2e7a3a]/10' : ''}`} />
+                  <span className="text-[9px] font-bold tracking-widest uppercase text-center w-full truncate leading-tight">
+                    {item.label.split(' ')[0]}
+                  </span>
+                </Link>
+              )
+            })}
+            <form action="/auth/signout" method="post" className="flex flex-col items-center justify-center min-w-[64px]">
+              <button
+                type="submit"
+                className="flex flex-col items-center justify-center p-2 text-[#8a8d87] hover:text-[#d32f2f]"
+              >
+                <LogOut className="w-5 h-5 mb-1" />
+                <span className="text-[9px] font-bold tracking-widest uppercase text-center leading-tight">
+                  Sign Out
+                </span>
+              </button>
+            </form>
+          </nav>
 
           {/* Main Content Area */}
           <main className="flex-1 min-w-0">
