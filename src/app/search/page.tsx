@@ -7,9 +7,10 @@ export const instant = false // Dynamic route
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams: Promise<{ q?: string }>
 }) {
-  const query = searchParams.q || ''
+  const resolvedParams = await searchParams
+  const query = resolvedParams.q || ''
 
   let results: any[] = []
 
