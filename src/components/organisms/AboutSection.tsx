@@ -36,10 +36,10 @@ export function AboutSection() {
             <FadeIn delay={0.3}>
               <div className="flex flex-col gap-4 mb-8 text-[15px] text-[#5c5a58] leading-[1.8] max-w-xl">
                 <p>
-                  Angel Touch was founded by Heena Thaker, whose passion for Ayurvedic wellness and natural beauty stems from years of dedicated study and hands-on practice in traditional formulation.
+                  Angel Touch is a women-only salon and wellness centre in Satellite, Ahmedabad — founded by Heena Thaker, a specialist in advanced skin treatments, Ayurvedic therapies and natural formulation.
                 </p>
                 <p>
-                  Every product, treatment and class offered at Angel Touch reflects the same intention — to bring ancient Ayurvedic knowledge into everyday life in a form that is honest, accessible and truly effective.
+                  From aroma facials and Shirodhara to bridal styling and skincare academy courses, every service at Angel Touch is delivered in private individual rooms with genuine care. Our in-house products — crafted using traditional Ayurvedic methods — extend that same intention into your home ritual.
                 </p>
               </div>
             </FadeIn>
