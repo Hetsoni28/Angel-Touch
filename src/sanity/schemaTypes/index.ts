@@ -2,19 +2,19 @@ import { seo } from './seo'
 import { productCategory } from './productCategory'
 import { product } from './product'
 import { treatment } from './treatment'
-import { liveClass } from './class'
-import { recordedClass } from './recordedClass'
+import { masterclassType } from './masterclass'
 import { membershipPlan } from './membershipPlan'
 import { siteSettings } from './siteSettings'
 import { faq } from './faq'
+import { blockContent } from './blockContent'
 
 export const schemaTypes = [
   seo,
+  blockContent,
   productCategory,
   product,
   treatment,
-  liveClass,
-  recordedClass,
+  masterclassType,
   membershipPlan,
   siteSettings,
   faq
