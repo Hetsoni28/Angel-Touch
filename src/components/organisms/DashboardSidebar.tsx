@@ -2,23 +2,35 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Video, User, CreditCard, LogOut } from 'lucide-react'
+import { LayoutDashboard, Video, User, CreditCard, LogOut, Settings } from 'lucide-react'
 
-export const DASHBOARD_NAV_ITEMS = [
-  { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Video Library', href: '/library', icon: Video },
-  { label: 'Profile', href: '/account/profile', icon: User },
-  { label: 'Billing', href: '/account/billing', icon: CreditCard },
-]
+export const getDashboardNavItems = (isAdmin: boolean) => {
+  const items = [
+    { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Video Library', href: '/dashboard/library', icon: Video },
+    { label: 'Profile', href: '/dashboard/profile', icon: User },
+    { label: 'Billing', href: '/dashboard/billing', icon: CreditCard },
+  ]
+  
+  if (isAdmin) {
+    items.push({ label: 'Admin Studio', href: '/studio', icon: Settings })
+  }
+  
+  return items
+}
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
+  const navItems = getDashboardNavItems(isAdmin)
 
   return (
     <aside className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
       <nav className="flex flex-col gap-2 sticky top-32">
-        {DASHBOARD_NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href
+        {navItems.map((item) => {
+          const isActive = item.href === '/dashboard' 
+            ? pathname === '/dashboard' 
+            : pathname.startsWith(item.href)
+            
           const Icon = item.icon
           return (
             <Link

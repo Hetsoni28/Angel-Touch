@@ -24,7 +24,7 @@ export function DashboardMembershipCard({ isMember, expiresAt }: DashboardMember
           <p className="text-[#5c5a58] text-[14px] mb-6 relative z-10">
             Your membership is active until {new Date(expiresAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
           </p>
-          <Link href="/library" className="inline-flex items-center text-[12px] font-semibold tracking-wider uppercase text-[#1e2228] hover:text-[#2e7a3a] transition-colors relative z-10">
+          <Link href="/dashboard/library" className="inline-flex items-center text-[12px] font-semibold tracking-wider uppercase text-[#1e2228] hover:text-[#2e7a3a] transition-colors relative z-10">
             Access Video Library <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </>

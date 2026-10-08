@@ -2,16 +2,20 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { DASHBOARD_NAV_ITEMS } from './DashboardSidebar'
+import { getDashboardNavItems } from './DashboardSidebar'
 import { LogOut } from 'lucide-react'
 
-export function DashboardBottomBar() {
+export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
+  const navItems = getDashboardNavItems(isAdmin)
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#dde7dd] z-50 flex justify-around items-center px-2 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
-      {DASHBOARD_NAV_ITEMS.map((item) => {
-        const isActive = pathname === item.href
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#dde7dd] z-50 flex justify-around items-center px-2 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe overflow-x-auto">
+      {navItems.map((item) => {
+        const isActive = item.href === '/dashboard' 
+          ? pathname === '/dashboard' 
+          : pathname.startsWith(item.href)
+          
         const Icon = item.icon
         return (
           <Link
