@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Video, User, CreditCard, LogOut, Settings } from 'lucide-react'
+import { LayoutDashboard, Video, User, CreditCard, LogOut, Settings, Calendar } from 'lucide-react'
 import { logoutAction } from '@/app/actions/auth'
 
 export const getDashboardNavItems = (isAdmin: boolean) => {
   const items = [
     { label: 'Overview', href: '/customer/dashboard', icon: LayoutDashboard },
+    { label: 'My Classes', href: '/customer/classes', icon: Calendar },
     { label: 'Video Library', href: '/customer/library', icon: Video },
     { label: 'Profile', href: '/customer/profile', icon: User },
     { label: 'Billing', href: '/customer/billing', icon: CreditCard },

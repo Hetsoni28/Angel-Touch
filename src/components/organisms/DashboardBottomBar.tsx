@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { getDashboardNavItems } from './DashboardSidebar'
-import { LogOut } from 'lucide-react'
+import { LogOut, Calendar } from 'lucide-react'
 import { logoutAction } from '@/app/actions/auth'
 
 export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
