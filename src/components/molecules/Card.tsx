@@ -1,48 +1,68 @@
 import React from 'react'
-import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/atoms/Skeleton'
+import Image from 'next/image'
+import Link from 'next/link'
 
-type CardProps = React.HTMLAttributes<HTMLDivElement>
+interface CardProps {
+  title: string
+  subtitle?: string
+  imageUrl?: string
+  href?: string
+  children?: React.ReactNode
+  badge?: React.ReactNode
+}
 
-export function Card({ className, ...props }: CardProps) {
-  return (
-    <div 
-      className={cn("rounded-xl border border-border bg-white text-body shadow-sm overflow-hidden", className)} 
-      {...props} 
-    />
+export function Card({ title, subtitle, imageUrl, href, children, badge }: CardProps) {
+  const content = (
+    <div className="group flex flex-col h-full bg-white border border-[#dde7dd] overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-[#2e7a3a]/30">
+      {/* Image Area */}
+      <div className="relative aspect-[4/3] w-full bg-[#faf8f2] overflow-hidden">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-[#dde7dd]">No Image</span>
+          </div>
+        )}
+        {badge && (
+          <div className="absolute top-4 left-4 z-10">
+            {badge}
+          </div>
+        )}
+      </div>
+
+      {/* Content Area */}
+      <div className="p-6 flex flex-col flex-1">
+        {subtitle && (
+          <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-[#8a8d87] mb-2">
+            {subtitle}
+          </span>
+        )}
+        <h3 
+          className="text-[1.2rem] font-medium text-[#1e2228] leading-[1.3] mb-4 group-hover:text-[#2e7a3a] transition-colors"
+          style={{ fontFamily: 'var(--font-heading)' }}
+        >
+          {title}
+        </h3>
+        
+        <div className="mt-auto">
+          {children}
+        </div>
+      </div>
+    </div>
   )
-}
 
-export function CardHeader({ className, ...props }: CardProps) {
-  return <div className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
-}
+  if (href) {
+    return (
+      <Link href={href} className="block h-full">
+        {content}
+      </Link>
+    )
+  }
 
-export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn("text-2xl font-semibold leading-none tracking-tight text-heading", className)} {...props} />
+  return content
 }
-
-export function CardContent({ className, ...props }: CardProps) {
-  return <div className={cn("p-6 pt-0", className)} {...props} />
-}
-
-export function CardFooter({ className, ...props }: CardProps) {
-  return <div className={cn("flex items-center p-6 pt-0", className)} {...props} />
-}
-
-export function CardSkeleton({ className }: { className?: string }) {
-  return (
-    <Card className={cn("overflow-hidden", className)}>
-      <Skeleton className="h-50 w-full rounded-none" />
-      <CardHeader>
-        <Skeleton className="h-4 w-1/3 mb-2" />
-        <Skeleton className="h-6 w-3/4" />
-      </CardHeader>
-      <CardContent>
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-4 w-5/6 mb-4" />
-        <Skeleton className="h-10 w-full mt-4" />
-      </CardContent>
-    </Card>
-  )
-}
-
