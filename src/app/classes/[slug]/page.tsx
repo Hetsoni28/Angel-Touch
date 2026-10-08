@@ -131,6 +131,13 @@ export default async function MasterclassDetailPage({ params }: Props) {
                     Permanent access to the class recording
                   </li>
                 </ul>
+
+                <div className="mt-8 p-6 bg-[#faf8f2] border border-[#dde7dd] rounded-sm">
+                  <p className="text-[14px] text-[#5c5a58] leading-[1.6]">
+                    <strong className="font-medium text-[#1e2228]">Your class recording is included.</strong><br/>
+                    Missed something during the live session? Your class recording is available in your dashboard after the class concludes.
+                  </p>
+                </div>
               </div>
             )}
           </div>
