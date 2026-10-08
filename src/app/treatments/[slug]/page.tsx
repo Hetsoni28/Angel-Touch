@@ -194,12 +194,14 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                     To ensure the highest quality of care, all treatments are by appointment only. Let us know when you&apos;d like to visit.
                   </p>
                   
-                  <Link
-                    href={`/contact?treatment=${treatment.slug}`}
+                  <a
+                    href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to inquire about booking the *${treatment.name}* treatment.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center justify-center w-full py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
                   >
-                    Enquire / Book
-                  </Link>
+                    Book via WhatsApp
+                  </a>
 
                   <div className="mt-8 pt-8 border-t border-[#dde7dd]/60">
                     <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-4">
