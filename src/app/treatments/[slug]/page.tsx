@@ -18,11 +18,13 @@ const TREATMENT_BY_SLUG_QUERY = groq`
   }
 `
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+
   // Try to fetch from Sanity
   let treatment = null
   try {
-    treatment = await client.fetch(TREATMENT_BY_SLUG_QUERY, { slug: params.slug })
+    treatment = await client.fetch(TREATMENT_BY_SLUG_QUERY, { slug })
   } catch (e) {
     // ignore
   }
@@ -41,11 +43,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function TreatmentDetailPage({ params }: { params: { slug: string } }) {
+export default async function TreatmentDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   let treatment = null
   
   try {
-    treatment = await client.fetch(TREATMENT_BY_SLUG_QUERY, { slug: params.slug })
+    treatment = await client.fetch(TREATMENT_BY_SLUG_QUERY, { slug })
   } catch (error) {
     console.error('Failed to fetch treatment:', error)
   }
@@ -86,7 +89,7 @@ export default async function TreatmentDetailPage({ params }: { params: { slug: 
         duration: 120,
       }
     ]
-    treatment = fallbackTreatments.find(t => t.slug === params.slug)
+    treatment = fallbackTreatments.find(t => t.slug === slug)
     
     if (!treatment) {
       notFound()
