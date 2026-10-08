@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
         currency: 'INR',
         status: 'pending',
         payment_type: 'membership',
+        reference_id: sanityPlanId,
         razorpay_order_id: order.id,
       })
 

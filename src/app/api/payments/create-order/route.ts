@@ -80,10 +80,13 @@ export async function POST(req: NextRequest) {
         amount: trueAmountPaise / 100,
         currency: 'INR',
         status: 'pending',
+        payment_type: type,
+        reference_id: enrollment.class_id,
         razorpay_order_id: order.id,
         metadata: { type, referenceId }
       })
 
+    return ok({ id: order.id, amount: order.amount, currency: order.currency })
   } catch {
     return serverError('Failed to create payment order.')
   }
