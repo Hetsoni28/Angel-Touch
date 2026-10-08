@@ -1,14 +1,15 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useState, useActionState } from 'react'
 import { registerAction, type AuthActionResult } from '@/app/actions/auth'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react'
 
 const initialState: AuthActionResult = { success: false }
 
 export function RegisterForm() {
   const [state, action, isPending] = useActionState(registerAction, initialState)
+  const [showPassword, setShowPassword] = useState(false)
 
   // Success State (Check your inbox)
   if (state.success && state.message) {
@@ -96,14 +97,24 @@ export function RegisterForm() {
           <label htmlFor="password" className="block text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] mb-2">
             Password
           </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            className={`w-full bg-transparent border-b pb-3 text-[15px] text-[#1e2228] focus:outline-none transition-colors rounded-none ${state.fieldErrors?.password ? 'border-red-500 focus:border-red-600' : 'border-[#dde7dd] focus:border-[#2e7a3a]'}`}
-          />
+          <div className="relative w-full">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="new-password"
+              required
+              className={`w-full bg-transparent border-b pb-3 pr-10 text-[15px] text-[#1e2228] focus:outline-none transition-colors rounded-none ${state.fieldErrors?.password ? 'border-red-500 focus:border-red-600' : 'border-[#dde7dd] focus:border-[#2e7a3a]'}`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-0 bottom-3 my-auto text-[#8a8d87] hover:text-[#1e2228] transition-colors"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
           {state.fieldErrors?.password && (
             <p className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">{state.fieldErrors.password[0]}</p>
           )}
