@@ -80,13 +80,13 @@ export default async function ClassesPage() {
             <FadeIn delay={0.4}>
               <div className="flex flex-col sm:flex-row gap-4 items-start">
                 <Link
-                  href="#upcoming"
+                  href="/classes#upcoming"
                   className="inline-flex items-center justify-center px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
                 >
                   Explore Upcoming Classes
                 </Link>
                 <Link
-                  href="#recorded"
+                  href="/classes#recorded"
                   className="inline-flex items-center justify-center px-9 py-4 bg-transparent border border-[#1e2228] text-[#1e2228] hover:bg-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
                 >
                   Explore Recorded Library
