@@ -19,6 +19,7 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+import { Suspense } from "react";
 import { Toaster } from '@/components/atoms/Toaster'
 
 export const metadata: Metadata = {
@@ -34,10 +35,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${playfairDisplay.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ivory text-body">
-        <Header />
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
         <main className="flex-1">{children}</main>
-        <Footer />
-        <FloatingWhatsApp />
+        <Suspense fallback={null}>
+          <Footer />
+          <FloatingWhatsApp />
+        </Suspense>
         <Toaster />
       </body>
     </html>
