@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
+import type { Payment, Profile } from '@/lib/supabase/types'
 
 export const instant = false
 
@@ -22,12 +23,22 @@ export default async function AdminPaymentsPage() {
     client.fetch(`*[_type == "membershipPlan"] { _id, name }`)
   ])
 
-  const referenceMap = [...masterclasses, ...membershipPlans].reduce((acc: Record<string, string>, curr: Record<string, any>) => {
+  const referenceMap = [...masterclasses, ...membershipPlans].reduce((acc: Record<string, string>, curr: { _id: string, title?: string, name?: string }) => {
     if (curr._id) {
-      acc[curr._id] = curr.title || curr.name
+      acc[curr._id] = curr.title || curr.name || 'Unknown'
     }
     return acc
   }, {} as Record<string, string>)
+
+  type PaymentWithProfile = Payment & { 
+    profiles?: Pick<Profile, 'full_name' | 'email'> | null,
+    razorpay_payment_id?: string, // legacy
+    gateway_payment_id?: string,
+    razorpay_order_id?: string,   // legacy
+    gateway_order_id?: string,
+    amount?: number,              // legacy
+    amount_paise?: number
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -50,15 +61,13 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {(payments as any[])?.map((payment: any) => {
+            {(payments as unknown as PaymentWithProfile[])?.map((payment) => {
               // Handle schema variations (amount vs amount_paise, razorpay_payment_id vs gateway_payment_id)
               const displayId = payment.razorpay_payment_id || payment.gateway_payment_id || payment.razorpay_order_id || payment.gateway_order_id || 'Pending'
               const displayAmount = payment.amount ? payment.amount : (payment.amount_paise ? payment.amount_paise / 100 : 0)
               
               // Handle reference resolution
-              // In our implementation we didn't strictly save reference_id to the payments table (we saved to enrollments/memberships directly). 
-              // But if it exists, we resolve it. Otherwise we just show the type.
-              const refName = referenceMap[payment.reference_id] || (payment.payment_type === 'membership' ? 'Premium Membership' : 'Class Enrollment')
+              const refName = payment.reference_id ? referenceMap[payment.reference_id] : (payment.payment_type === 'membership' ? 'Premium Membership' : 'Class Enrollment')
 
               return (
                 <tr key={payment.id} className="border-b border-[#dde7dd] hover:bg-[#faf8f2] transition-colors">
