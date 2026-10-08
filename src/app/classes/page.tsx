@@ -7,6 +7,9 @@ import { EmptyState } from '@/components/molecules/EmptyState'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { FadeIn } from '@/components/atoms/FadeIn'
+import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+
 export const instant = false // Replaces revalidate in Next.js 16
 
 interface Masterclass {
@@ -32,43 +35,60 @@ export default async function ClassesPage() {
   return (
     <div className="min-h-screen bg-[#faf8f2]">
       
-      {/* ── 2. Editorial Split Hero ── */}
-      <section className="bg-white border-b border-[#dde7dd]">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
-          
-          {/* Left: Text */}
-          <div className="flex flex-col justify-center px-6 py-20 lg:px-24">
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#8a8d87] mb-6">
-              Angel Touch · Learning
-            </span>
-            <h1 
-              className="text-[3.5rem] lg:text-[4.5rem] font-medium text-[#1e2228] leading-[1.1] mb-8"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Learn the craft behind the ritual.
-            </h1>
-            <p className="text-[16px] text-[#5c5a58] leading-[1.8] max-w-md mb-12">
-              Focused classes designed to teach you how Ayurvedic products are made, guided through the Angel Touch approach.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary" size="lg" onClick={() => document.getElementById('upcoming')?.scrollIntoView({ behavior: 'smooth' })}>
-                Explore Upcoming Classes
-              </Button>
-              <Button variant="outline" size="lg" onClick={() => document.getElementById('recorded')?.scrollIntoView({ behavior: 'smooth' })}>
-                Explore Recorded Library
-              </Button>
-            </div>
-          </div>
+      {/* ── 2. Brand-Aligned Hero (Matches TreatmentsHero) ── */}
+      <section className="relative w-full min-h-[75vh] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60">
+        
+        {/* Full Background Image */}
+        <div className="absolute inset-0 z-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/learning_hero.jpg"
+            alt="Ayurvedic Masterclass"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Overlay to fade image out on the left side */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2] via-[#faf8f2]/90 to-transparent" />
+        </div>
 
-          {/* Right: Authentic Workshop Image */}
-          <div className="relative h-[50vh] lg:h-auto min-h-[500px]">
-            <Image
-              src="/images/learning_hero.jpg"
-              alt="Hands measuring botanical ingredients in a workshop"
-              fill
-              className="object-cover"
-              priority
-            />
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-24 pb-24 md:pt-32 md:pb-32">
+          <div className="max-w-[640px]">
+            <FadeIn delay={0.1}>
+              <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Classes' }]} />
+
+              <h1
+                className="text-[2.8rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-[#1e2228] leading-[1.05] mb-6 md:mb-8"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
+              >
+                Learn the craft<br />behind the ritual.
+              </h1>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <span className="gold-rule mb-6 md:mb-8 block" />
+            </FadeIn>
+
+            <FadeIn delay={0.3}>
+              <p className="text-[15px] md:text-[17px] text-[#5c5a58] leading-[1.8] max-w-lg mb-10">
+                Focused classes designed to teach you how Ayurvedic products are made, guided through the Angel Touch approach.
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={0.4}>
+              <div className="flex flex-col sm:flex-row gap-4 items-start">
+                <Link
+                  href="#upcoming"
+                  className="inline-flex items-center justify-center px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                >
+                  Explore Upcoming Classes
+                </Link>
+                <Link
+                  href="#recorded"
+                  className="inline-flex items-center justify-center px-9 py-4 bg-transparent border border-[#1e2228] text-[#1e2228] hover:bg-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                >
+                  Explore Recorded Library
+                </Link>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
