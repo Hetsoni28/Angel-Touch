@@ -33,3 +33,17 @@ export type {
   PaymentGateway,
   AccessGrantedVia,
 } from './types'
+
+export {
+  getMyProfile,
+  getMyActiveMembership,
+  getMyEnrollment,
+  getMyEnrollments,
+  getMyRecordingAccess,
+  canAccessRecording,
+  getMyPayments,
+  assertOwnership,
+} from './guards'
+
+export type { UserRole } from './auth'
+
