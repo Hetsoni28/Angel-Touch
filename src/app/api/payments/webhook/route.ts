@@ -166,6 +166,81 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // 4. Handle Refunds
+    if (event.event === 'refund.processed' || event.event === 'refund.created') {
+      const refund = event.payload.refund.entity
+      const paymentId = refund.payment_id
+
+      // Find the payment to see what it was for
+      const { data: paymentRecord } = await serviceSupabase
+        .from('payments')
+        .select('user_id, payment_type, razorpay_order_id')
+        .eq('razorpay_payment_id', paymentId)
+        .single()
+
+      if (paymentRecord) {
+        // Mark payment as refunded
+        await serviceSupabase
+          .from('payments')
+          .update({ status: 'refunded' })
+          .eq('razorpay_payment_id', paymentId)
+
+        if (paymentRecord.payment_type === 'class_enrollment') {
+          // Revoke access
+          await serviceSupabase
+            .from('class_enrollments')
+            .update({ status: 'cancelled' })
+            .eq('user_id', paymentRecord.user_id)
+            // Ideally we'd have referenceId, but we can revoke based on order relation if we tracked it, 
+            // or just status.
+        } else if (paymentRecord.payment_type === 'membership') {
+          // Revoke membership access immediately
+          await serviceSupabase
+            .from('memberships')
+            .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+            .eq('gateway_subscription_id', paymentRecord.razorpay_order_id)
+        }
+      }
+    }
+
+    // 5. True Razorpay Subscription Events (Future-proofing for Phase 17/18)
+    if (event.event.startsWith('subscription.')) {
+      const subscription = event.payload.subscription.entity
+      const subId = subscription.id
+      
+      if (event.event === 'subscription.activated' || event.event === 'subscription.charged') {
+        // Extended time based on current end or new billing cycle
+        // Razorpay sends current_end in unix timestamp
+        const expiresAt = subscription.current_end ? new Date(subscription.current_end * 1000).toISOString() : new Date().toISOString()
+        
+        await serviceSupabase
+          .from('memberships')
+          .update({ status: 'active', expires_at: expiresAt })
+          .eq('gateway_subscription_id', subId)
+      }
+      
+      if (event.event === 'subscription.cancelled') {
+        await serviceSupabase
+          .from('memberships')
+          .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+          .eq('gateway_subscription_id', subId)
+      }
+      
+      if (event.event === 'subscription.halted') {
+        await serviceSupabase
+          .from('memberships')
+          .update({ status: 'paused' })
+          .eq('gateway_subscription_id', subId)
+      }
+      
+      if (event.event === 'subscription.completed') {
+        await serviceSupabase
+          .from('memberships')
+          .update({ status: 'expired' })
+          .eq('gateway_subscription_id', subId)
+      }
+    }
+
     return ok({ received: true })
 
   } catch {
