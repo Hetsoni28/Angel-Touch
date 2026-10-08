@@ -22,10 +22,12 @@ export default async function AdminPaymentsPage() {
     client.fetch(`*[_type == "membershipPlan"] { _id, name }`)
   ])
 
-  const referenceMap = [...masterclasses, ...membershipPlans].reduce((acc: any, curr: any) => {
-    acc[curr._id] = curr.title || curr.name
+  const referenceMap = [...masterclasses, ...membershipPlans].reduce((acc: Record<string, string>, curr: Record<string, any>) => {
+    if (curr._id) {
+      acc[curr._id] = curr.title || curr.name
+    }
     return acc
-  }, {})
+  }, {} as Record<string, string>)
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -48,7 +50,7 @@ export default async function AdminPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {payments?.map((payment) => {
+            {(payments as any[])?.map((payment: any) => {
               // Handle schema variations (amount vs amount_paise, razorpay_payment_id vs gateway_payment_id)
               const displayId = payment.razorpay_payment_id || payment.gateway_payment_id || payment.razorpay_order_id || payment.gateway_order_id || 'Pending'
               const displayAmount = payment.amount ? payment.amount : (payment.amount_paise ? payment.amount_paise / 100 : 0)

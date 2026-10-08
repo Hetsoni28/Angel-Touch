@@ -54,7 +54,7 @@ export default async function AdminMembershipsPage() {
             </tr>
           </thead>
           <tbody>
-            {memberships?.map((membership) => {
+            {(memberships as any[])?.map((membership: any) => {
               const isExpired = new Date(membership.expires_at) < new Date()
               const displayStatus = isExpired && membership.status === 'active' ? 'expired' : membership.status
               

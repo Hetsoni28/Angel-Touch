@@ -51,7 +51,7 @@ export default async function AdminRecordingsPage() {
     .eq('status', 'active')
     .gt('expires_at', new Date().toISOString())
 
-  const activeMemberIds = new Set(activeMembers?.map(m => m.user_id) || [])
+  const activeMemberIds = new Set((activeMembers as any[])?.map((m: any) => m.user_id) || [])
 
   return (
     <div className="w-full max-w-6xl mx-auto">
