@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Video, User, CreditCard, LogOut, Settings } from 'lucide-react'
+import { logoutAction } from '@/app/actions/auth'
 
 export const getDashboardNavItems = (isAdmin: boolean) => {
   const items = [
@@ -49,7 +50,7 @@ export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
         })}
 
         <div className="mt-8 pt-6 border-t border-[#dde7dd]">
-          <form action="/auth/signout" method="post">
+          <form action={logoutAction}>
             <button
               type="submit"
               className="w-full flex items-center px-5 py-4 text-[13px] font-semibold tracking-widest uppercase text-[#5c5a58] hover:text-[#d32f2f] hover:bg-white transition-all duration-200 border-l-2 border-transparent"

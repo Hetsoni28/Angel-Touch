@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { getDashboardNavItems } from './DashboardSidebar'
 import { LogOut } from 'lucide-react'
+import { logoutAction } from '@/app/actions/auth'
 
 export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
@@ -32,7 +33,7 @@ export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
           </Link>
         )
       })}
-      <form action="/auth/signout" method="post" className="flex flex-col items-center justify-center min-w-[64px]">
+      <form action={logoutAction} className="flex flex-col items-center justify-center min-w-[64px]">
         <button
           type="submit"
           className="flex flex-col items-center justify-center p-2 text-[#8a8d87] hover:text-[#d32f2f]"
