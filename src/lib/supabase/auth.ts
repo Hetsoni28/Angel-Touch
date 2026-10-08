@@ -75,14 +75,15 @@ export async function requireAuth(redirectTo = '/login') {
 
 /**
  * Ensures the user is authenticated AND has ADMIN role.
- * Redirects to / if not an admin.
+ * - Unauthenticated → redirect to /login (handled by middleware first)
+ * - Authenticated but NOT admin → redirect to /403 Forbidden
  */
 export async function requireAdmin() {
   const user = await requireAuth()
   const profile = await getCurrentProfile()
 
   if (!profile?.is_admin) {
-    redirect('/')
+    redirect('/403')
   }
 
   return { user, profile }
