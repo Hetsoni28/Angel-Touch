@@ -13,8 +13,8 @@ export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#dde7dd] z-50 flex justify-around items-center px-2 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe overflow-x-auto">
       {navItems.map((item) => {
-        const isActive = item.href === '/dashboard' 
-          ? pathname === '/dashboard' 
+        const isActive = item.href === '/customer/dashboard' 
+          ? pathname === '/customer/dashboard' 
           : pathname.startsWith(item.href)
           
         const Icon = item.icon

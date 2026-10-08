@@ -60,9 +60,9 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse
   }
 
-  // ── Route: /dashboard/* ───────────────────────────────────────────────────
+  // ── Route: /customer/* ───────────────────────────────────────────────────
   // Not logged in → redirect to login with return URL
-  if (pathname.startsWith('/dashboard')) {
+  if (pathname.startsWith('/customer')) {
     if (!user) {
       const loginUrl = new URL('/login', request.url)
       loginUrl.searchParams.set('redirect', pathname)

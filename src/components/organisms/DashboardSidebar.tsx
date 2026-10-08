@@ -7,10 +7,10 @@ import { logoutAction } from '@/app/actions/auth'
 
 export const getDashboardNavItems = (isAdmin: boolean) => {
   const items = [
-    { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-    { label: 'Video Library', href: '/dashboard/library', icon: Video },
-    { label: 'Profile', href: '/dashboard/profile', icon: User },
-    { label: 'Billing', href: '/dashboard/billing', icon: CreditCard },
+    { label: 'Overview', href: '/customer/dashboard', icon: LayoutDashboard },
+    { label: 'Video Library', href: '/customer/library', icon: Video },
+    { label: 'Profile', href: '/customer/profile', icon: User },
+    { label: 'Billing', href: '/customer/billing', icon: CreditCard },
   ]
   
   if (isAdmin) {
@@ -28,8 +28,8 @@ export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     <aside className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
       <nav className="flex flex-col gap-2 sticky top-32">
         {navItems.map((item) => {
-          const isActive = item.href === '/dashboard' 
-            ? pathname === '/dashboard' 
+          const isActive = item.href === '/customer/dashboard' 
+            ? pathname === '/customer/dashboard' 
             : pathname.startsWith(item.href)
             
           const Icon = item.icon

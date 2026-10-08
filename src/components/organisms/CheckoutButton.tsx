@@ -71,7 +71,7 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
           setSuccess(true)
           // Redirect to dashboard after a short delay
           setTimeout(() => {
-            router.push('/dashboard')
+            router.push('/customer/dashboard')
           }, 3000)
         },
         prefill: {

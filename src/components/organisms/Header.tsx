@@ -25,6 +25,8 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  if (pathname.startsWith('/studio')) return null
+
   return (
     <>
       <header className="sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
@@ -74,8 +76,8 @@ export function Header() {
               <Search strokeWidth={1.75} className="w-[18px] h-[18px]" />
             </button>
             <Link
-              href="/account"
-              aria-label="Account"
+              href="/customer/dashboard"
+              aria-label="Dashboard"
               className="hidden sm:flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors p-1"
             >
               <User strokeWidth={1.75} className="w-[18px] h-[18px]" />
