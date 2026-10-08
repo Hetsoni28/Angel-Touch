@@ -65,36 +65,56 @@ angel-touch/
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## 🚀 Full Setup Guide for New Developers
 
-### 1. Install Dependencies
-Ensure you are running a recent version of Node.js.
+Follow these steps precisely to get the Angel Touch environment running on your local machine.
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Hetsoni28/Angel-Touch.git
+cd Angel-Touch
+```
+
+### Step 2: Install Node Dependencies
+Make sure you are using a recent version of Node.js (v18+ recommended).
 ```bash
 npm install
 ```
 
-### 2. Environment Variables
-Create a `.env.local` file in the root directory. Contact the lead developer for the secret keys.
-
+### Step 3: Setup Environment Variables
+Ask the lead developer for the `.env.local` file, or create it in the root folder and fill in these keys from the Supabase and Sanity dashboards:
 ```env
-# Next.js Site URL (Required for auth redirects)
+# Next.js Site URL (Required for Supabase auth redirects)
 NEXT_PUBLIC_SITE_URL=http://localhost:3002
 
-# Supabase Keys
+# Supabase Keys (Find these in Project Settings -> API)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
 # Sanity CMS Keys
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+NEXT_PUBLIC_SANITY_PROJECT_ID=uy2nrh30
 NEXT_PUBLIC_SANITY_DATASET=production
 ```
 
-### 3. Start the Development Server
+### Step 4: Supabase Database Setup
+Since this project relies heavily on PostgreSQL and Row Level Security, your database must be in sync. 
+If you are linking to the live/staging remote database, you don't need to do anything (the schema is already live). 
+If you are setting up a *local* Supabase instance for testing:
+1. Install Supabase CLI: `npm i -g supabase`
+2. Run `supabase start`
+3. The migrations in `supabase/migrations/` will automatically apply to your local database.
+
+### Step 5: Sanity CMS Setup
+The Sanity Studio is built directly into this Next.js app! You do not need to run a separate Sanity server.
+Just make sure your Sanity Project ID is correct in your `.env.local` file. 
+
+### Step 6: Start the Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3002](http://localhost:3002) to view the application.
+*   **Website:** Open [http://localhost:3002](http://localhost:3002)
+*   **CMS Dashboard:** Open [http://localhost:3002/studio](http://localhost:3002/studio) (Login with the authorized Sanity account).
 
 ---
 
