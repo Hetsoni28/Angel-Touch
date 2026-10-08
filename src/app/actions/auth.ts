@@ -157,3 +157,70 @@ export async function logoutAction(): Promise<void> {
   await supabase.auth.signOut()
   redirect('/')
 }
+
+
+const ForgotPasswordSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+})
+
+export async function forgotPasswordAction(
+  _prevState: AuthActionResult,
+  formData: FormData
+): Promise<AuthActionResult> {
+  const email = formData.get('email') as string
+  const parsed = ForgotPasswordSchema.safeParse({ email })
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    }
+  }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+  })
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  return {
+    success: true,
+    message: 'Check your email for the password reset link.',
+  }
+}
+
+const ResetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(72, 'Password is too long'),
+})
+
+export async function resetPasswordAction(
+  _prevState: AuthActionResult,
+  formData: FormData
+): Promise<AuthActionResult> {
+  const password = formData.get('password') as string
+  const parsed = ResetPasswordSchema.safeParse({ password })
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    }
+  }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.password,
+  })
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  redirect('/login?reset=success')
+}
