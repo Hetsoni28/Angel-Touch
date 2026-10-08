@@ -19,7 +19,7 @@ interface Masterclass {
 }
 
 export default async function ClassesPage() {
-  const masterclasses: Masterclass[] = await client.fetch(ALL_MASTERCLASSES_QUERY)
+  const masterclasses: Masterclass[] = (await client.fetch(ALL_MASTERCLASSES_QUERY)) || []
 
   const now = new Date()
 
