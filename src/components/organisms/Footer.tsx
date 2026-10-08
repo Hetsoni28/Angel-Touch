@@ -213,12 +213,12 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-[#dde7dd] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t border-[#dde7dd] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center">
           <p className="text-[11px] text-[#8a8d87] tracking-widest uppercase">
             © 2025 Angel Touch by Heena Thaaker · All rights reserved
           </p>
           <p className="text-[11px] text-[#8a8d87] tracking-widest uppercase">
-            Satellite, Ahmedabad · Gujarat · India
+            Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer" className="font-bold text-[#5c8f60] hover:text-[#2e7a3a] transition-colors">HNTech</a>
           </p>
         </div>
 
