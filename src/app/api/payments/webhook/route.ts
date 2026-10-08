@@ -102,9 +102,13 @@ export async function POST(req: NextRequest) {
           .from('memberships')
           .upsert({
             user_id: userId,
-            plan_id: referenceId,
+            plan_name: payment.notes.planName || 'Premium',
+            tier: 'premium',
             status: 'active',
             expires_at: expiresAt.toISOString(),
+            started_at: new Date().toISOString(),
+            gateway: 'razorpay',
+            gateway_subscription_id: payment.order_id, // we used order_id since we created a one-time order as fallback
           }, { onConflict: 'user_id' })
 
         // Send membership activation email

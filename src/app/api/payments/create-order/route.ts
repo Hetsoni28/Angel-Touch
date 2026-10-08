@@ -18,52 +18,42 @@ import Razorpay from 'razorpay'
 import { client } from '@/sanity/lib/client'
 
 const schema = z.object({
-  type: z.enum(['class_enrollment', 'membership']),
-  referenceId: z.string().min(1), // enrollmentId or membershipPlanId
+  type: z.literal('class_enrollment'),
+  referenceId: z.string().min(1),
 })
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Authenticate
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return unauthorized()
 
-    // 2. Validate body
     const body = await req.json()
     const parsed = schema.safeParse(body)
     if (!parsed.success) return fail(parsed.error.errors[0].message)
 
     const { type, referenceId } = parsed.data
 
-    // 3. Verify Razorpay keys exist
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
       return serverError('Payment gateway is not configured.')
     }
 
-    // 4. Calculate True Amount Server-Side
-    let trueAmountPaise = 0
     const serviceSupabase = await createServiceClient()
-
-    if (type === 'class_enrollment') {
-      // Find the enrollment
-      const { data: enrollment } = await serviceSupabase
-        .from('class_enrollments')
-        .select('class_id')
-        .eq('id', referenceId)
-        .single()
-        
-      if (!enrollment) return fail('Enrollment not found.', 404)
-
-      // Fetch class price from Sanity
-      const sanityClass = await client.fetch(`*[_type == "masterclass" && _id == $id][0] { price }`, { id: enrollment.class_id })
-      if (!sanityClass || !sanityClass.price) return fail('Class pricing not found.', 400)
+    
+    // Find the enrollment
+    const { data: enrollment } = await serviceSupabase
+      .from('class_enrollments')
+      .select('class_id')
+      .eq('id', referenceId)
+      .single()
       
-      trueAmountPaise = sanityClass.price * 100 // Convert INR to Paise
-    } else if (type === 'membership') {
-      // Stub for membership
-      trueAmountPaise = 99900
-    }
+    if (!enrollment) return fail('Enrollment not found.', 404)
+
+    // Fetch class price from Sanity
+    const sanityClass = await client.fetch(`*[_type == "masterclass" && _id == $id][0] { price }`, { id: enrollment.class_id })
+    if (!sanityClass || !sanityClass.price) return fail('Class pricing not found.', 400)
+    
+    const trueAmountPaise = sanityClass.price * 100 // Convert INR to Paise
 
     // 5. Create Razorpay instance
     const razorpay = new Razorpay({
