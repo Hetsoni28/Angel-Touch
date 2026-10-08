@@ -1,6 +1,7 @@
 import { HeroSection } from '@/components/organisms/HeroSection'
 import { BrandIntroductionSection } from '@/components/organisms/BrandIntroductionSection'
 import { ThreeExperiencesSection } from '@/components/organisms/ThreeExperiencesSection'
+import { ServicesSection } from '@/components/organisms/ServicesSection'
 import { FeaturedProductsSection } from '@/components/organisms/FeaturedProductsSection'
 import { FeaturedTreatmentsSection } from '@/components/organisms/FeaturedTreatmentsSection'
 import { UpcomingClassesSection } from '@/components/organisms/UpcomingClassesSection'
@@ -17,6 +18,7 @@ export default function HomePage() {
       <HeroSection />
       <BrandIntroductionSection />
       <ThreeExperiencesSection />
+      <ServicesSection />
       <FeaturedProductsSection />
       <FeaturedTreatmentsSection />
       <UpcomingClassesSection />
