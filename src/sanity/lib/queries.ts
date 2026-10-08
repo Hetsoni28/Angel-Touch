@@ -31,3 +31,16 @@ export const ALL_TREATMENTS_QUERY = groq`
     duration
   } | order(name asc)
 `
+
+export const ALL_MASTERCLASSES_QUERY = groq`
+  *[_type == "masterclass"] {
+    _id,
+    title,
+    "slug": slug.current,
+    "imageUrl": image.asset->url,
+    shortDescription,
+    date,
+    duration,
+    price
+  } | order(date asc)
+`

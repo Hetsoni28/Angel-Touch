@@ -19,7 +19,7 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
-import { sanityClient } from '@/sanity/lib/client'
+import { client as sanityClient } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 
 export async function GET(req: NextRequest) {
