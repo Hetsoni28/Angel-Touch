@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Manage your classes, membership, and account details.',
 }
 
+export const instant = false
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   await connection()
   const supabase = await createClient()
