@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
-import { CardSkeleton } from '@/components/molecules/Card'
+import { CardSkeleton } from '@/components/molecules/CardSkeleton'
 
 // TODO: Replace with Sanity CMS query
 const placeholderProducts = [
