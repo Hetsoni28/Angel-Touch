@@ -1,6 +1,7 @@
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -102,9 +103,13 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           
           <div className="mb-10">
-            <Link href="/treatments" className="text-[11px] font-semibold tracking-widest uppercase text-[#8a8d87] hover:text-[#2e7a3a] transition-colors">
-              ← Back to Treatments
-            </Link>
+            <DynamicBreadcrumbs 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Treatments', href: '/treatments' },
+                { label: treatment.name }
+              ]} 
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
