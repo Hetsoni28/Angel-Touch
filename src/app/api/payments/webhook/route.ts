@@ -21,6 +21,7 @@
 import { NextRequest } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { ok, fail, serverError } from '@/lib/api/response'
+import { sendEmail } from '@/lib/email/service'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -61,6 +62,16 @@ export async function POST(req: NextRequest) {
         payment_type: type,
       })
 
+      // Fetch user email for notifications
+      const { data: profile } = await serviceSupabase
+        .from('profiles')
+        .select('email, full_name')
+        .eq('id', userId)
+        .single()
+
+      const userEmail = profile?.email ?? ''
+      const userName = profile?.full_name ?? 'Valued Customer'
+
       // Grant access based on payment type
       if (type === 'class_enrollment') {
         // Confirm enrollment
@@ -69,6 +80,17 @@ export async function POST(req: NextRequest) {
           .update({ status: 'confirmed' })
           .eq('id', referenceId)
           .eq('user_id', userId)
+
+        // Send payment confirmation email
+        await sendEmail({
+          type: 'PAYMENT_CONFIRMATION',
+          to: userEmail,
+          name: userName,
+          amount: payment.amount,
+          orderId: payment.order_id,
+          paymentId: payment.id,
+          description: 'Ayurvedic Masterclass Enrollment',
+        }).catch(console.error) // Non-blocking — don't fail the webhook if email fails
       }
 
       if (type === 'membership') {
@@ -84,6 +106,16 @@ export async function POST(req: NextRequest) {
             status: 'active',
             expires_at: expiresAt.toISOString(),
           }, { onConflict: 'user_id' })
+
+        // Send membership activation email
+        await sendEmail({
+          type: 'MEMBERSHIP_ACTIVATION',
+          to: userEmail,
+          name: userName,
+          planName: 'Angel Touch Premium Membership',
+          expiresAt: expiresAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+          libraryUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/library`,
+        }).catch(console.error)
       }
     }
 
@@ -109,6 +141,24 @@ export async function POST(req: NextRequest) {
           .update({ status: 'cancelled' })
           .eq('id', referenceId)
           .eq('user_id', userId)
+      }
+
+      // Fetch user email for notifications
+      const { data: profile } = await serviceSupabase
+        .from('profiles')
+        .select('email, full_name')
+        .eq('id', userId)
+        .single()
+
+      if (profile?.email) {
+        await sendEmail({
+          type: 'PAYMENT_FAILED',
+          to: profile.email,
+          name: profile.full_name ?? 'Valued Customer',
+          amount: payment.amount,
+          orderId: payment.order_id,
+          retryUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/account/billing`,
+        }).catch(console.error)
       }
     }
 
