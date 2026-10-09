@@ -87,21 +87,19 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                {/* Hours */}
                 <div className="group">
                   <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#8a8d87] mb-4 flex items-center gap-3">
                     <span className="w-4 h-[1px] bg-[#dde7dd] group-hover:bg-[#5c8f60] transition-colors" />
                     Hours of Operation
                   </h3>
-                  <div className="text-[16px] text-[#1e2228] leading-[1.8] pl-7">
-                    <p className="flex justify-between max-w-[280px]">
-                      <span>Monday — Saturday</span>
-                      <span className="text-[#5c5a58]">10:00 AM — 8:00 PM</span>
-                    </p>
-                    <p className="flex justify-between max-w-[280px] mt-2">
-                      <span>Sunday</span>
-                      <span className="text-[#5c8f60] font-medium">10:00 AM — 4:30 PM</span>
-                    </p>
+                  <div className="text-[15px] sm:text-[16px] text-[#1e2228] leading-[1.8] pl-7">
+                    <div className="grid grid-cols-[auto_1fr] gap-4 sm:gap-8 max-w-[360px]">
+                      <span className="whitespace-nowrap">Monday — Saturday</span>
+                      <span className="text-[#5c5a58] text-right whitespace-nowrap">10:00 AM — 8:00 PM</span>
+                      
+                      <span className="whitespace-nowrap">Sunday</span>
+                      <span className="text-[#5c8f60] font-medium text-right whitespace-nowrap">10:00 AM — 4:30 PM</span>
+                    </div>
                   </div>
                 </div>
 
