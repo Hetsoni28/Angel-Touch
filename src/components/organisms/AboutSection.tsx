@@ -5,12 +5,12 @@ const services = [
   'Advanced Aesthetic Skin Treatments & Aroma Facials',
   'Aromatherapy & Wellness Therapies',
   'Hair Spa, Hair Smoothening, Keratin & Re-moulding',
-  'Hair Colouring — Chemical & Natural Methods',
+  'Hair Colouring - Chemical & Natural Methods',
   'Shirodhara (Ayurvedic Oil-Pouring Therapy)',
   'Bridal & Bridesmaid Makeup, Hair Styling',
   'Destination Wedding Makeup',
   'Manicure, Pedicure & Full Nail Art Services',
-  'Skincare Academy — Levels 1, 2 & 3',
+  'Skincare Academy - Levels 1, 2 & 3',
   'Aromatherapy & Beauty School',
 ]
 
@@ -21,31 +21,31 @@ export function AboutSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
-          {/* Founder Photo */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-start">
-            <FadeIn delay={0.1}>
-              <div className="w-full max-w-sm overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom">
+          {/* Treatment Photo */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-start w-full">
+            <FadeIn delay={0.1} fullWidth className="max-w-sm">
+              <div className="w-full overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom relative aspect-[4/5]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/heena_thaaker.jpg"
-                  alt="Heena Thaaker — Founder of Angel Touch"
-                  className="w-full h-full object-cover object-top"
+                  src="/images/ayurvedic_shirodhara.jpg"
+                  alt="Ayurvedic Treatment at Angel Touch"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
             </FadeIn>
           </div>
 
           {/* Content */}
-          <div className="lg:col-span-7 flex flex-col">
+          <div className="lg:col-span-7 flex flex-col justify-center">
             <FadeIn delay={0.2}>
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-4">
-                Angel Touch by Heena Thaaker
+                Our Sanctuary
               </p>
               <h2
                 className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.15] mb-5"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
               >
-                Beauty with intention.
+                Comprehensive beauty & wellness.
               </h2>
               <span className="gold-rule mb-6 block" />
             </FadeIn>
@@ -68,8 +68,8 @@ export function AboutSection() {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <Link href="/about" className="at-link self-start">
-                Discover our story →
+              <Link href="/services" className="at-link self-start">
+                Explore all services &rarr;
               </Link>
             </FadeIn>
           </div>
