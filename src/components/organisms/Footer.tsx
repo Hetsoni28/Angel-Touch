@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const services = [
   { label: 'Advanced Skin Treatments', href: '/treatments' },
@@ -16,7 +19,7 @@ const explore = [
   { label: 'Shop', href: '/shop' },
   { label: 'Treatments', href: '/treatments' },
   { label: 'Classes', href: '/classes' },
-  { label: 'Recorded Classes', href: '/classes/recorded' },
+  { label: 'Recorded Classes', href: '/classes#recorded' },
   { label: 'Membership', href: '/membership' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
@@ -35,6 +38,9 @@ const hours = [
 ]
 
 export function Footer() {
+  const pathname = usePathname()
+  if (pathname.startsWith('/studio')) return null
+
   return (
     <footer className="bg-[#faf8f2] border-t border-[#dde7dd]">
 
@@ -192,22 +198,19 @@ export function Footer() {
               </a>
             </div>
 
-            {/* Embedded mini map placeholder */}
-            <a
-              href="https://maps.google.com/?q=UGF-6+Policlinic+Chamber+Satellite+Ahmedabad"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full h-32 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden hover:opacity-90 transition-opacity relative"
-              aria-label="View on Google Maps"
-            >
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-                <svg className="w-7 h-7 text-[#2e7a3a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
-                </svg>
-                <span className="text-[11px] font-semibold tracking-widest uppercase text-[#2e7a3a]">Open in Maps</span>
-              </div>
-            </a>
+            {/* Embedded real map */}
+            <div className="w-full h-32 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-500">
+              <iframe
+                src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0"
+              />
+            </div>
           </div>
 
         </div>
