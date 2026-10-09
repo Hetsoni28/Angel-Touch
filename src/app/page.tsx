@@ -11,10 +11,12 @@ import { AboutSection } from '@/components/organisms/AboutSection'
 import { TestimonialsSection } from '@/components/organisms/TestimonialsSection'
 import { SocialSection } from '@/components/organisms/SocialSection'
 import { FinalCTASection } from '@/components/organisms/FinalCTASection'
+import { WelcomeAnimation } from '@/components/organisms/WelcomeAnimation'
 
 export default function HomePage() {
   return (
     <>
+      <WelcomeAnimation />
       <HeroSection />
       <BrandIntroductionSection />
       <ThreeExperiencesSection />
