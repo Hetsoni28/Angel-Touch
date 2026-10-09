@@ -14,21 +14,25 @@ type InquiryType = 'TREATMENT' | 'PRODUCT' | 'GENERAL' | 'CLASS'
 interface InquiryParams {
   type: InquiryType
   itemName?: string // e.g. "Ayurvedic Shirodhara" or "Kesar Radiance Oil"
+  itemUrl?: string  // e.g. "https://domain.com/shop/kesar-oil"
   message?: string
 }
 
-export function generateWhatsAppLink({ type, itemName, message }: InquiryParams): string {
+export function generateWhatsAppLink({ type, itemName, itemUrl, message }: InquiryParams): string {
   let text = ''
 
   switch (type) {
     case 'TREATMENT':
       text = `Hello Angel Touch, I would like to inquire about booking the *${itemName}* treatment.`
+      if (itemUrl) text += `\nReference: ${itemUrl}`
       break
     case 'PRODUCT':
-      text = `Hello Angel Touch, I am interested in purchasing the *${itemName}*. Could you share more details?`
+      text = `Hello Angel Touch, I am interested in purchasing the *${itemName}*.`
+      if (itemUrl) text += `\nReference: ${itemUrl}`
       break
     case 'CLASS':
       text = `Hello Angel Touch, I would like to inquire about the upcoming *${itemName}* masterclass.`
+      if (itemUrl) text += `\nReference: ${itemUrl}`
       break
     case 'GENERAL':
     default:

@@ -3,6 +3,7 @@ import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { ProductCard } from '@/components/molecules/ProductCard'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 
@@ -173,12 +174,18 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
 
             <FadeIn delay={0.2}>
               {/* PRIMARY CTA */}
-              <Link
-                href={`/contact?product=${encodeURIComponent(product.name)}`}
+              <a
+                href={generateWhatsAppLink({
+                  type: 'PRODUCT',
+                  itemName: product.name,
+                  itemUrl: `https://angeltouch.com/shop/${slug}`
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center px-10 py-5 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[12px] font-semibold tracking-[0.2em] uppercase transition-colors duration-200 shadow-sm"
               >
                 Enquire About Product
-              </Link>
+              </a>
 
               {/* TRUST / INFORMATION AREA */}
               <div className="mt-8 pt-6 border-t border-[#dde7dd]/40 text-center lg:text-left">

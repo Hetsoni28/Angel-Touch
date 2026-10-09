@@ -2,6 +2,7 @@ import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -195,7 +196,11 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                   </p>
                   
                   <a
-                    href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to inquire about booking the *${treatment.name}* treatment.`)}`}
+                    href={generateWhatsAppLink({ 
+                      type: 'TREATMENT', 
+                      itemName: treatment.name,
+                      itemUrl: `https://angeltouch.com/treatments/${slug}`
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center w-full py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
