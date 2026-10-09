@@ -1,45 +1,22 @@
-'use client'
-
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
-import { CardSkeleton } from '@/components/molecules/CardSkeleton'
+import { client } from '@/sanity/lib/client'
+import { ALL_PRODUCTS_QUERY } from '@/sanity/lib/queries'
 
-// TODO: Replace with Sanity CMS query
-const placeholderProducts = [
-  {
-    id: '1',
-    name: 'Kesar Radiance Oil',
-    category: 'Skin Care',
-    description: 'A lightweight facial oil blending pure saffron and sandalwood to restore natural luminosity.',
-    slug: 'kesar-radiance-oil',
-    image: '/images/kesar_radiance_oil.jpg',
-  },
-  {
-    id: '2',
-    name: 'Ashwagandha Hair Elixir',
-    category: 'Hair Care',
-    description: 'A deeply nourishing botanical blend to strengthen roots, condition strands, and soothe the scalp.',
-    slug: 'ashwagandha-hair-elixir',
-    image: '/images/ayurvedic_hair_elixir.jpg',
-  },
-  {
-    id: '3',
-    name: 'Neem & Tulsi Cleansing Clay',
-    category: 'Body Care',
-    description: 'A purifying green clay formulated with wildcrafted herbs for gentle, mindful daily use.',
-    slug: 'neem-tulsi-clay',
-    image: '/images/ayurvedic_herbal_clay_powder_1791405720188.jpg',
-  },
-]
+export async function FeaturedProductsSection() {
+  // Fetch real data from Sanity
+  let products = []
+  try {
+    const data = await client.fetch(ALL_PRODUCTS_QUERY)
+    products = data.filter((p: any) => p.featured).slice(0, 3)
+    if (products.length === 0) {
+      products = data.slice(0, 3)
+    }
+  } catch (error) {
+    console.error('Failed to fetch featured products', error)
+  }
 
-export function FeaturedProductsSection() {
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000)
-    return () => clearTimeout(timer)
-  }, [])
+  if (products.length === 0) return null
 
   return (
     <section className="bg-white py-20 md:py-28">
@@ -63,40 +40,32 @@ export function FeaturedProductsSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
-          {loading ? (
-            <>
-              <CardSkeleton className="aspect-4/3" />
-              <CardSkeleton className="aspect-4/3" />
-              <CardSkeleton className="aspect-4/3" />
-            </>
-          ) : (
-            placeholderProducts.map((product, index) => (
-              <FadeIn key={product.id} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-                <article className="group flex flex-col h-full">
-                  <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-4/3">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category}</p>
-                  <h3
-                    className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {product.name}
-                  </h3>
-                  <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow">
-                    {product.description}
-                  </p>
-                  <Link href={`/shop/${product.slug}#enquire`} className="at-link at-link-green">
-                    Enquire About Product &rarr;
-                  </Link>
-                </article>
-              </FadeIn>
-            ))
-          )}
+          {products.map((product: any, index: number) => (
+            <FadeIn key={product._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+              <article className="group flex flex-col h-full">
+                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[4/3] relative">
+                  <img
+                    src={product.imageUrl || '/images/ayurvedic_hero_editorial_1791405719098.jpg'}
+                    alt={product.name}
+                    className="w-full h-full object-cover absolute inset-0"
+                  />
+                </div>
+                <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category || 'Product'}</p>
+                <h3
+                  className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {product.name}
+                </h3>
+                <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow line-clamp-3">
+                  {product.description || product.shortDescription || ''}
+                </p>
+                <Link href={`/shop/${product.slug}`} className="at-link at-link-green">
+                  View Product &rarr;
+                </Link>
+              </article>
+            </FadeIn>
+          ))}
         </div>
 
       </div>

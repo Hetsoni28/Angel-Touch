@@ -13,7 +13,7 @@ export const metadata = {
 export const instant = false
 
 export default async function TreatmentsPage() {
-  // Fetch from Sanity. We catch errors to fallback gracefully to placeholder data
+  // Fetch real data from Sanity. Catch errors to gracefully render empty state.
   let sanityTreatments = []
   try {
     sanityTreatments = await client.fetch(ALL_TREATMENTS_QUERY)

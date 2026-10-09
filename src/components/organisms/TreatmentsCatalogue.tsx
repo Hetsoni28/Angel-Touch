@@ -10,44 +10,23 @@ type Treatment = {
   duration?: number
 }
 
-// Fallback data if Sanity is empty
-const fallbackTreatments: Treatment[] = [
-  {
-    _id: 't1',
-    name: 'Advanced Aroma Facial',
-    slug: 'advanced-aroma-facial',
-    imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
-    description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
-    duration: 60,
-  },
-  {
-    _id: 't2',
-    name: 'Shirodhara Therapy',
-    slug: 'shirodhara',
-    imageUrl: '/images/ayurvedic_shirodhara.jpg',
-    description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
-    duration: 45,
-  },
-  {
-    _id: 't3',
-    name: 'Botanical Hair Spa',
-    slug: 'botanical-hair-spa',
-    imageUrl: '/images/ayurvedic_hair_elixir_1791410293201.jpg',
-    description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
-    duration: 60,
-  },
-  {
-    _id: 't4',
-    name: 'Bridal Styling',
-    slug: 'bridal-styling',
-    imageUrl: '/images/ayurvedic_beauty_editorial_1791410358517.jpg',
-    description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
-    duration: 120,
-  }
-]
-
 export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
-  const displayTreatments = treatments && treatments.length > 0 ? treatments : fallbackTreatments
+  const displayTreatments = treatments || []
+
+  if (displayTreatments.length === 0) {
+    return (
+      <section id="catalogue" className="bg-white py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
+          <h2 className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] mb-6" style={{ fontFamily: 'var(--font-heading)' }}>
+            Treatments & Services
+          </h2>
+          <p className="text-[#5c5a58]">
+            No treatments are currently available. Please check back later.
+          </p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="catalogue" className="bg-white py-24 md:py-32">
