@@ -13,6 +13,8 @@ import { SocialSection } from '@/components/organisms/SocialSection'
 import { FinalCTASection } from '@/components/organisms/FinalCTASection'
 import { WelcomeAnimation } from '@/components/organisms/WelcomeAnimation'
 
+export const instant = false
+
 export default function HomePage() {
   return (
     <>
