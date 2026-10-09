@@ -32,12 +32,12 @@ export function WelcomeAnimation() {
             setShouldHide(true)
           }}
         >
-          {/* Realistic Botanical Background */}
+          {/* Realistic Botanical Background with Multiply Blend for true shadow effect */}
           <motion.div
-            className="absolute inset-0 z-0 pointer-events-none"
-            initial={{ opacity: 0, scale: 1.04, x: -10 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 2.8, ease: [0.33, 1, 0.68, 1], delay: 0.4 }}
+            className="absolute inset-0 z-0 pointer-events-none mix-blend-multiply"
+            initial={{ opacity: 0, scale: 1.05, x: -15, y: -5 }}
+            animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            transition={{ duration: 3.5, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
           >
             <Image
               src="/images/botanical_welcome_shadows.jpg"
@@ -53,9 +53,9 @@ export function WelcomeAnimation() {
           <div className="relative z-10 flex flex-col items-center">
             {/* Logo Reveal */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 1.0 }}
+              initial={{ opacity: 0, y: 25, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 1.0 }}
               className="relative w-48 sm:w-64 md:w-72 aspect-[3/1]"
             >
               <Image
@@ -71,10 +71,10 @@ export function WelcomeAnimation() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 1.8 }}
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 1.6 }}
               className="mt-6 sm:mt-8 text-center"
             >
-              <p className="font-playfair text-[#1E5F2E] text-lg sm:text-xl tracking-wide">
+              <p className="font-playfair text-[#1E5F2E] text-lg sm:text-xl tracking-wide opacity-90">
                 Beauty, rooted in nature.
               </p>
             </motion.div>
