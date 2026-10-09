@@ -3,6 +3,7 @@ import { DashboardSidebar } from '@/components/organisms/DashboardSidebar'
 import { DashboardBottomBar } from '@/components/organisms/DashboardBottomBar'
 import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
+import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -17,6 +18,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   
+  if (!user) {
+    redirect('/login?redirect=/customer/dashboard')
+  }
+
   let isAdmin = false
   if (user) {
     const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single()
