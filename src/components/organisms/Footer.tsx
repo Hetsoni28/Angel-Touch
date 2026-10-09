@@ -179,7 +179,7 @@ export function Footer() {
                   Satellite, Ahmedabad – 380015
                 </p>
                 <a
-                  href="https://maps.google.com/?q=Angel+Touch+Beauty+Wellness+Satellite+Ahmedabad"
+                  href="https://www.google.com/maps/search/Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad/@23.02937,72.504909,15z/data=!3m1!1e3"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[11px] font-semibold tracking-widest uppercase text-[#2e7a3a] hover:underline"
@@ -201,7 +201,7 @@ export function Footer() {
             {/* Embedded real map */}
             <div className="w-full h-32 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-500">
               <iframe
-                src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad&t=k&z=16&ie=UTF8&iwloc=B&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
