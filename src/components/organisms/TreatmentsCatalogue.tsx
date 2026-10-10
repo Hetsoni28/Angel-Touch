@@ -1,5 +1,6 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Treatment = {
   _id: string
@@ -15,13 +16,27 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
 
   if (displayTreatments.length === 0) {
     return (
-      <section id="catalogue" className="bg-white py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
-          <h2 className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] mb-6" style={{ fontFamily: 'var(--font-heading)' }}>
+      <section id="catalogue" className="relative py-32 md:py-48 min-h-[50vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/treatments-services-bg.png"
+            alt="Spa Treatment Background"
+            fill
+            className="object-cover object-center"
+          />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 text-center drop-shadow-md">
+          <h2 
+            className="text-[2.2rem] md:text-[3rem] font-medium text-[#1e2228] mb-6 drop-shadow-md" 
+            style={{ fontFamily: 'var(--font-heading)', textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
+          >
             Treatments & Services
           </h2>
-          <p className="text-[#5c5a58]">
-            No treatments are currently available. Please check back later.
+          <p 
+            className="text-[16px] text-[#2c2a28] font-medium drop-shadow-sm max-w-md mx-auto" 
+            style={{ textShadow: '0 1px 3px rgba(255,255,255,0.9)' }}
+          >
+            No treatments are currently available in the catalogue. Please check back later.
           </p>
         </div>
       </section>

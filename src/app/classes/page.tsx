@@ -50,17 +50,17 @@ export default async function ClassesPage() {
             alt="Ayurvedic Masterclass"
             className="w-full h-full object-cover object-center"
           />
-          {/* Overlay to fade image out on the left side */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2] via-[#faf8f2]/90 to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-24 pb-24 md:pt-32 md:pb-32">
           <div className="max-w-[640px]">
             <FadeIn delay={0.1}>
-              <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Classes' }]} />
+              <div className="text-white/80 [&_*]:text-white/80">
+                <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Classes' }]} />
+              </div>
 
               <h1
-                className="text-[2.8rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-[#1e2228] leading-[1.05] mb-6 md:mb-8"
+                className="text-[2.8rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-white leading-[1.05] mb-6 md:mb-8 drop-shadow-md"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
                 Learn the craft<br />behind the ritual.
@@ -68,11 +68,11 @@ export default async function ClassesPage() {
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <span className="gold-rule mb-6 md:mb-8 block" />
+              <span className="gold-rule mb-6 md:mb-8 block drop-shadow-sm" />
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <p className="text-[15px] md:text-[17px] text-[#5c5a58] leading-[1.8] max-w-lg mb-10">
+              <p className="text-[15px] md:text-[17px] text-white/95 leading-[1.8] max-w-lg mb-10 drop-shadow-md font-medium">
                 Focused classes designed to teach you how Ayurvedic products are made, guided through the Angel Touch approach.
               </p>
             </FadeIn>
@@ -81,13 +81,13 @@ export default async function ClassesPage() {
               <div className="flex flex-col sm:flex-row gap-4 items-start">
                 <Link
                   href="/classes#upcoming"
-                  className="inline-flex items-center justify-center px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                  className="inline-flex items-center justify-center px-9 py-4 bg-white hover:bg-[#2e7a3a] text-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
                 >
                   Explore Upcoming Classes
                 </Link>
                 <Link
                   href="/classes#recorded"
-                  className="inline-flex items-center justify-center px-9 py-4 bg-transparent border border-[#1e2228] text-[#1e2228] hover:bg-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                  className="inline-flex items-center justify-center px-9 py-4 bg-transparent border border-white text-white hover:bg-white hover:text-[#1e2228] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 backdrop-blur-sm"
                 >
                   Explore Recorded Library
                 </Link>

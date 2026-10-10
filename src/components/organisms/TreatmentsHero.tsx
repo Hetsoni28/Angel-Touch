@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export function TreatmentsHero() {
   return (
-    <section className="relative w-full min-h-[75vh] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60">
+    <section className="relative w-full min-h-[75vh] flex flex-col justify-center overflow-hidden">
       
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
@@ -14,8 +14,6 @@ export function TreatmentsHero() {
           alt="Angel Touch Treatments"
           className="w-full h-full object-cover object-center"
         />
-        {/* Overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2] via-[#faf8f2]/90 to-transparent" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-24 pb-24 md:pt-32 md:pb-32">

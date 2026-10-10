@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { client } from '@/sanity/lib/client'
 import { connection } from 'next/server'
+import Image from 'next/image'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { RecordingCard } from '@/components/organisms/RecordingCard'
 
@@ -58,22 +59,38 @@ export default async function RecordingsPage() {
   const recordings = await client.fetch(query)
 
   return (
-    <div className="min-h-screen bg-[#faf8f2] py-12 md:py-20">
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="mb-12">
-          <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Recorded Library' }]} />
+    <div className="min-h-screen bg-[#faf8f2]">
+      {/* Hero Section */}
+      <section className="relative w-full overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/recordings-hero-bg.png"
+            alt="Study desk with ayurvedic herbs"
+            fill
+            className="object-cover object-center"
+            priority
+          />
         </div>
 
-        <div className="max-w-3xl mb-16">
-          <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6">
-            Recorded Library
-          </h1>
-          <p className="text-[#5c5a58] text-lg leading-relaxed">
-            Missed a live session? Unlock unlimited wisdom from our past masterclasses. 
-            Enjoy complimentary access with an active membership, or purchase recordings individually for lifetime access.
-          </p>
+        <div className="relative z-10 py-20 md:py-32 px-6 md:px-10 max-w-7xl mx-auto">
+          <div className="mb-8">
+            <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Recorded Library' }]} />
+          </div>
+          
+          <div className="max-w-3xl">
+            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6 drop-shadow-sm">
+              Recorded Library
+            </h1>
+            <p className="text-[#3c3a38] text-lg md:text-xl leading-relaxed font-medium drop-shadow-sm">
+              Missed a live session? Unlock unlimited wisdom from our past masterclasses. 
+              Enjoy complimentary access with an active membership, or purchase recordings individually for lifetime access.
+            </p>
+          </div>
         </div>
+      </section>
 
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
         {recordings.length === 0 ? (
           <div className="text-center py-20 bg-white border border-dashed border-[#dde7dd]">
             <p className="text-[#5c5a58]">No recordings available yet.</p>
