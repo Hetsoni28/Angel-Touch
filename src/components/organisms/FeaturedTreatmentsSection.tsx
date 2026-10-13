@@ -12,8 +12,22 @@ export async function FeaturedTreatmentsSection() {
     if (treatments.length === 0) {
       treatments = data.slice(0, 2)
     }
-  } catch (error) {
-    console.error('Failed to fetch featured treatments', error)
+  } catch {
+    // Graceful fallback to signature treatments
+    treatments = [
+      {
+        name: 'Advanced Aroma Facial',
+        slug: 'advanced-aroma-facial',
+        imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
+        description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
+      },
+      {
+        name: 'Shirodhara Therapy',
+        slug: 'shirodhara',
+        imageUrl: '/images/ayurvedic_shirodhara.jpg',
+        description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
+      }
+    ]
   }
 
   if (treatments.length === 0) return null

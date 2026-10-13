@@ -5,8 +5,8 @@ import { groq } from 'next-sanity'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { ProductCard } from '@/components/molecules/ProductCard'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
-
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+import type { Metadata } from 'next'
 
 const PRODUCT_QUERY = groq`
   *[_type == "product" && slug.current == $slug][0] {
@@ -70,6 +70,43 @@ const fallbackProducts = {
   }
 }
 
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params
+  let product = await client.fetch(PRODUCT_QUERY, { slug: params.slug }).catch(() => null)
+  if (!product) {
+    product = (fallbackProducts as Record<string, { name: string; category: string; images: string[]; description: string; ingredients: string; usage: string }>)[params.slug]
+  }
+
+  if (!product) {
+    return {
+      title: 'Product | Angel Touch',
+      description: 'Explore handcrafted Ayurvedic products at Angel Touch.',
+    }
+  }
+
+  const title = `${product.name} | Ayurvedic Beauty`
+  const description = product.description || 'Handcrafted Ayurvedic beauty formulation by Angel Touch.'
+  const image = product.images?.[0] || '/images/featured_lifestyle.jpg'
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `https://angeltouch.in/shop/${params.slug}` },
+    openGraph: {
+      title: `${product.name} | Angel Touch`,
+      description,
+      url: `https://angeltouch.in/shop/${params.slug}`,
+      images: [{ url: image, alt: product.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | Angel Touch`,
+      description,
+      images: [image],
+    },
+  }
+}
+
 export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   let product = await client.fetch(PRODUCT_QUERY, { slug: params.slug }).catch(() => null)
@@ -107,8 +144,35 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
   const mainImage = product.images?.[0] || '/images/featured_lifestyle.jpg'
   const galleryImages = product.images?.slice(1) || []
 
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: mainImage.startsWith('http') ? mainImage : `https://angeltouch.in${mainImage}`,
+    category: product.category,
+    brand: {
+      '@type': 'Brand',
+      name: 'Angel Touch',
+    },
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: `https://angeltouch.in/shop/${params.slug}`,
+      seller: {
+        '@type': 'Organization',
+        name: 'Angel Touch',
+      },
+    },
+  }
+
   return (
     <div className="bg-[#faf8f2] min-h-screen pt-8 pb-20 md:pt-12 md:pb-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
         {/* 2. BREADCRUMBS */}

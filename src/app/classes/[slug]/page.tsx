@@ -23,14 +23,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Class Not Found | Angel Touch' }
   }
 
+  const title = `${masterclass.title} | Ayurvedic Masterclass`
+  const description = masterclass.shortDescription || 'Learn authentic Ayurvedic product formulation with Heena Thaker at Angel Touch.'
+  const image = masterclass.imageUrl || '/images/og-default.jpg'
+
   return {
-    title: `${masterclass.title} | Angel Touch Masterclasses`,
-    description: masterclass.shortDescription || 'Join our Ayurvedic product-making masterclass.',
+    title,
+    description,
+    alternates: { canonical: `https://angeltouch.in/classes/${resolvedParams.slug}` },
     openGraph: {
-      images: [masterclass.imageUrl],
-    }
+      title: `${masterclass.title} | Angel Touch Masterclasses`,
+      description,
+      url: `https://angeltouch.in/classes/${resolvedParams.slug}`,
+      images: [{ url: image, alt: masterclass.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${masterclass.title} | Angel Touch Masterclasses`,
+      description,
+      images: [image],
+    },
   }
 }
+
 
 export default async function MasterclassDetailPage({ params }: Props) {
   // Await params as required by Next.js 16 / Turbopack
@@ -90,8 +105,42 @@ export default async function MasterclassDetailPage({ params }: Props) {
     },
   }
 
+  const educationEventSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'EducationEvent',
+    name: masterclass.title,
+    description: masterclass.shortDescription || masterclass.title,
+    startDate: masterclass.date,
+    eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+    eventStatus: isCancelled
+      ? 'https://schema.org/EventCancelled'
+      : (isPast ? 'https://schema.org/EventCompleted' : 'https://schema.org/EventScheduled'),
+    image: masterclass.imageUrl?.startsWith('http') ? masterclass.imageUrl : `https://angeltouch.in${masterclass.imageUrl}`,
+    offers: {
+      '@type': 'Offer',
+      price: masterclass.price,
+      priceCurrency: 'INR',
+      availability: isFull ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+      url: `https://angeltouch.in/classes/${resolvedParams.slug}`,
+    },
+    organizer: {
+      '@type': 'Organization',
+      name: 'Angel Touch',
+      url: 'https://angeltouch.in',
+    },
+    performer: {
+      '@type': 'Person',
+      name: 'Heena Thaker',
+      jobTitle: 'Founder & Ayurvedic Expert',
+    },
+  }
+
   return (
     <div className="min-h-screen bg-[#faf8f2]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(educationEventSchema) }}
+      />
       
       {/* ── 1. Class Hero ── */}
       <section className="relative w-full h-[50vh] min-h-[350px] sm:min-h-[400px] md:h-[60vh] bg-[#1e2228]">

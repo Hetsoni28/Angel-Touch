@@ -6,8 +6,44 @@ import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 
 export const instant = false
+
+const fallbackTreatments = [
+  {
+    _id: 't1',
+    name: 'Advanced Aroma Facial',
+    slug: 'advanced-aroma-facial',
+    imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
+    description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
+    duration: 60,
+  },
+  {
+    _id: 't2',
+    name: 'Shirodhara Therapy',
+    slug: 'shirodhara',
+    imageUrl: '/images/ayurvedic_shirodhara.jpg',
+    description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
+    duration: 45,
+  },
+  {
+    _id: 't3',
+    name: 'Botanical Hair Spa',
+    slug: 'botanical-hair-spa',
+    imageUrl: '/images/ayurvedic_hair_elixir_1791410293201.jpg',
+    description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
+    duration: 60,
+  },
+  {
+    _id: 't4',
+    name: 'Bridal Styling',
+    slug: 'bridal-styling',
+    imageUrl: '/images/ayurvedic_beauty_editorial_1791410358517.jpg',
+    description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
+    duration: 120,
+  }
+]
 
 // We use a basic groq query for the detail page
 const TREATMENT_BY_SLUG_QUERY = groq`
@@ -21,7 +57,7 @@ const TREATMENT_BY_SLUG_QUERY = groq`
   }
 `
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
 
   // Try to fetch from Sanity
@@ -32,17 +68,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // ignore
   }
 
+  if (!treatment) {
+    treatment = fallbackTreatments.find(t => t.slug === slug)
+  }
+
   if (treatment) {
+    const title = `${treatment.name} | Ayurvedic Treatment`
+    const description = treatment.description || 'Authentic Ayurvedic therapy at Angel Touch.'
+    const image = treatment.imageUrl || '/images/og-default.jpg'
+
     return {
-      title: `${treatment.name} | Angel Touch`,
-      description: treatment.description || 'Ayurvedic treatment at Angel Touch.',
+      title,
+      description,
+      alternates: { canonical: `https://angeltouch.in/treatments/${slug}` },
+      openGraph: {
+        title: `${treatment.name} | Angel Touch`,
+        description,
+        url: `https://angeltouch.in/treatments/${slug}`,
+        images: [{ url: image, alt: treatment.name }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${treatment.name} | Angel Touch`,
+        description,
+        images: [image],
+      },
     }
   }
 
   // Fallback
   return {
     title: 'Treatment | Angel Touch',
-    description: 'Explore premium treatments at Angel Touch.',
+    description: 'Explore premium Ayurvedic treatments at Angel Touch.',
   }
 }
 
@@ -58,40 +115,6 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
 
   // Fallback for static demo if Sanity doesn't return anything
   if (!treatment) {
-    const fallbackTreatments = [
-      {
-        _id: 't1',
-        name: 'Advanced Aroma Facial',
-        slug: 'advanced-aroma-facial',
-        imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
-        description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
-        duration: 60,
-      },
-      {
-        _id: 't2',
-        name: 'Shirodhara Therapy',
-        slug: 'shirodhara',
-        imageUrl: '/images/ayurvedic_shirodhara.jpg',
-        description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
-        duration: 45,
-      },
-      {
-        _id: 't3',
-        name: 'Botanical Hair Spa',
-        slug: 'botanical-hair-spa',
-        imageUrl: '/images/ayurvedic_hair_elixir_1791410293201.jpg',
-        description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
-        duration: 60,
-      },
-      {
-        _id: 't4',
-        name: 'Bridal Styling',
-        slug: 'bridal-styling',
-        imageUrl: '/images/ayurvedic_beauty_editorial_1791410358517.jpg',
-        description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
-        duration: 120,
-      }
-    ]
     treatment = fallbackTreatments.find(t => t.slug === slug)
     
     if (!treatment) {
@@ -99,8 +122,39 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
     }
   }
 
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: treatment.name,
+    description: treatment.description,
+    provider: {
+      '@type': 'BeautySalon',
+      name: 'Angel Touch by Heena Thaker',
+      url: 'https://angeltouch.in',
+      telephone: '+919723179638',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road',
+        addressLocality: 'Satellite, Ahmedabad',
+        postalCode: '380015',
+        addressRegion: 'Gujarat',
+        addressCountry: 'IN',
+      },
+    },
+    serviceType: 'Ayurvedic Therapy & Beauty',
+    areaServed: {
+      '@type': 'City',
+      name: 'Ahmedabad',
+    },
+    image: treatment.imageUrl?.startsWith('http') ? treatment.imageUrl : `https://angeltouch.in${treatment.imageUrl}`,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       <article className="min-h-screen bg-[#faf8f2]">
         
         {/* Editorial Hero */}

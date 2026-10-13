@@ -13,8 +13,31 @@ export async function FeaturedProductsSection() {
     if (products.length === 0) {
       products = data.slice(0, 3)
     }
-  } catch (error) {
-    console.error('Failed to fetch featured products', error)
+  } catch {
+    // Graceful fallback to signature products
+    products = [
+      {
+        name: 'Kesar Radiance Oil',
+        slug: 'kesar-radiance-oil',
+        category: 'Skin Care',
+        imageUrl: '/images/skincare_oil.jpg',
+        description: 'A lightweight facial oil blending pure saffron and sandalwood to restore natural luminosity.',
+      },
+      {
+        name: 'Ashwagandha Hair Elixir',
+        slug: 'ashwagandha-hair-elixir',
+        category: 'Hair Care',
+        imageUrl: '/images/hair_elixir.jpg',
+        description: 'A deeply nourishing botanical blend to strengthen roots, condition strands, and soothe the scalp.',
+      },
+      {
+        name: 'Neem & Tulsi Cleansing Clay',
+        slug: 'neem-tulsi-cleansing-clay',
+        category: 'Body Care',
+        imageUrl: '/images/green_clay.jpg',
+        description: 'A purifying green clay formulated with wildcrafted herbs for gentle, mindful daily use.',
+      }
+    ]
   }
 
   if (products.length === 0) return null

@@ -6,8 +6,24 @@ import { ProductGrid } from '@/components/organisms/ProductGrid'
 import { FeaturedProduct } from '@/components/organisms/FeaturedProduct'
 import { BrandPhilosophy } from '@/components/organisms/BrandPhilosophy'
 import { ShopCTA } from '@/components/organisms/ShopCTA'
+import type { Metadata } from 'next'
 
 export const instant = false
+
+export const metadata: Metadata = {
+  title: 'Shop Ayurvedic Beauty Products',
+  description:
+    'Browse Angel Touch\'s handcrafted Ayurvedic skincare, hair care, and wellness products. Formulated by Heena Thaker using traditional cold-infusion methods and wildcrafted botanicals.',
+  alternates: { canonical: 'https://angeltouch.in/shop' },
+  openGraph: {
+    title: 'Shop Ayurvedic Beauty Products | Angel Touch',
+    description:
+      'Handcrafted Ayurvedic skincare, hair care, and wellness products. Saffron facial oils, herbal elixirs, cleansing clays, and more.',
+    url: 'https://angeltouch.in/shop',
+    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Ayurvedic Products' }],
+  },
+}
+
 
 export default async function ShopPage() {
   const [products, categories] = await Promise.all([

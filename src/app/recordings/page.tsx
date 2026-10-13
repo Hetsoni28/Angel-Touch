@@ -4,13 +4,25 @@ import { connection } from 'next/server'
 import Image from 'next/image'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { RecordingCard } from '@/components/organisms/RecordingCard'
+import type { Metadata } from 'next'
 
 export const instant = false
 
-export const metadata = {
-  title: 'Recorded Library | Angel Touch',
-  description: 'Access past masterclasses and exclusive video recordings.',
+export const metadata: Metadata = {
+  title: 'Recorded Ayurvedic Masterclass Vault',
+  description:
+    'Access past Angel Touch masterclass recordings. A curated library of Ayurvedic formulation sessions led by Heena Thaker — available on demand for members and individual purchasers.',
+  alternates: { canonical: 'https://angeltouch.in/recordings' },
+  openGraph: {
+    title: 'Recorded Ayurvedic Masterclass Vault | Angel Touch',
+    description:
+      'On-demand access to exclusive Ayurvedic formulation masterclass recordings by Heena Thaker. Learn to craft skincare, hair care, and wellness products at your own pace.',
+    url: 'https://angeltouch.in/recordings',
+    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Recorded Masterclass Vault' }],
+  },
+  robots: { index: false, follow: false }, // Paywall content — exclude from index
 }
+
 
 export default async function RecordingsPage() {
   await connection()

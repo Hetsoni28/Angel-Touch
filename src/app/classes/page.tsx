@@ -8,11 +8,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Masterclasses | Angel Touch',
-  description: 'Learn the craft behind the ritual. Focused classes designed to teach you how Ayurvedic products are made.',
+export const metadata: Metadata = {
+  title: 'Ayurvedic Formulation Masterclasses',
+  description:
+    'Enrol in Angel Touch live and recorded masterclasses. Learn to formulate authentic Ayurvedic skincare, hair care, and wellness products from scratch under the guidance of Heena Thaker.',
+  alternates: { canonical: 'https://angeltouch.in/classes' },
+  openGraph: {
+    title: 'Ayurvedic Formulation Masterclasses | Angel Touch',
+    description:
+      'Live and recorded Ayurvedic product-making masterclasses. Learn to craft saffron facial oils, herbal elixirs, and wellness formulations.',
+    url: 'https://angeltouch.in/classes',
+    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Ayurvedic Masterclasses' }],
+  },
 }
+
 
 export const instant = false // Replaces revalidate in Next.js 16
 
@@ -28,7 +39,7 @@ interface Masterclass {
 }
 
 export default async function ClassesPage() {
-  const masterclasses: Masterclass[] = (await client.fetch(ALL_MASTERCLASSES_QUERY)) || []
+  const masterclasses: Masterclass[] = (await client.fetch(ALL_MASTERCLASSES_QUERY).catch(() => [])) || []
 
   const now = new Date()
 

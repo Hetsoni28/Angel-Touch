@@ -1,5 +1,6 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 
 function generateWhatsAppLink({ type = 'GENERAL' }: { type?: 'GENERAL' | 'MASTERCLASS' | 'TREATMENT' }) {
   const phone = '919723179638'
@@ -14,14 +15,61 @@ function generateWhatsAppLink({ type = 'GENERAL' }: { type?: 'GENERAL' | 'MASTER
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
 }
 
-export const metadata = {
-  title: 'Contact | Angel Touch',
-  description: 'Get in touch with Angel Touch to book treatments, enroll in masterclasses, or inquire about our premium Ayurvedic products.',
+export const metadata: Metadata = {
+  title: 'Contact Angel Touch | Book a Treatment or Enquire',
+  description:
+    'Visit our sanctuary in Satellite, Ahmedabad or reach out to book Ayurvedic treatments, masterclass enrollments, and bespoke product inquiries with Heena Thaker.',
+  alternates: { canonical: 'https://angeltouch.in/contact' },
+  openGraph: {
+    title: 'Contact Angel Touch | Book a Treatment or Enquire',
+    description:
+      'Visit our sanctuary in Satellite, Ahmedabad. Book Ayurvedic treatments, bridal styling, or masterclasses with Heena Thaker.',
+    url: 'https://angeltouch.in/contact',
+    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Contact Angel Touch' }],
+  },
+}
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  name: 'Angel Touch by Heena Thaker',
+  url: 'https://angeltouch.in/contact',
+  telephone: '+919723179638',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road',
+    addressLocality: 'Satellite, Ahmedabad',
+    postalCode: '380015',
+    addressRegion: 'Gujarat',
+    addressCountry: 'IN',
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      opens: '10:00',
+      closes: '20:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Sunday'],
+      opens: '10:00',
+      closes: '16:30',
+    },
+  ],
+  sameAs: [
+    'https://instagram.com/angeltouch_by_heena_thaker',
+    'https://wa.me/919723179638',
+  ],
 }
 
 export default function ContactPage() {
   return (
     <article className="min-h-screen bg-[#faf8f2]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       
       {/* Editorial Hero */}
       <header className="relative w-full pt-24 pb-12 sm:pt-36 sm:pb-16 md:pt-44 md:pb-24 px-6 md:px-10 max-w-7xl mx-auto">

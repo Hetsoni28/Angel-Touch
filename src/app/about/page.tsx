@@ -1,14 +1,52 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'About Angel Touch | Our Philosophy & Founder',
-  description: 'Discover the story behind Angel Touch by Heena Thaker. Pure, authentic Ayurvedic wellness, treatments, and masterclasses.',
+export const metadata: Metadata = {
+  title: 'About Heena Thaker | Angel Touch Founder & Ayurvedic Expert',
+  description:
+    'Meet Heena Thaker — founder of Angel Touch, certified Ayurvedic expert, and beauty school principal. Learn the philosophy behind our women-only sanctuary of authentic Ayurvedic healing.',
+  alternates: { canonical: 'https://angeltouch.in/about' },
+  openGraph: {
+    title: 'About Heena Thaker | Angel Touch Founder & Ayurvedic Expert',
+    description:
+      'The story behind Angel Touch. Heena Thaker\'s philosophy of authentic Ayurvedic healing, handcrafted products, and certified formulation education.',
+    url: 'https://angeltouch.in/about',
+    images: [{ url: '/images/heena_thaaker.jpg', width: 800, height: 1067, alt: 'Heena Thaker — Founder, Angel Touch' }],
+  },
 }
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Heena Thaker',
+  alternateName: 'Heena Thaaker',
+  jobTitle: 'Founder & Ayurvedic Expert',
+  worksFor: {
+    '@type': 'BeautySalon',
+    name: 'Angel Touch',
+    url: 'https://angeltouch.in',
+  },
+  url: 'https://angeltouch.in/about',
+  knowsAbout: [
+    'Ayurveda',
+    'Ayurvedic cosmetic formulation',
+    'Shirodhara',
+    'Abhyanga',
+    'Holistic skincare',
+    'Natural beauty',
+    'Ayurvedic education',
+  ],
+}
+
 
 export default function AboutPage() {
   return (
     <article className="min-h-screen bg-[#faf8f2]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       
       {/* Editorial Hero with Cinematic Background */}
       <header className="relative w-full h-[55vh] sm:h-[65vh] md:h-[70vh] min-h-[420px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden">

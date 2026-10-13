@@ -22,10 +22,76 @@ const dmSans = DM_Sans({
 import { Suspense } from "react";
 import { Toaster } from '@/components/atoms/Toaster'
 
+const SITE_URL = 'https://angeltouch.in'
+
 export const metadata: Metadata = {
-  title: "Angel Touch by Heena Thaker",
+  metadataBase: new URL(SITE_URL),
+
+  title: {
+    default: 'Angel Touch by Heena Thaker | Ayurvedic Beauty & Wellness',
+    template: '%s | Angel Touch',
+  },
   description:
-    "Natural Beauty, Healthy You. Explore Ayurvedic products, treatments, and product-making classes.",
+    'Angel Touch by Heena Thaker — India\'s premium women-only Ayurvedic salon, wellness centre, and certified beauty school. Authentic skin treatments, Shirodhara, Abhyanga, handcrafted Ayurvedic products, and live masterclasses.',
+
+  keywords: [
+    'Angel Touch',
+    'Heena Thaker',
+    'Ayurvedic salon India',
+    'Ayurvedic treatments',
+    'Shirodhara',
+    'Abhyanga massage',
+    'Ayurvedic skincare',
+    'natural beauty products',
+    'Ayurvedic masterclass',
+    'women wellness centre',
+  ],
+
+  authors: [{ name: 'Heena Thaker', url: SITE_URL }],
+  creator: 'Heena Thaker',
+  publisher: 'Angel Touch',
+
+  alternates: {
+    canonical: SITE_URL,
+  },
+
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: SITE_URL,
+    siteName: 'Angel Touch by Heena Thaker',
+    title: 'Angel Touch by Heena Thaker | Ayurvedic Beauty & Wellness',
+    description:
+      'Premium women-only Ayurvedic salon, wellness centre, and beauty school. Authentic treatments, handcrafted products, and certified masterclasses.',
+    images: [
+      {
+        url: '/images/og-default.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Angel Touch by Heena Thaker — Ayurvedic Beauty & Wellness',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Angel Touch by Heena Thaker | Ayurvedic Beauty & Wellness',
+    description:
+      'Premium women-only Ayurvedic salon, wellness centre, and beauty school. Authentic treatments, handcrafted products, and certified masterclasses.',
+    images: ['/images/og-default.jpg'],
+    creator: '@angeltouch',
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
