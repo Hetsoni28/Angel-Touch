@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 const services = [
@@ -25,11 +26,13 @@ export function AboutSection() {
           <div className="lg:col-span-5 flex justify-center lg:justify-start w-full">
             <FadeIn delay={0.1} fullWidth className="max-w-sm">
               <div className="w-full overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom relative aspect-[4/5]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src="/images/ayurvedic_shirodhara.jpg"
                   alt="Ayurvedic Treatment at Angel Touch"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 400px"
+                  className="object-cover"
+                  loading="lazy"
                 />
               </div>
             </FadeIn>

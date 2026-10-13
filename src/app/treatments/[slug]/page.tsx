@@ -1,5 +1,6 @@
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
@@ -107,11 +108,13 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
           
           <div className="absolute inset-0 z-0">
             {treatment.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={treatment.imageUrl}
                 alt={treatment.name}
-                className="w-full h-full object-cover object-[center_30%] sm:object-center"
+                fill
+                sizes="100vw"
+                className="object-cover object-[center_30%] sm:object-center"
+                priority
               />
             ) : (
               <div className="w-full h-full bg-[#e9f3e9]" />

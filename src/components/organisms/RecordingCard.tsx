@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { PlayCircle, Crown, ShoppingBag } from 'lucide-react'
 
 interface RecordingCardProps {
@@ -16,7 +17,14 @@ export function RecordingCard({ slug, title, imageUrl, description, date, price,
     <div className="bg-white border border-[#dde7dd] overflow-hidden group hover:border-[#2e7a3a]/30 transition-all duration-300 flex flex-col h-full">
       <div className="aspect-video bg-[#faf8f2] relative overflow-hidden flex-shrink-0">
         {imageUrl ? (
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+          />
         ) : (
           <div className="w-full h-full bg-[#dde7dd]/50" />
         )}

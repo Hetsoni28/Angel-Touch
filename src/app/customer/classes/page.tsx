@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib/client'
 import { Calendar, PlayCircle, Clock, CheckCircle2 } from 'lucide-react'
 import { connection } from 'next/server'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export const instant = false
 
@@ -83,7 +84,7 @@ export default async function MyClassesPage() {
                   <div key={cls._id} className="bg-white border border-[#dde7dd] p-6 flex flex-col md:flex-row gap-6 items-start md:items-center">
                     {cls.imageUrl && (
                       <div className="w-full md:w-48 aspect-video bg-[#faf8f2] flex-shrink-0 relative overflow-hidden">
-                        <img src={cls.imageUrl} alt={cls.title} className="w-full h-full object-cover" />
+                        <Image src={cls.imageUrl} alt={cls.title} fill sizes="(max-width: 768px) 100vw, 192px" className="object-cover" loading="lazy" />
                       </div>
                     )}
                     <div className="flex-1">
@@ -120,7 +121,7 @@ export default async function MyClassesPage() {
                   <div key={cls._id} className="bg-white border border-[#dde7dd] p-6 flex flex-col md:flex-row gap-6 items-start md:items-center opacity-80 hover:opacity-100 transition-opacity">
                     {cls.imageUrl && (
                       <div className="w-full md:w-48 aspect-video bg-[#faf8f2] flex-shrink-0 relative overflow-hidden">
-                        <img src={cls.imageUrl} alt={cls.title} className="w-full h-full object-cover grayscale opacity-80" />
+                        <Image src={cls.imageUrl} alt={cls.title} fill sizes="(max-width: 768px) 100vw, 192px" className="object-cover grayscale opacity-80" loading="lazy" />
                       </div>
                     )}
                     <div className="flex-1">

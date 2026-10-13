@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function FinalCTASection() {
@@ -10,10 +11,13 @@ export function FinalCTASection() {
         className="absolute inset-0 w-full h-full pointer-events-none select-none"
         aria-hidden="true"
       >
-        <img
+        <Image
           src="/hero-image.svg"
           alt=""
-          className="w-full h-full object-cover object-center opacity-[0.2]"
+          fill
+          sizes="100vw"
+          className="object-cover object-center opacity-[0.2]"
+          loading="lazy"
         />
       </div>
 

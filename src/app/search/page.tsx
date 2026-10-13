@@ -1,5 +1,6 @@
 import { client } from '@/sanity/lib/client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Search as SearchIcon } from 'lucide-react'
 
 export const instant = false // Dynamic route
@@ -62,10 +63,13 @@ export default async function SearchPage({
               <div key={item._id} className="group bg-white border border-[#dde7dd] flex flex-col sm:flex-row hover:shadow-xl hover:shadow-[#2e7a3a]/5 transition-all duration-300">
                 {item.imageUrl && (
                   <div className="w-full sm:w-1/3 aspect-[4/3] relative overflow-hidden bg-[#faf8f2]">
-                    <img
+                    <Image
                       src={item.imageUrl}
                       alt={item.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      fill
+                      sizes="(max-width: 640px) 100vw, 300px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
                     />
                   </div>
                 )}

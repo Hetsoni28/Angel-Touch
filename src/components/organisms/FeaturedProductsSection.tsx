@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { client } from '@/sanity/lib/client'
 import { ALL_PRODUCTS_QUERY } from '@/sanity/lib/queries'
@@ -44,10 +45,13 @@ export async function FeaturedProductsSection() {
             <FadeIn key={product._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
               <article className="group flex flex-col h-full">
                 <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] relative">
-                  <img
+                  <Image
                     src={product.imageUrl || '/images/ayurvedic_hero_editorial_1791405719098.jpg'}
                     alt={product.name}
-                    className="w-full h-full object-cover object-center absolute inset-0"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
                   />
                 </div>
                 <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category || 'Product'}</p>

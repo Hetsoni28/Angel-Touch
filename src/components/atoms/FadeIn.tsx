@@ -38,6 +38,7 @@ export function FadeIn({ children, delay = 0, direction = 'up', fullWidth = fals
         delay: delay,
       }}
       className={`${fullWidth ? 'w-full' : ''} ${className}`}
+      style={{ willChange: 'opacity, transform' }}
     >
       {children}
     </motion.div>

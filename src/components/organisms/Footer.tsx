@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const services = [
@@ -85,7 +86,7 @@ export function Footer() {
           {/* Brand + Hours + Social */}
           <div className="lg:col-span-4">
             <Link href="/" className="block mb-6">
-              <img src="/logo.svg" alt="Angel Touch" className="h-16 w-auto" />
+              <Image src="/logo.svg" alt="Angel Touch" width={220} height={64} className="h-16 w-auto" loading="lazy" />
             </Link>
             <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-sm mb-8">
               A premium women-only salon and wellness centre founded by Heena Thaaker — offering advanced skin treatments, Ayurvedic therapies, professional hair services, bridal styling and a certified beauty school.

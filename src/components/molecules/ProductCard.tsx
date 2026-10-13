@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 export interface ProductCardProps {
@@ -15,11 +16,13 @@ export function ProductCard({ product, index }: { product: ProductCardProps, ind
     <FadeIn delay={0.1 * (index % 4 + 1)} className="flex flex-col h-full">
       <article className="group flex flex-col h-full">
         <Link href={`/shop/${typeof product.slug === 'object' ? product.slug?.current : product.slug}`} className="block overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[3/4] relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.imageUrl || '/images/skincare_oil.jpg'} // Fallback if image missing
-            alt={product.name}
-            className="w-full h-full object-cover object-center"
+          <Image
+            src={product.imageUrl || '/images/skincare_oil.jpg'}
+            alt={product.name || 'Ayurvedic product'}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
           />
         </Link>
         

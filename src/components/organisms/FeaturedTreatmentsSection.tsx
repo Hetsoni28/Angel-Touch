@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { client } from '@/sanity/lib/client'
 import { ALL_TREATMENTS_QUERY } from '@/sanity/lib/queries'
@@ -48,10 +49,13 @@ export async function FeaturedTreatmentsSection() {
               <article className="group flex flex-col h-full bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
                 
                 <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] relative">
-                  <img
+                  <Image
                     src={t.imageUrl || '/images/ayurvedic_abhyanga.jpg'}
                     alt={t.name}
-                    className="w-full h-full object-cover absolute inset-0"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
                   />
                 </div>
 

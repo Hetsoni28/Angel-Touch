@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 /*
@@ -16,11 +17,14 @@ export function ThreeExperiencesSection() {
           {}
           <FadeIn delay={0.1} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
-              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3]">
-                <img
+              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
+                <Image
                   src="/images/ayurvedic_herbal_body_scrub_1791405717151.jpg"
                   alt="Ayurvedic products"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
               </div>
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">01 — Products</p>
@@ -39,11 +43,14 @@ export function ThreeExperiencesSection() {
           {}
           <FadeIn delay={0.2} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
-              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3]">
-                <img
+              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
+                <Image
                   src="/images/ayurvedic_abhyanga.jpg"
                   alt="Ayurvedic treatments"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
               </div>
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">02 — Treatments</p>
@@ -62,11 +69,14 @@ export function ThreeExperiencesSection() {
           {}
           <FadeIn delay={0.3} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
-              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3]">
-                <img
+              <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
+                <Image
                   src="/images/ayurvedic_cosmetics_workspace_1791405719662.jpg"
                   alt="Ayurvedic product-making classes"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
               </div>
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">03 — Learning</p>

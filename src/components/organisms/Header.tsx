@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Search, User, Menu, X } from 'lucide-react'
 
@@ -33,7 +34,7 @@ export function Header() {
           
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-            <img src="/logo.svg" alt="Angel Touch" className="h-12 sm:h-16 w-auto object-contain" />
+            <Image src="/logo.svg" alt="Angel Touch" width={220} height={64} className="h-12 sm:h-16 w-auto object-contain" priority />
           </Link>
 
           {/* Desktop Nav */}

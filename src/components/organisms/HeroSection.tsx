@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function HeroSection() {
@@ -51,11 +52,14 @@ export function HeroSection() {
         </div>
 
         <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm">
-          <FadeIn direction="none" delay={0.3} className="w-full h-full">
-            <img
+          <FadeIn direction="none" delay={0.3} className="w-full h-full relative">
+            <Image
               src="/images/ayurvedic_hero_editorial_1791405719098.jpg"
               alt="Ayurvedic botanical ingredients arranged on ivory stone"
-              className="w-full h-full object-cover object-center"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover object-center"
+              priority
             />
           </FadeIn>
         </div>

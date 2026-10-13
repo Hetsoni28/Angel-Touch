@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import Link from 'next/link'
@@ -8,11 +9,13 @@ export function TreatmentsHero() {
       
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/ayurvedic_shirodhara.jpg"
           alt="Angel Touch Treatments"
-          className="w-full h-full object-cover object-[center_35%] sm:object-center"
+          fill
+          sizes="100vw"
+          className="object-cover object-[center_35%] sm:object-center"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2]/85 via-[#faf8f2]/60 to-transparent sm:from-[#faf8f2]/75" />
       </div>

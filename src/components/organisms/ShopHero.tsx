@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 
@@ -9,11 +10,13 @@ export function ShopHero() {
       
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img 
+        <Image 
           src="/images/shop_hero.jpg" 
           alt="Ayurvedic beauty ingredients and products on warm ivory stone"
-          className="w-full h-full object-cover object-center"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+          priority
         />
         <div className="absolute inset-0 bg-[#faf8f2]/30 backdrop-blur-[0.5px]" />
       </div>

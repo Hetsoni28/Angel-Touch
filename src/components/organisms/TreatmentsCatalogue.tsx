@@ -94,11 +94,13 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                   <div className="w-full lg:w-1/2">
                     <Link href={`/treatments/${treatment.slug}`} className="block relative w-full aspect-[4/3] sm:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group">
                       {treatment.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={treatment.imageUrl}
                           alt={treatment.name}
-                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-[#8a8d87] text-sm">

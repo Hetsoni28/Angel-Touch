@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
 export function RecordedLearningSection() {
@@ -11,11 +12,14 @@ export function RecordedLearningSection() {
 
           {}
           <FadeIn delay={0.1}>
-            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px]">
-              <img
+            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px] relative">
+              <Image
                 src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
                 alt="Ayurvedic formulation notes and botanical ingredients"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                loading="lazy"
               />
             </div>
           </FadeIn>

@@ -44,11 +44,13 @@ export default async function ClassesPage() {
         
         {/* Full Background Image */}
         <div className="absolute inset-0 z-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/images/learning_hero.jpg"
             alt="Ayurvedic Masterclass"
-            className="w-full h-full object-cover object-[center_30%] sm:object-center"
+            fill
+            sizes="100vw"
+            className="object-cover object-[center_30%] sm:object-center"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1e2228]/85 via-[#1e2228]/60 to-[#1e2228]/30 sm:from-[#1e2228]/75" />
         </div>

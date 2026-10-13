@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib/client'
 import { Video } from 'lucide-react'
 import { connection } from 'next/server'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export const instant = false
 
@@ -70,7 +71,14 @@ export default async function VideoLibraryPage() {
             <Link key={video._id} href={`/customer/library/${video.slug.current || video.slug}`} className="group block bg-white border border-[#dde7dd] overflow-hidden hover:border-[#2e7a3a]/30 hover:shadow-lg transition-all duration-300">
               <div className="aspect-video bg-[#faf8f2] relative overflow-hidden">
                 {video.imageUrl ? (
-                  <img src={video.imageUrl} alt={video.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <Image
+                    src={video.imageUrl}
+                    alt={video.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <Video className="w-8 h-8 text-[#dde7dd]" />
