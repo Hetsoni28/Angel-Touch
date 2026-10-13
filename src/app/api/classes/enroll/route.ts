@@ -17,6 +17,7 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
 import { enrollClassSchema } from '@/lib/security/validation'
 import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
+import { client } from '@/sanity/lib/client'
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,18 +39,49 @@ export async function POST(req: NextRequest) {
 
     const { classId } = parsed.data
 
+    // 2b. Validate class state in Sanity (cancellation, past date, capacity)
+    const masterclass = await client.fetch(
+      `*[_type == "masterclass" && _id == $classId][0] { _id, title, capacity, isCancelled, date }`,
+      { classId }
+    )
+
+    if (!masterclass) {
+      return fail('Masterclass not found.', 404)
+    }
+
+    if (masterclass.isCancelled) {
+      return fail('This masterclass has been cancelled.', 400)
+    }
+
+    if (new Date(masterclass.date) < new Date()) {
+      return fail('This live class has already concluded.', 400)
+    }
+
     // 3. Check for duplicate enrollment
     const { data: existing } = await supabase
       .from('class_enrollments')
       .select('id, status')
       .eq('user_id', user.id)
       .eq('class_id', classId)
-      .single()
+      .maybeSingle()
 
     if (existing) {
       if (existing.status === 'confirmed') return fail('You are already enrolled in this class.', 409)
       // Return existing pending enrollment ID for payment step
       return ok({ enrollmentId: existing.id, status: existing.status })
+    }
+
+    // 3b. Check cohort capacity
+    if (masterclass.capacity) {
+      const { count: confirmedCount } = await supabase
+        .from('class_enrollments')
+        .select('*', { count: 'exact', head: true })
+        .eq('class_id', classId)
+        .eq('status', 'confirmed')
+
+      if (confirmedCount !== null && confirmedCount >= masterclass.capacity) {
+        return fail('This masterclass cohort has reached maximum capacity.', 409)
+      }
     }
 
     // 4. Create PENDING enrollment (service-role bypasses RLS safely on server)

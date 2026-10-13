@@ -137,6 +137,8 @@ export async function loginAction(
     }
   }
 
+  const redirectUrl = formData.get('redirect') as string | null
+
   // Read role from DB — never from client
   const { data: profile } = await supabase
     .from('profiles')
@@ -145,6 +147,10 @@ export async function loginAction(
 
   if (profile?.is_admin) {
     redirect('/admin')
+  }
+
+  if (redirectUrl && redirectUrl.startsWith('/') && !redirectUrl.startsWith('//')) {
+    redirect(redirectUrl)
   }
 
   redirect('/account')

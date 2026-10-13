@@ -1,8 +1,12 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 export function FloatingWhatsApp() {
+  const pathname = usePathname()
+  if (pathname.startsWith('/studio')) return null
+
   return (
     <a
       href={generateWhatsAppLink({ type: 'GENERAL' })}

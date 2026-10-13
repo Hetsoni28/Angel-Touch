@@ -31,18 +31,65 @@ export default async function MembershipCheckoutPage({ searchParams }: { searchP
     redirect('/membership')
   }
 
+  // 3. Prevent duplicate active subscription
+  const { data: activeMembership } = await supabase
+    .from('memberships')
+    .select('id, plan_name, expires_at, status')
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+    .maybeSingle()
+
+  const isAlreadyActive = !!activeMembership?.expires_at && new Date(activeMembership.expires_at) > new Date()
+
   return (
     <div className="min-h-screen bg-[#faf8f2] py-12 md:py-20">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
       <div className="max-w-4xl mx-auto px-6">
         
-        <div className="mb-10 text-center">
-          <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-4">Secure Checkout</h1>
-          <p className="text-[#5c5a58] text-[15px]">You are upgrading to the Angel Touch Premium Membership.</p>
-        </div>
+        {isAlreadyActive ? (
+          <div className="max-w-xl mx-auto bg-white border border-[#2e7a3a]/40 p-8 md:p-12 text-center shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-[#e9f3e9] flex items-center justify-center mx-auto mb-6 text-[#2e7a3a]">
+              <Check className="w-6 h-6" />
+            </div>
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#2e7a3a] block mb-2">
+              Subscription Active
+            </span>
+            <h2 className="font-playfair text-2xl md:text-3xl text-[#1e2228] mb-4">
+              You Already Have an Active Membership
+            </h2>
+            <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-8">
+              Your {activeMembership.plan_name || 'Premium'} membership is active and valid until{' '}
+              {new Date(activeMembership.expires_at!).toLocaleDateString('en-IN', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+              . You already enjoy full access to all recordings in our vault.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/customer/library"
+                className="inline-flex items-center justify-center px-8 py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-widest uppercase transition-colors"
+              >
+                Access Video Vault
+              </Link>
+              <Link
+                href="/customer/dashboard"
+                className="inline-flex items-center justify-center px-8 py-4 border border-[#dde7dd] hover:border-[#1e2228] text-[#1e2228] text-[11px] font-semibold tracking-widest uppercase transition-colors"
+              >
+                My Dashboard
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mb-10 text-center">
+              <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-4">Secure Checkout</h1>
+              <p className="text-[#5c5a58] text-[15px]">You are upgrading to the Angel Touch Premium Membership.</p>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-[#dde7dd] p-8 md:p-12 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-[#dde7dd] p-8 md:p-12 shadow-sm">
           
           {/* Left Column: Plan Summary */}
           <div>
@@ -105,6 +152,8 @@ export default async function MembershipCheckoutPage({ searchParams }: { searchP
           </div>
           
         </div>
+          </>
+        )}
       </div>
     </div>
   )

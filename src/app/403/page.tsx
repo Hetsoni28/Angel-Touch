@@ -30,7 +30,7 @@ export default function ForbiddenPage() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/account"
+            href="/customer/dashboard"
             className="inline-flex items-center justify-center px-8 py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors"
           >
             Go to My Dashboard

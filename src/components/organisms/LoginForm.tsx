@@ -3,13 +3,19 @@
 import { useState, useActionState } from 'react'
 import { loginAction, type AuthActionResult } from '@/app/actions/auth'
 import Link from 'next/link'
-import { ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2, Clock } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 const initialState: AuthActionResult = { success: false }
 
 export function LoginForm() {
   const [state, action, isPending] = useActionState(loginAction, initialState)
   const [showPassword, setShowPassword] = useState(false)
+  const searchParams = useSearchParams()
+
+  const reason = searchParams.get('reason')
+  const reset = searchParams.get('reset')
+  const redirectUrl = searchParams.get('redirect')
 
   return (
     <div className="w-full">
@@ -21,14 +27,47 @@ export function LoginForm() {
         </p>
       </div>
 
-      {/* Global error */}
+      {/* Session Expired Notice */}
+      {reason === 'expired' && (
+        <div className="mb-8 p-4 bg-[#faf8f2] border-l-2 border-[#edc179] text-[#735118] text-[13px] flex items-start gap-3">
+          <Clock className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#b38538]" />
+          <span>Your session has expired. For your security, please sign in again to continue.</span>
+        </div>
+      )}
+
+      {/* Unauthenticated Access Notice */}
+      {reason === 'unauthenticated' && (
+        <div className="mb-8 p-4 bg-[#faf8f2] border-l-2 border-[#2e7a3a] text-[#1e2228] text-[13px] flex items-start gap-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#2e7a3a]" />
+          <span>Please sign in with your credentials to access that protected page.</span>
+        </div>
+      )}
+
+      {/* Password Reset Success */}
+      {reset === 'success' && (
+        <div className="mb-8 p-4 bg-[#f0f9f0] border-l-2 border-[#2e7a3a] text-[#1e5f2e] text-[13px] flex items-start gap-3">
+          <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#2e7a3a]" />
+          <span>Your password has been reset successfully. Please sign in with your new credentials.</span>
+        </div>
+      )}
+
+      {/* Global / Wrong password error */}
       {state.error && (
-        <div className="mb-8 px-4 py-3 bg-red-50 border-l-2 border-red-500 text-red-700 text-[13px]">
-          {state.error}
+        <div className="mb-8 p-4 bg-[#fef2f2] border-l-2 border-red-500 text-red-700 text-[13px] flex flex-col gap-2">
+          <span>{state.error}</span>
+          {state.error.toLowerCase().includes('invalid') && (
+            <Link
+              href="/forgot-password"
+              className="text-[11px] font-bold text-red-700 hover:text-red-900 uppercase tracking-wider inline-flex items-center gap-1 mt-1"
+            >
+              Forgot your password? Reset it here &rarr;
+            </Link>
+          )}
         </div>
       )}
 
       <form action={action} className="flex flex-col gap-6">
+        <input type="hidden" name="redirect" value={redirectUrl || ''} />
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] mb-2">

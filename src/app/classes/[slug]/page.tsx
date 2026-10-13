@@ -7,6 +7,7 @@ import { Badge } from '@/components/atoms/Badge'
 import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
 
 export const instant = false // Replaces revalidate in Next.js 16
 
@@ -45,8 +46,38 @@ export default async function MasterclassDetailPage({ params }: Props) {
 
   const dateObj = new Date(masterclass.date)
   const isPast = dateObj < new Date()
+  const isCancelled = !!masterclass.isCancelled
   const formattedDate = dateObj.toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
   const formattedTime = dateObj.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })
+
+  // Check enrollment & capacity
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let isEnrolled = false
+  if (user) {
+    const { data: enrollment } = await supabase
+      .from('class_enrollments')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('class_id', masterclass._id)
+      .eq('status', 'confirmed')
+      .maybeSingle()
+    isEnrolled = !!enrollment
+  }
+
+  let isFull = false
+  if (masterclass.capacity) {
+    const { count: confirmedCount } = await supabase
+      .from('class_enrollments')
+      .select('*', { count: 'exact', head: true })
+      .eq('class_id', masterclass._id)
+      .eq('status', 'confirmed')
+
+    if (confirmedCount !== null && confirmedCount >= masterclass.capacity) {
+      isFull = true
+    }
+  }
 
   // Custom styling for Sanity block content
   const portableTextComponents = {
@@ -190,7 +221,32 @@ export default async function MasterclassDetailPage({ params }: Props) {
                 </div>
               </div>
 
-              {isPast ? (
+              {isCancelled ? (
+                <div className="bg-[#fef2f2] border border-red-200 p-4 text-center">
+                  <p className="text-[11px] font-bold tracking-widest uppercase text-red-700 mb-1">
+                    Class Cancelled
+                  </p>
+                  <p className="text-[13px] text-[#5c5a58]">
+                    This masterclass has been cancelled.
+                  </p>
+                </div>
+              ) : isEnrolled ? (
+                <div className="space-y-4">
+                  <div className="bg-[#f0f9f0] border border-[#2e7a3a]/40 p-4 text-center">
+                    <p className="text-[11px] font-bold tracking-widest uppercase text-[#2e7a3a] mb-1">
+                      Seat Confirmed
+                    </p>
+                    <p className="text-[13px] text-[#5c5a58]">
+                      You are enrolled in this live cohort.
+                    </p>
+                  </div>
+                  <Link href="/customer/classes">
+                    <Button variant="primary" size="lg" className="w-full">
+                      View in My Classes
+                    </Button>
+                  </Link>
+                </div>
+              ) : isPast ? (
                 <div>
                   <div className="bg-[#faf8f2] p-4 text-center mb-4 border border-[#dde7dd]">
                     <p className="text-[13px] text-[#5c5a58] leading-[1.6]">
@@ -198,6 +254,22 @@ export default async function MasterclassDetailPage({ params }: Props) {
                     </p>
                   </div>
                   <Link href="/memberships">
+                    <Button variant="primary" size="lg" className="w-full">
+                      View Membership Plans
+                    </Button>
+                  </Link>
+                </div>
+              ) : isFull ? (
+                <div className="space-y-4">
+                  <div className="bg-[#faf8f2] border border-[#edc179]/60 p-4 text-center">
+                    <p className="text-[11px] font-bold tracking-widest uppercase text-[#b38538] mb-1">
+                      Cohort at Capacity
+                    </p>
+                    <p className="text-[13px] text-[#5c5a58]">
+                      Live seats are full. Unlock recording via Membership.
+                    </p>
+                  </div>
+                  <Link href="/membership">
                     <Button variant="primary" size="lg" className="w-full">
                       View Membership Plans
                     </Button>

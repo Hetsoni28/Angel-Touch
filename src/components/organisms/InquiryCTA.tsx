@@ -1,4 +1,5 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 import Link from 'next/link'
 
 export function InquiryCTA() {
@@ -20,7 +21,7 @@ export function InquiryCTA() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20make%20a%20general%20inquiry%20about%20your%20treatments."
+              href={generateWhatsAppLink({ type: 'GENERAL' })}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 w-full sm:w-auto"

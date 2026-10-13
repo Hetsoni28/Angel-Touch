@@ -99,7 +99,11 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <DashboardMembershipCard isMember={isMember} expiresAt={membership?.expires_at || undefined} />
+        <DashboardMembershipCard 
+          isMember={isMember} 
+          expiresAt={membership?.expires_at || undefined}
+          status={membership?.status}
+        />
         <DashboardUpcomingClass nextClass={nextClass} />
       </div>
 

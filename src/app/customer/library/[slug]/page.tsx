@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { VideoPlayerLocked } from '@/components/organisms/VideoPlayerLocked'
 import { VideoPlayerUnlocked } from '@/components/organisms/VideoPlayerUnlocked'
 
+import { RecordingUnavailableAlert } from '@/components/molecules/RecordingUnavailableAlert'
+
 export const instant = false
 
 // Helper to extract YouTube ID
@@ -16,14 +18,20 @@ function getYouTubeId(url: string) {
   return match && match[2].length === 11 ? match[2] : null
 }
 
-export default async function VideoPlayerPage({ params }: { params: { slug: string } }) {
+interface PageProps {
+  params: Promise<{ slug: string }>
+}
+
+export default async function VideoPlayerPage({ params }: PageProps) {
   await connection()
+  const resolvedParams = await params
+  const { slug } = resolvedParams
   
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login?redirect=/customer/library/' + params.slug)
+    redirect('/login?redirect=/customer/library/' + slug)
   }
 
   // 1. Fetch Class from Sanity
@@ -35,7 +43,7 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
       recordingUrl
     }
   `
-  const masterclass = await client.fetch(query, { slug: params.slug })
+  const masterclass = await client.fetch(query, { slug })
 
   if (!masterclass) {
     return (
@@ -51,17 +59,7 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
   // Ensure this is actually a past class that has a recording
   const isPast = new Date(masterclass.date) < new Date()
   if (!isPast || !masterclass.recordingUrl) {
-    return (
-      <div className="w-full text-center py-20">
-        <h1 className="text-2xl font-playfair text-[#1e2228] mb-4">Recording Not Available Yet</h1>
-        <p className="text-[#5c5a58] text-[15px] mb-6">
-          This class has either not happened yet, or the recording is currently being processed.
-        </p>
-        <Link href="/customer/library" className="text-[#2e7a3a] text-sm hover:underline">
-          &larr; Back to Library
-        </Link>
-      </div>
-    )
+    return <RecordingUnavailableAlert title={masterclass.title} classDate={masterclass.date} />
   }
 
   // 2. Check Access Permissions
@@ -73,10 +71,10 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
     .from('memberships')
     .select('status, expires_at')
     .eq('user_id', user.id)
-    .eq('status', 'active')
-    .single()
+    .maybeSingle()
 
-  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
+  const isMember = membership?.status === 'active' && !!membership?.expires_at && new Date(membership.expires_at) > new Date()
+  const wasExpiredMember = !!membership?.expires_at && new Date(membership.expires_at) <= new Date()
 
   if (isMember) {
     hasAccess = true
@@ -89,7 +87,7 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
       .eq('user_id', user.id)
       .eq('class_id', masterclass._id)
       .eq('status', 'confirmed')
-      .single()
+      .maybeSingle()
       
     if (enrollment) {
       hasAccess = true
@@ -99,7 +97,14 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
 
   // 3. Render
   if (!hasAccess) {
-    return <VideoPlayerLocked title={masterclass.title} slug={params.slug} />
+    return (
+      <VideoPlayerLocked 
+        title={masterclass.title} 
+        slug={slug} 
+        reason={wasExpiredMember ? 'expired_membership' : 'no_access'}
+        expiresAt={membership?.expires_at || undefined}
+      />
+    )
   }
 
   const youtubeId = getYouTubeId(masterclass.recordingUrl)

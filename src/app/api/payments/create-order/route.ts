@@ -45,15 +45,36 @@ export async function POST(req: NextRequest) {
     // Find the enrollment
     const { data: enrollment } = await serviceSupabase
       .from('class_enrollments')
-      .select('class_id')
+      .select('class_id, status')
       .eq('id', referenceId)
       .single()
       
     if (!enrollment) return fail('Enrollment not found.', 404)
+    if (enrollment.status === 'confirmed') {
+      return fail('You have already enrolled and completed payment for this class.', 409)
+    }
 
-    // Fetch class price from Sanity
-    const sanityClass = await client.fetch(`*[_type == "masterclass" && _id == $id][0] { price }`, { id: enrollment.class_id })
+    // Check for duplicate payment record
+    const { data: existingPayment } = await serviceSupabase
+      .from('payments')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('reference_id', enrollment.class_id)
+      .eq('status', 'succeeded')
+      .maybeSingle()
+
+    if (existingPayment) {
+      return fail('A confirmed payment for this class already exists on your account.', 409)
+    }
+
+    // Fetch class price and validation from Sanity
+    const sanityClass = await client.fetch(
+      `*[_type == "masterclass" && _id == $id][0] { price, isCancelled, date, capacity }`,
+      { id: enrollment.class_id }
+    )
     if (!sanityClass || !sanityClass.price) return fail('Class pricing not found.', 400)
+    if (sanityClass.isCancelled) return fail('This masterclass has been cancelled.', 400)
+    if (new Date(sanityClass.date) < new Date()) return fail('This live class has already concluded.', 400)
     
     const trueAmountPaise = sanityClass.price * 100 // Convert INR to Paise
 

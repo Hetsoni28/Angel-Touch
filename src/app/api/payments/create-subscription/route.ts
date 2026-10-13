@@ -24,6 +24,21 @@ export async function POST(req: NextRequest) {
 
     const { sanityPlanId } = parsed.data
 
+    // Check if user already has an active membership
+    const { data: existingMembership } = await supabase
+      .from('memberships')
+      .select('status, expires_at')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .maybeSingle()
+
+    if (existingMembership?.expires_at && new Date(existingMembership.expires_at) > new Date()) {
+      return fail(
+        `You already have an active membership valid until ${new Date(existingMembership.expires_at).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}.`,
+        409
+      )
+    }
+
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
       return serverError('Payment gateway is not configured.')
     }

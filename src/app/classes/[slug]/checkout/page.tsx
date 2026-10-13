@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { CheckoutButton } from '@/components/organisms/CheckoutButton'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
+import { ClassStatusAlert } from '@/components/molecules/ClassStatusAlert'
 
 export const instant = false
 
@@ -39,6 +40,32 @@ export default async function CheckoutPage({ params }: Props) {
     notFound()
   }
 
+  // 4. Check existing enrollment for duplicate prevention
+  const { data: existingEnrollment } = await supabase
+    .from('class_enrollments')
+    .select('id, status')
+    .eq('user_id', user.id)
+    .eq('class_id', masterclass._id)
+    .maybeSingle()
+
+  const isAlreadyEnrolled = existingEnrollment?.status === 'confirmed'
+  const isPast = new Date(masterclass.date) < new Date()
+  const isCancelled = !!masterclass.isCancelled
+
+  // 5. Check capacity if defined
+  let isFull = false
+  if (masterclass.capacity) {
+    const { count: confirmedCount } = await supabase
+      .from('class_enrollments')
+      .select('*', { count: 'exact', head: true })
+      .eq('class_id', masterclass._id)
+      .eq('status', 'confirmed')
+
+    if (confirmedCount !== null && confirmedCount >= masterclass.capacity) {
+      isFull = true
+    }
+  }
+
   return (
     <div className="min-h-[80vh] bg-[#faf8f2] py-12 md:py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -54,7 +81,24 @@ export default async function CheckoutPage({ params }: Props) {
           />
         </div>
 
-        <div className="max-w-3xl mx-auto bg-white border border-[#dde7dd] p-8 md:p-12">
+        {isAlreadyEnrolled ? (
+          <div className="max-w-3xl mx-auto">
+            <ClassStatusAlert status="already_enrolled" classTitle={masterclass.title} />
+          </div>
+        ) : isCancelled ? (
+          <div className="max-w-3xl mx-auto">
+            <ClassStatusAlert status="cancelled" classTitle={masterclass.title} />
+          </div>
+        ) : isPast ? (
+          <div className="max-w-3xl mx-auto">
+            <ClassStatusAlert status="past" classTitle={masterclass.title} date={new Date(masterclass.date).toLocaleDateString()} />
+          </div>
+        ) : isFull ? (
+          <div className="max-w-3xl mx-auto">
+            <ClassStatusAlert status="full" classTitle={masterclass.title} />
+          </div>
+        ) : (
+          <div className="max-w-3xl mx-auto bg-white border border-[#dde7dd] p-8 md:p-12">
           <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-8 text-center">
             Secure Checkout
           </h1>
@@ -94,6 +138,7 @@ export default async function CheckoutPage({ params }: Props) {
             Secured by Razorpay • 100% Encrypted
           </p>
         </div>
+        )}
 
       </div>
     </div>

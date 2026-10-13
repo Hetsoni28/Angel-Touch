@@ -2,6 +2,7 @@ import { LoginForm } from '@/components/organisms/LoginForm'
 import { getCurrentUser } from '@/lib/supabase/auth'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Sign In | Angel Touch',
@@ -15,5 +16,9 @@ export default async function LoginPage() {
   const user = await getCurrentUser()
   if (user) redirect('/account')
 
-  return <LoginForm />
+  return (
+    <Suspense fallback={<div className="py-12 text-center text-xs tracking-widest uppercase text-[#8a8d87]">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  )
 }

@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { Button } from '@/components/atoms/Button'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Script from 'next/script'
-import { CheckCircle2, AlertCircle } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Clock } from 'lucide-react'
 
 interface CheckoutButtonProps {
   classId: string
@@ -92,6 +93,12 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
             setError(err.message || 'Payment verification failed.')
           }
         },
+        modal: {
+          ondismiss: function () {
+            setLoading(false)
+            setError('Payment Cancelled: You closed the checkout window before completing payment. You can retry whenever you are ready.')
+          },
+        },
         prefill: {
           name: userName,
           email: userEmail,
@@ -104,12 +111,14 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
       // @ts-ignore
       const rzp = new window.Razorpay(options)
       rzp.on('payment.failed', function (response: any) {
-        setError('Payment was declined or failed. Please try again.')
+        setLoading(false)
+        const reason = response.error?.description || 'Your transaction was declined by the bank.'
+        setError(`Payment Failed: ${reason} Your card was not charged. Please try again or use another payment method.`)
       })
       rzp.open()
 
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.')
+      setError(err.message || 'Something went wrong during checkout.')
     } finally {
       setLoading(false)
     }
@@ -129,12 +138,76 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       
-      {error && (
-        <div className="bg-red-50 text-red-700 p-4 mb-6 rounded flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <p className="text-sm">{error}</p>
-        </div>
-      )}
+      {error && (() => {
+        const isCancelled = error.startsWith('Payment Cancelled')
+        const isDelayed = error.toLowerCase().includes('delayed') || error.toLowerCase().includes('pending')
+        const isDuplicate = error.toLowerCase().includes('already')
+
+        if (isCancelled) {
+          return (
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6">
+              <div className="flex items-start gap-3 text-[#735118]">
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <div>
+                  <p className="text-[13px] font-medium leading-relaxed">{error}</p>
+                  <p className="text-[11px] text-[#8a8d87] mt-1">Click the button below whenever you are ready to retry.</p>
+                </div>
+              </div>
+            </div>
+          )
+        }
+
+        if (isDelayed) {
+          return (
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6">
+              <div className="flex items-start gap-3 text-[#735118]">
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <div>
+                  <p className="text-[13px] font-medium leading-relaxed">{error}</p>
+                  <p className="text-[11px] text-[#8a8d87] mt-1">Please do not submit a second payment. Contact us if your status does not update within 15 minutes.</p>
+                </div>
+              </div>
+            </div>
+          )
+        }
+
+        if (isDuplicate) {
+          return (
+            <div className="bg-[#f0f9f0] border-l-2 border-[#2e7a3a] p-4 mb-6">
+              <div className="flex items-start gap-3 text-[#1e5f2e]">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#2e7a3a]" />
+                <div>
+                  <p className="text-[13px] font-medium leading-relaxed">{error}</p>
+                  <div className="mt-2">
+                    <Link href="/customer/classes" className="text-[11px] font-bold text-[#2e7a3a] uppercase tracking-wider hover:underline">
+                      View in My Classes &rarr;
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        }
+
+        return (
+          <div className="bg-[#fef2f2] border-l-2 border-red-500 p-4 mb-6 flex flex-col gap-2">
+            <div className="flex items-start gap-3 text-red-700">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <p className="text-[13px] leading-relaxed font-medium">{error}</p>
+            </div>
+            <div className="pl-7 pt-1">
+              <a
+                href={`https://wa.me/919723179638?text=Hello%2C%20I%20encountered%20an%20issue%20during%20checkout%20for%20${encodeURIComponent(classTitle)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-semibold text-[#8a8d87] hover:text-[#2e7a3a] uppercase tracking-wider transition-colors"
+              >
+                Need payment assistance? Contact WhatsApp concierge &rarr;
+              </a>
+            </div>
+          </div>
+        )
+      })()}
 
       <Button
         onClick={handlePayment}
