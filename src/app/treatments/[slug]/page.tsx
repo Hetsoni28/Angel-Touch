@@ -103,7 +103,7 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
       <article className="min-h-screen bg-[#faf8f2]">
         
         {/* Editorial Hero */}
-        <header className="relative w-full min-h-[60vh] md:min-h-[75vh] flex flex-col justify-end">
+        <header className="relative w-full min-h-[50vh] sm:min-h-[60vh] md:min-h-[75vh] flex flex-col justify-end">
           
           <div className="absolute inset-0 z-0">
             {treatment.imageUrl ? (
@@ -111,15 +111,15 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
               <img
                 src={treatment.imageUrl}
                 alt={treatment.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-[center_30%] sm:object-center"
               />
             ) : (
               <div className="w-full h-full bg-[#e9f3e9]" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f2] via-[#faf8f2]/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f2] via-[#faf8f2]/60 to-[#faf8f2]/10 sm:via-[#faf8f2]/40" />
           </div>
 
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pb-16 md:pb-24">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pb-12 sm:pb-16 md:pb-24">
             <FadeIn>
               <div className="mb-6 md:mb-10">
                 <DynamicBreadcrumbs 
@@ -131,13 +131,13 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-16">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-16">
                 <div className="max-w-2xl">
-                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-5">
+                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-4 sm:mb-5">
                     Signature Treatment
                   </p>
                   <h1
-                    className="text-[2.6rem] md:text-[3.8rem] lg:text-[4.4rem] font-medium text-[#1e2228] leading-[1.05]"
+                    className="text-[2.1rem] sm:text-[3rem] md:text-[3.8rem] lg:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08]"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {treatment.name}

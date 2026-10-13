@@ -24,19 +24,19 @@ export default function ContactPage() {
     <article className="min-h-screen bg-[#faf8f2]">
       
       {/* Editorial Hero */}
-      <header className="relative w-full pt-40 pb-20 md:pt-48 md:pb-24 px-6 md:px-10 max-w-7xl mx-auto">
+      <header className="relative w-full pt-24 pb-12 sm:pt-36 sm:pb-16 md:pt-44 md:pb-24 px-6 md:px-10 max-w-7xl mx-auto">
         <FadeIn>
           <div className="max-w-3xl">
-            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-6 block">
+            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-4 sm:mb-6 block">
               Contact Us
             </span>
             <h1
-              className="text-[3rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.05] mb-8"
+              className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
               Let's start your wellness journey.
             </h1>
-            <p className="text-[16px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl">
+            <p className="text-[15px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl">
               Whether you are looking to book a holistic treatment, inquire about our raw Ayurvedic products, or enroll in a masterclass, we are here to assist you.
             </p>
           </div>
@@ -44,11 +44,11 @@ export default function ContactPage() {
       </header>
 
       {/* Pro Split Layout Contact Section */}
-      <section className="max-w-7xl mx-auto px-6 md:px-10 pb-32">
+      <section className="max-w-7xl mx-auto px-6 md:px-10 pb-20 sm:pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 bg-white border border-[#dde7dd] overflow-hidden shadow-sm">
           
           {/* Left: Cinematic Image with Map Overlay placeholder */}
-          <div className="relative aspect-square lg:aspect-auto lg:h-full w-full bg-[#e9f3e9]">
+          <div className="relative aspect-[4/3] sm:aspect-square lg:aspect-auto lg:h-full w-full bg-[#e9f3e9]">
             <Image
               src="/images/ayurvedic_hero_editorial_1791405719098.jpg"
               alt="Angel Touch Sanctuary"
@@ -58,10 +58,10 @@ export default function ContactPage() {
             {/* Elegant overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#1e2228]/60 to-transparent" />
             
-            <div className="absolute bottom-10 left-10 right-10">
+            <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10">
               <FadeIn delay={0.2}>
-                <h3 className="text-white text-2xl font-playfair mb-2">Our Sanctuary</h3>
-                <p className="text-white/80 text-sm leading-relaxed max-w-sm">
+                <h3 className="text-white text-xl sm:text-2xl font-playfair mb-2">Our Sanctuary</h3>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed max-w-sm">
                   A tranquil space dedicated exclusively to women's holistic wellness and beauty education.
                 </p>
               </FadeIn>
@@ -69,7 +69,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right: Contact Information & Actions */}
-          <div className="p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-white relative">
+          <div className="p-6 sm:p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-white relative">
             
             <FadeIn delay={0.2}>
               <div className="space-y-12">

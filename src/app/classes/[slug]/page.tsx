@@ -94,23 +94,23 @@ export default async function MasterclassDetailPage({ params }: Props) {
     <div className="min-h-screen bg-[#faf8f2]">
       
       {/* ── 1. Class Hero ── */}
-      <section className="relative w-full h-[60vh] min-h-[400px] bg-[#1e2228]">
+      <section className="relative w-full h-[50vh] min-h-[350px] sm:min-h-[400px] md:h-[60vh] bg-[#1e2228]">
         <Image
           src={masterclass.imageUrl}
           alt={masterclass.title}
           fill
-          className="object-cover opacity-60 mix-blend-overlay"
+          className="object-cover object-center opacity-60 mix-blend-overlay"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1e2228]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1e2228]/85 via-[#1e2228]/50 to-transparent" />
         
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:px-24">
           <div className="max-w-7xl mx-auto">
-            <Badge variant={isPast ? 'recorded' : 'live'} className="mb-6 bg-white/10 text-white border-white/20">
+            <Badge variant={isPast ? 'recorded' : 'live'} className="mb-4 sm:mb-6 bg-white/10 text-white border-white/20">
               {isPast ? 'Recorded Vault' : 'Upcoming Live Class'}
             </Badge>
             <h1 
-              className="text-[3rem] md:text-[4rem] lg:text-[5rem] font-medium text-white leading-[1.1] max-w-4xl"
+              className="text-[2rem] xs:text-[2.4rem] sm:text-[3.2rem] md:text-[4rem] lg:text-[5rem] font-medium text-white leading-[1.1] max-w-4xl"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               {masterclass.title}

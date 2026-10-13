@@ -20,7 +20,7 @@ export function RegisterForm() {
             <CheckCircle2 className="w-10 h-10 text-[#2e7a3a]" />
           </div>
         </div>
-        <h2 className="font-playfair text-4xl text-[#1e2228] mb-4">
+        <h2 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-4">
           Check your inbox
         </h2>
         <p className="text-[15px] text-[#5c5a58] leading-relaxed mb-10">
@@ -42,7 +42,7 @@ export function RegisterForm() {
     <div className="w-full">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="font-playfair text-4xl text-[#1e2228] mb-3">Join Angel Touch</h1>
+        <h1 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-3">Join Angel Touch</h1>
         <p className="text-[15px] text-[#5c5a58] leading-relaxed">
           Create an account to book live masterclasses and unlock the recorded formulation vault.
         </p>

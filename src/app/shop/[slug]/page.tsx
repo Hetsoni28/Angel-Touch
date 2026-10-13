@@ -126,7 +126,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
           {/* LEFT: 55% Width Image Gallery */}
           <div className="w-full lg:w-[55%]">
             <FadeIn>
-              <div className="relative w-full aspect-4/5 bg-[#e9f3e9] overflow-hidden border border-[#dde7dd]/50 mb-4">
+              <div className="relative w-full aspect-[4/5] bg-[#faf8f2] overflow-hidden border border-[#dde7dd]/60 mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={mainImage} 
@@ -136,11 +136,11 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               </div>
               
               {galleryImages.length > 0 && (
-                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={mainImage} alt="thumbnail" className="w-20 h-24 shrink-0 bg-[#e9f3e9] border border-[#2e7a3a] object-cover cursor-pointer opacity-100" />
+                  <img src={mainImage} alt="thumbnail" className="w-16 h-20 sm:w-20 sm:h-24 shrink-0 bg-[#faf8f2] border border-[#2e7a3a] object-cover cursor-pointer opacity-100" />
                   {galleryImages.map((img: string, i: number) => (
-                    <div key={i} className="relative w-20 h-24 shrink-0 bg-[#e9f3e9] border border-[#dde7dd]/50 cursor-pointer hover:opacity-80 transition-opacity">
+                    <div key={i} className="relative w-16 h-20 sm:w-20 sm:h-24 shrink-0 bg-[#faf8f2] border border-[#dde7dd]/60 cursor-pointer hover:opacity-80 transition-opacity">
                        {/* eslint-disable-next-line @next/next/no-img-element */}
                        <img src={img} alt={`${product.name} detail`} className="w-full h-full object-cover" />
                     </div>
@@ -216,7 +216,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               </p>
             </div>
             <div className="order-1 md:order-2">
-              <div className="relative w-full aspect-4/3 bg-[#e9f3e9] overflow-hidden border border-[#dde7dd]/50">
+              <div className="relative w-full aspect-[4/3] bg-[#faf8f2] overflow-hidden border border-[#dde7dd]/50">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={mainImage} 

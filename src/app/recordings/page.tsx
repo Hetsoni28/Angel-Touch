@@ -61,7 +61,7 @@ export default async function RecordingsPage() {
   return (
     <div className="min-h-screen bg-[#faf8f2]">
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden">
+      <section className="relative w-full overflow-hidden min-h-[420px] sm:min-h-[480px] flex items-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/recordings-hero-bg.png"
@@ -71,17 +71,18 @@ export default async function RecordingsPage() {
             priority
           />
         </div>
+        <div className="absolute inset-0 bg-[#faf8f2]/65 z-[1] backdrop-blur-[0.5px]" />
 
-        <div className="relative z-10 py-20 md:py-32 px-6 md:px-10 max-w-7xl mx-auto">
-          <div className="mb-8">
+        <div className="relative z-10 py-16 md:py-28 px-6 md:px-10 max-w-7xl mx-auto w-full">
+          <div className="mb-6 sm:mb-8">
             <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Recorded Library' }]} />
           </div>
           
           <div className="max-w-3xl">
-            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6 drop-shadow-sm">
+            <h1 className="font-playfair text-[2.2rem] xs:text-[2.6rem] sm:text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6 leading-[1.1]">
               Recorded Library
             </h1>
-            <p className="text-[#3c3a38] text-lg md:text-xl leading-relaxed font-medium drop-shadow-sm">
+            <p className="text-[#3c3a38] text-base sm:text-lg md:text-xl leading-relaxed font-medium">
               Missed a live session? Unlock unlimited wisdom from our past masterclasses. 
               Enjoy complimentary access with an active membership, or purchase recordings individually for lifetime access.
             </p>

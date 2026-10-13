@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export function TreatmentsHero() {
   return (
-    <section className="relative w-full min-h-[75vh] flex flex-col justify-center overflow-hidden">
+    <section className="relative w-full min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] flex flex-col justify-center overflow-hidden">
       
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
@@ -12,17 +12,18 @@ export function TreatmentsHero() {
         <img
           src="/images/ayurvedic_shirodhara.jpg"
           alt="Angel Touch Treatments"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-[center_35%] sm:object-center"
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2]/85 via-[#faf8f2]/60 to-transparent sm:from-[#faf8f2]/75" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-24 pb-24 md:pt-32 md:pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-16 pb-16 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32">
         <div className="max-w-[640px]">
           <FadeIn delay={0.1}>
             <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Treatments' }]} />
 
             <h1
-              className="text-[2.8rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-[#1e2228] leading-[1.05] mb-6 md:mb-8"
+              className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-[#1e2228] leading-[1.05] mb-6 md:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
               Care,<br />thoughtfully<br />approached.

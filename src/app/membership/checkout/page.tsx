@@ -9,10 +9,11 @@ import Link from 'next/link'
 
 export const instant = false
 
-export default async function MembershipCheckoutPage({ searchParams }: { searchParams: { plan?: string } }) {
+export default async function MembershipCheckoutPage({ searchParams }: { searchParams: Promise<{ plan?: string }> }) {
   await connection()
 
-  const planId = searchParams.plan
+  const resolvedSearchParams = await searchParams
+  const planId = resolvedSearchParams.plan
   if (!planId) {
     redirect('/membership')
   }
@@ -89,7 +90,7 @@ export default async function MembershipCheckoutPage({ searchParams }: { searchP
               <p className="text-[#5c5a58] text-[15px]">You are upgrading to the Angel Touch Premium Membership.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-[#dde7dd] p-8 md:p-12 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 bg-white border border-[#dde7dd] p-6 sm:p-8 md:p-12 shadow-sm">
           
           {/* Left Column: Plan Summary */}
           <div>

@@ -43,11 +43,11 @@ export async function FeaturedProductsSection() {
           {products.map((product: any, index: number) => (
             <FadeIn key={product._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
               <article className="group flex flex-col h-full">
-                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[4/3] relative">
+                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] relative">
                   <img
                     src={product.imageUrl || '/images/ayurvedic_hero_editorial_1791405719098.jpg'}
                     alt={product.name}
-                    className="w-full h-full object-cover absolute inset-0"
+                    className="w-full h-full object-cover object-center absolute inset-0"
                   />
                 </div>
                 <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category || 'Product'}</p>

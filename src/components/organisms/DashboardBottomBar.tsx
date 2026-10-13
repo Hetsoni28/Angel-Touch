@@ -22,24 +22,24 @@ export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center justify-center p-2 min-w-[64px] ${
+            className={`flex flex-col items-center justify-center p-1.5 sm:p-2 min-w-[52px] sm:min-w-[64px] ${
               isActive ? 'text-[#2e7a3a]' : 'text-[#8a8d87]'
             }`}
           >
-            <Icon className={`w-5 h-5 mb-1 ${isActive ? 'fill-[#2e7a3a]/10' : ''}`} />
-            <span className="text-[9px] font-bold tracking-widest uppercase text-center w-full truncate leading-tight">
+            <Icon className={`w-4.5 h-4.5 sm:w-5 sm:h-5 mb-1 ${isActive ? 'fill-[#2e7a3a]/10' : ''}`} />
+            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest uppercase text-center w-full truncate leading-tight">
               {item.label.split(' ')[0]}
             </span>
           </Link>
         )
       })}
-      <form action={logoutAction} className="flex flex-col items-center justify-center min-w-[64px]">
+      <form action={logoutAction} className="flex flex-col items-center justify-center min-w-[52px] sm:min-w-[64px]">
         <button
           type="submit"
-          className="flex flex-col items-center justify-center p-2 text-[#8a8d87] hover:text-[#d32f2f]"
+          className="flex flex-col items-center justify-center p-1.5 sm:p-2 text-[#8a8d87] hover:text-[#d32f2f]"
         >
-          <LogOut className="w-5 h-5 mb-1" />
-          <span className="text-[9px] font-bold tracking-widest uppercase text-center leading-tight">
+          <LogOut className="w-4.5 h-4.5 sm:w-5 sm:h-5 mb-1" />
+          <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest uppercase text-center leading-tight">
             Sign Out
           </span>
         </button>

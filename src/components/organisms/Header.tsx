@@ -31,12 +31,12 @@ export function Header() {
       <header className="sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
         <div className="max-w-7xl mx-auto px-6 md:px-10 h-[88px] flex items-center justify-between">
           
-          {}
+          {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-            <img src="/logo.svg" alt="Angel Touch" className="h-16 w-auto object-contain" />
+            <img src="/logo.svg" alt="Angel Touch" className="h-12 sm:h-16 w-auto object-contain" />
           </Link>
 
-          {}
+          {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             <Link
               href="/"
@@ -66,8 +66,8 @@ export function Header() {
             })}
           </nav>
 
-          {}
-          <div className="flex items-center gap-5">
+          {/* Action Area */}
+          <div className="flex items-center gap-3 sm:gap-5">
             <form action="/search" method="GET" className="hidden sm:flex items-center group bg-transparent rounded-full border border-transparent hover:border-[#dde7dd] focus-within:border-[#dde7dd] hover:bg-white focus-within:bg-white transition-all duration-300">
               <input
                 type="text"
@@ -108,14 +108,26 @@ export function Header() {
         </div>
       </header>
 
-      {}
+      {/* Mobile Menu Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-[#faf8f2] flex flex-col pt-[96px]">
-          <nav className="flex flex-col px-8 py-8 gap-5 border-b border-[#dde7dd]">
+        <div className="fixed inset-0 z-40 bg-[#faf8f2] flex flex-col pt-[88px] overflow-y-auto">
+          <div className="px-6 py-4 border-b border-[#dde7dd]">
+            <form action="/search" method="GET" className="flex items-center bg-white border border-[#dde7dd] px-4 py-2.5 rounded-sm">
+              <Search strokeWidth={1.75} className="w-4 h-4 text-[#8a8d87] mr-3 shrink-0" />
+              <input
+                type="text"
+                name="q"
+                placeholder="Search products, classes, treatments..."
+                className="w-full bg-transparent text-[14px] text-[#1e2228] outline-none placeholder-[#8a8d87]"
+              />
+            </form>
+          </div>
+
+          <nav className="flex flex-col px-6 py-6 gap-4 border-b border-[#dde7dd]">
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              className="text-[22px] font-medium text-[#1e2228]"
+              className="text-[20px] font-medium text-[#1e2228] hover:text-[#2e7a3a] transition-colors"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Home
@@ -125,18 +137,26 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-[22px] font-medium text-[#1e2228]"
+                className="text-[20px] font-medium text-[#1e2228] hover:text-[#2e7a3a] transition-colors"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/customer/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="text-[20px] font-medium text-[#2e7a3a] hover:text-[#1e5f2e] transition-colors flex items-center gap-2 pt-2 border-t border-[#dde7dd]/50"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              <User className="w-5 h-5" /> My Account & Dashboard
+            </Link>
           </nav>
-          <div className="px-8 mt-auto pb-10 flex flex-col gap-4">
+          <div className="px-6 mt-auto pb-8 pt-6 flex flex-col gap-3">
             <Link
               href="/classes"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center py-4 bg-[#2e7a3a] text-white text-[12px] font-semibold tracking-[0.18em] uppercase"
+              className="block w-full text-center py-4 bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors"
             >
               Explore Classes
             </Link>

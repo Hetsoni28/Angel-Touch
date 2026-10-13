@@ -37,7 +37,7 @@ export default async function AdminEnrollmentsPage() {
       </div>
 
       <div className="bg-white border border-[#dde7dd] overflow-x-auto">
-        <table className="w-full text-left text-[13px] text-[#5c5a58]">
+        <table className="w-full text-left text-[13px] text-[#5c5a58] min-w-[650px]">
           <thead className="text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] bg-[#faf8f2] border-b border-[#dde7dd]">
             <tr>
               <th className="px-6 py-4">Customer</th>

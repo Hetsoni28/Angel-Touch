@@ -11,7 +11,7 @@ export function RecordedLearningSection() {
 
           {}
           <FadeIn delay={0.1}>
-            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-4/3 max-h-[340px]">
+            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px]">
               <img
                 src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
                 alt="Ayurvedic formulation notes and botanical ingredients"

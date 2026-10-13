@@ -11,7 +11,7 @@ export default function AboutPage() {
     <article className="min-h-screen bg-[#faf8f2]">
       
       {/* Editorial Hero with Cinematic Background */}
-      <header className="relative w-full h-[70vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+      <header className="relative w-full h-[55vh] sm:h-[65vh] md:h-[70vh] min-h-[420px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden">
         <Image
           src="/images/ayurvedic_editorial_bg.jpg"
           alt="Ayurvedic Botanicals"
@@ -21,13 +21,13 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-[#faf8f2]/80 backdrop-blur-sm z-10" />
         
-        <div className="relative z-20 max-w-4xl mx-auto px-6 text-center mt-20">
+        <div className="relative z-20 max-w-4xl mx-auto px-6 text-center mt-12 sm:mt-20">
           <FadeIn>
-            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-8 block">
+            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-4 sm:mb-8 block">
               Our Story
             </span>
             <h1
-              className="text-[3rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.05] mb-8"
+              className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
               Rooted in ancient wisdom,<br />crafted for modern wellness.

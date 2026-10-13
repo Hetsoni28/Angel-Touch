@@ -44,7 +44,7 @@ export function FeaturedProduct({ product }: { product: ProductCardProps }) {
 
           <div className="order-1 lg:order-2 lg:col-span-6 lg:col-start-7 xl:col-span-5 xl:col-start-8">
             <FadeIn direction="none" delay={0.2} className="w-full relative mx-auto max-w-md lg:max-w-none">
-              <div className="relative w-full aspect-4/5 bg-[#faf8f2] overflow-hidden rounded-sm border border-[#dde7dd]/50">
+              <div className="relative w-full aspect-[4/5] bg-[#faf8f2] overflow-hidden rounded-sm border border-[#dde7dd]/50">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={product.imageUrl || '/images/featured_lifestyle.jpg'} 

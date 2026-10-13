@@ -11,11 +11,11 @@ interface VideoPlayerUnlockedProps {
 export function VideoPlayerUnlocked({ title, date, youtubeId, accessReason }: VideoPlayerUnlockedProps) {
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <Link href="/customer/library" className="inline-flex items-center text-[#8a8d87] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-widest uppercase transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Library
         </Link>
-        <span className="inline-flex items-center bg-[#e9f3e9] text-[#1e5f2e] text-[10px] px-3 py-1 font-bold tracking-widest uppercase rounded">
+        <span className="inline-flex items-center self-start sm:self-auto bg-[#e9f3e9] text-[#1e5f2e] text-[10px] px-3 py-1 font-bold tracking-widest uppercase rounded">
           Unlocked via {accessReason}
         </span>
       </div>
@@ -38,8 +38,8 @@ export function VideoPlayerUnlocked({ title, date, youtubeId, accessReason }: Vi
         )}
       </div>
 
-      <div className="bg-white border border-[#dde7dd] p-8">
-        <h1 className="font-playfair text-3xl text-[#1e2228] mb-2">{title}</h1>
+      <div className="bg-white border border-[#dde7dd] p-5 sm:p-8">
+        <h1 className="font-playfair text-2xl sm:text-3xl text-[#1e2228] mb-2">{title}</h1>
         <p className="text-[#8a8d87] text-[12px] font-semibold tracking-widest uppercase mb-8">
           Recorded on {new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
         </p>

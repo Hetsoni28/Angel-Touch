@@ -21,7 +21,7 @@ export function LoginForm() {
     <div className="w-full">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="font-playfair text-4xl text-[#1e2228] mb-3">Welcome Back</h1>
+        <h1 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-3">Welcome Back</h1>
         <p className="text-[15px] text-[#5c5a58] leading-relaxed">
           Sign in to access your classes, formulations, and exclusive masterclass vault.
         </p>

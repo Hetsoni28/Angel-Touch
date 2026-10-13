@@ -9,7 +9,7 @@ export function HeroSection() {
         <div className="relative z-10 flex flex-col justify-center">
           <FadeIn delay={0.1}>
             <h1
-              className="text-[2.6rem] sm:text-[3.4rem] lg:text-[4rem] xl:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08] mb-6 md:mb-7"
+              className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.4rem] lg:text-[4rem] xl:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08] mb-6 md:mb-7"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
               Beauty,<br />rooted in nature.
@@ -50,7 +50,7 @@ export function HeroSection() {
           </FadeIn>
         </div>
 
-        <div className="relative w-full aspect-4/5 sm:aspect-square lg:aspect-4/5 bg-[#e9f3e9] overflow-hidden rounded-sm">
+        <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm">
           <FadeIn direction="none" delay={0.3} className="w-full h-full">
             <img
               src="/images/ayurvedic_hero_editorial_1791405719098.jpg"

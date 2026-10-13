@@ -40,7 +40,7 @@ export default async function ClassesPage() {
     <div className="min-h-screen bg-[#faf8f2]">
       
       {/* ── 2. Brand-Aligned Hero (Matches TreatmentsHero) ── */}
-      <section className="relative w-full min-h-[75vh] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60">
+      <section className="relative w-full min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60">
         
         {/* Full Background Image */}
         <div className="absolute inset-0 z-0">
@@ -48,11 +48,12 @@ export default async function ClassesPage() {
           <img
             src="/images/learning_hero.jpg"
             alt="Ayurvedic Masterclass"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_30%] sm:object-center"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1e2228]/85 via-[#1e2228]/60 to-[#1e2228]/30 sm:from-[#1e2228]/75" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-24 pb-24 md:pt-32 md:pb-32">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full pt-16 pb-16 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32">
           <div className="max-w-[640px]">
             <FadeIn delay={0.1}>
               <div className="text-white/80 [&_*]:text-white/80">
@@ -60,7 +61,7 @@ export default async function ClassesPage() {
               </div>
 
               <h1
-                className="text-[2.8rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-white leading-[1.05] mb-6 md:mb-8 drop-shadow-md"
+                className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-white leading-[1.05] mb-6 md:mb-8 drop-shadow-md"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
                 Learn the craft<br />behind the ritual.
@@ -72,22 +73,22 @@ export default async function ClassesPage() {
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <p className="text-[15px] md:text-[17px] text-white/95 leading-[1.8] max-w-lg mb-10 drop-shadow-md font-medium">
+              <p className="text-[15px] md:text-[17px] text-white/95 leading-[1.8] max-w-lg mb-8 md:mb-10 drop-shadow-md font-medium">
                 Focused classes designed to teach you how Ayurvedic products are made, guided through the Angel Touch approach.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-4 items-start">
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-start">
                 <Link
                   href="/classes#upcoming"
-                  className="inline-flex items-center justify-center px-9 py-4 bg-white hover:bg-[#2e7a3a] text-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-[#2e7a3a] text-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 text-center"
                 >
                   Explore Upcoming Classes
                 </Link>
                 <Link
                   href="/classes#recorded"
-                  className="inline-flex items-center justify-center px-9 py-4 bg-transparent border border-white text-white hover:bg-white hover:text-[#1e2228] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 backdrop-blur-sm"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white text-white hover:bg-white hover:text-[#1e2228] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 backdrop-blur-sm text-center"
                 >
                   Explore Recorded Library
                 </Link>

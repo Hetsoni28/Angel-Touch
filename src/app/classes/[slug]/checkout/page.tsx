@@ -98,18 +98,18 @@ export default async function CheckoutPage({ params }: Props) {
             <ClassStatusAlert status="full" classTitle={masterclass.title} />
           </div>
         ) : (
-          <div className="max-w-3xl mx-auto bg-white border border-[#dde7dd] p-8 md:p-12">
-          <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-8 text-center">
+          <div className="max-w-3xl mx-auto bg-white border border-[#dde7dd] p-6 sm:p-8 md:p-12">
+          <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl text-[#1e2228] mb-8 text-center">
             Secure Checkout
           </h1>
 
-          <div className="flex flex-col md:flex-row gap-8 items-center border-b border-[#dde7dd] pb-8 mb-8">
-            <div className="w-full md:w-1/3 aspect-[4/3] relative">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center border-b border-[#dde7dd] pb-8 mb-8">
+            <div className="w-full md:w-1/3 aspect-[16/10] sm:aspect-[4/3] relative bg-[#faf8f2] overflow-hidden">
               <Image 
                 src={masterclass.imageUrl} 
                 alt={masterclass.title}
                 fill
-                className="object-cover"
+                className="object-cover object-center"
               />
             </div>
             <div className="w-full md:w-2/3">

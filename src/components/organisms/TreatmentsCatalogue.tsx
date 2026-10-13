@@ -92,7 +92,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                   
                   {/* Image */}
                   <div className="w-full lg:w-1/2">
-                    <Link href={`/treatments/${treatment.slug}`} className="block relative w-full aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group">
+                    <Link href={`/treatments/${treatment.slug}`} className="block relative w-full aspect-[4/3] sm:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group">
                       {treatment.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -110,7 +110,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
 
                   {/* Content */}
                   <div className={`w-full lg:w-1/2 flex flex-col ${isEven ? 'lg:items-start' : 'lg:items-start'}`}>
-                    <div className="flex items-center gap-4 mb-6">
+                    <div className="flex items-center gap-4 mb-4 sm:mb-6">
                       <span className="w-8 h-px bg-[#5c8f60]" />
                       <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#5c8f60]">
                         Signature Treatment
@@ -119,7 +119,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
 
                     <Link href={`/treatments/${treatment.slug}`}>
                       <h4
-                        className="text-[2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.1] mb-6 hover:text-[#2e7a3a] transition-colors"
+                        className="text-[1.8rem] sm:text-[2.2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.1] mb-4 sm:mb-6 hover:text-[#2e7a3a] transition-colors"
                         style={{ fontFamily: 'var(--font-heading)' }}
                       >
                         {treatment.name}

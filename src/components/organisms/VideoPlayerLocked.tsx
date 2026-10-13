@@ -19,8 +19,8 @@ export function VideoPlayerLocked({ title, slug, reason, expiresAt }: VideoPlaye
         </Link>
       </div>
       
-      <div className="bg-white border border-[#dde7dd] p-8 md:p-12 text-center">
-        <div className="w-16 h-16 bg-[#faf8f2] rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="bg-white border border-[#dde7dd] p-5 sm:p-8 md:p-12 text-center">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#faf8f2] rounded-full flex items-center justify-center mx-auto mb-6">
           <Lock className="w-6 h-6 text-[#8a8d87]" />
         </div>
 
@@ -28,7 +28,7 @@ export function VideoPlayerLocked({ title, slug, reason, expiresAt }: VideoPlaye
           {isExpired ? 'Membership Expired' : 'Protected Vault Content'}
         </span>
 
-        <h1 className="font-playfair text-3xl text-[#1e2228] mb-4">
+        <h1 className="font-playfair text-2xl sm:text-3xl text-[#1e2228] mb-4">
           {isExpired ? 'Membership Access Ended' : 'Recording Locked'}
         </h1>
 
