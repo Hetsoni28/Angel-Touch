@@ -76,7 +76,7 @@ export default async function VideoPlayerPage({ params }: { params: { slug: stri
     .eq('status', 'active')
     .single()
 
-  const isMember = !!membership && new Date(membership.expires_at) > new Date()
+  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
   if (isMember) {
     hasAccess = true

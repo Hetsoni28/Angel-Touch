@@ -15,14 +15,17 @@ import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
-import { z } from 'zod'
-
-const schema = z.object({
-  classId: z.string().min(1, 'classId is required'),
-})
+import { enrollClassSchema } from '@/lib/security/validation'
+import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Rate limiting
+    const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.ENROLLMENT)
+    if (!rateLimit.allowed) {
+      return rateLimitExceededResponse(rateLimit)
+    }
+
     // 1. Authenticate
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -30,8 +33,8 @@ export async function POST(req: NextRequest) {
 
     // 2. Validate body
     const body = await req.json()
-    const parsed = schema.safeParse(body)
-    if (!parsed.success) return fail(parsed.error.errors[0].message)
+    const parsed = enrollClassSchema.safeParse(body)
+    if (!parsed.success) return fail(parsed.error.issues[0]?.message || 'Invalid parameters')
 
     const { classId } = parsed.data
 

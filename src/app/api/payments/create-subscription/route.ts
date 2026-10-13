@@ -1,23 +1,26 @@
 import { NextRequest } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
-import { z } from 'zod'
 import Razorpay from 'razorpay'
 import { client } from '@/sanity/lib/client'
-
-const schema = z.object({
-  sanityPlanId: z.string().min(1),
-})
+import { createSubscriptionSchema } from '@/lib/security/validation'
+import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Rate limiting check
+    const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.PAYMENTS)
+    if (!rateLimit.allowed) {
+      return rateLimitExceededResponse(rateLimit)
+    }
+
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return unauthorized()
 
     const body = await req.json()
-    const parsed = schema.safeParse(body)
-    if (!parsed.success) return fail(parsed.error.errors[0].message)
+    const parsed = createSubscriptionSchema.safeParse(body)
+    if (!parsed.success) return fail(parsed.error.issues[0]?.message || 'Invalid parameters')
 
     const { sanityPlanId } = parsed.data
 

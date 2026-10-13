@@ -38,7 +38,7 @@ export default async function DashboardPage() {
     .eq('status', 'active')
     .single()
 
-  const isMember = !!membership && new Date(membership.expires_at) > new Date()
+  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
   // 3. Fetch Class Enrollments
   const { data: enrollments } = await supabase
@@ -70,12 +70,20 @@ export default async function DashboardPage() {
   const nextClass = upcomingClasses.length > 0 ? upcomingClasses[0] : null
 
   // 4. Fetch Payments (for Recent Activity)
-  const { data: payments } = await supabase
+  const { data: rawPayments } = await supabase
     .from('payments')
-    .select('id, amount, status, created_at, payment_type')
+    .select('id, amount, amount_paise, status, created_at, payment_type')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(3)
+
+  const payments = (rawPayments || []).map(p => ({
+    id: p.id,
+    amount: p.amount ?? (p.amount_paise ? p.amount_paise / 100 : 0),
+    status: p.status,
+    created_at: p.created_at || new Date().toISOString(),
+    payment_type: p.payment_type,
+  }))
 
   return (
     <div className="w-full space-y-10">
@@ -91,7 +99,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <DashboardMembershipCard isMember={isMember} expiresAt={membership?.expires_at} />
+        <DashboardMembershipCard isMember={isMember} expiresAt={membership?.expires_at || undefined} />
         <DashboardUpcomingClass nextClass={nextClass} />
       </div>
 

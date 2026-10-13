@@ -65,14 +65,32 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
         name: 'Angel Touch',
         description: `Enrollment: ${classTitle}`,
         order_id: orderId,
-        handler: function (response: any) {
-          // Razorpay successful payment callback
-          // The webhook handles actual database confirmation.
-          setSuccess(true)
-          // Redirect to dashboard after a short delay
-          setTimeout(() => {
-            router.push('/customer/dashboard')
-          }, 3000)
+        handler: async function (response: any) {
+          try {
+            // Server-side payment verification
+            const verifyRes = await fetch('/api/payments/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                type: 'class_enrollment',
+                referenceId: enrollmentId,
+              }),
+            })
+            const verifyData = await verifyRes.json()
+            if (!verifyRes.ok) {
+              throw new Error(verifyData.error || 'Payment verification failed.')
+            }
+
+            setSuccess(true)
+            setTimeout(() => {
+              router.push('/customer/dashboard')
+            }, 2000)
+          } catch (err: any) {
+            setError(err.message || 'Payment verification failed.')
+          }
         },
         prefill: {
           name: userName,

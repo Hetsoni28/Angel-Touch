@@ -12,7 +12,7 @@ export type MembershipTier = 'basic' | 'standard' | 'premium'
 
 export type MembershipStatus = 'active' | 'cancelled' | 'expired' | 'paused' | 'pending'
 
-export type EnrollmentStatus = 'confirmed' | 'waitlisted' | 'cancelled' | 'attended' | 'no_show'
+export type EnrollmentStatus = 'pending' | 'confirmed' | 'waitlisted' | 'cancelled' | 'attended' | 'no_show'
 
 export type PaymentStatus = 'pending' | 'succeeded' | 'failed' | 'refunded' | 'partially_refunded'
 
@@ -27,12 +27,13 @@ export type AccessGrantedVia = 'purchase' | 'membership'
 export type Profile = {
   id: string                   // UUID — matches auth.users.id
   full_name: string | null
+  email?: string | null
   phone: string | null
   avatar_url: string | null
   is_admin: boolean
   is_active: boolean
   created_at: string           // ISO timestamptz
-  updated_at: string
+  updated_at?: string
 }
 
 export type Membership = {
@@ -47,21 +48,21 @@ export type Membership = {
   cancel_reason: string | null
   gateway: PaymentGateway | null
   gateway_subscription_id: string | null
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
 }
 
 export type ClassEnrollment = {
   id: string
   user_id: string
   class_id: string             // Sanity document _id
-  class_name: string
+  class_name?: string
   status: EnrollmentStatus
-  enrolled_at: string
-  cancelled_at: string | null
-  attended_at: string | null
-  created_at: string
-  updated_at: string
+  enrolled_at?: string
+  cancelled_at?: string | null
+  attended_at?: string | null
+  created_at?: string
+  updated_at?: string
 }
 
 export type RecordingPurchase = {
@@ -70,7 +71,7 @@ export type RecordingPurchase = {
   recording_id: string         // Sanity document _id
   recording_name: string
   purchased_at: string
-  created_at: string
+  created_at?: string
 }
 
 export type RecordingAccess = {
@@ -82,7 +83,7 @@ export type RecordingAccess = {
   membership_id: string | null
   expires_at: string | null
   granted_at: string
-  created_at: string
+  created_at?: string
 }
 
 export type Payment = {
@@ -90,16 +91,20 @@ export type Payment = {
   user_id: string
   payment_type: PaymentType
   reference_id: string | null
-  amount_paise: number         // In smallest currency unit (paise for INR)
+  amount_paise?: number         // In smallest currency unit (paise for INR)
+  amount?: number
   currency: string
   status: PaymentStatus
-  gateway: PaymentGateway
-  gateway_order_id: string | null
-  gateway_payment_id: string | null
-  gateway_signature: string | null
-  gateway_payload: Record<string, unknown> | null
-  created_at: string
-  updated_at: string
+  gateway?: PaymentGateway
+  gateway_order_id?: string | null
+  gateway_payment_id?: string | null
+  razorpay_order_id?: string | null
+  razorpay_payment_id?: string | null
+  gateway_signature?: string | null
+  gateway_payload?: Record<string, unknown> | null
+  metadata?: Record<string, unknown> | null
+  created_at?: string
+  updated_at?: string
 }
 
 // ── Supabase Database type (for createClient<Database>()) ────
@@ -109,57 +114,52 @@ export type Database = {
     Tables: {
       profiles: {
         Row: Profile
-        Insert: Omit<Profile, 'created_at' | 'updated_at'> & {
-          created_at?: string
-          updated_at?: string
-        }
-        Update: Partial<Omit<Profile, 'id'>>
+        Insert: Partial<Profile> & { id: string }
+        Update: Partial<Profile>
+        Relationships: []
       }
       memberships: {
         Row: Membership
-        Insert: Omit<Membership, 'id' | 'created_at' | 'updated_at'> & {
-          id?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: Partial<Omit<Membership, 'id' | 'user_id'>>
+        Insert: Partial<Membership> & { user_id: string }
+        Update: Partial<Membership>
+        Relationships: []
       }
       class_enrollments: {
         Row: ClassEnrollment
-        Insert: Omit<ClassEnrollment, 'id' | 'created_at' | 'updated_at' | 'enrolled_at'> & {
-          id?: string
-          enrolled_at?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: Partial<Pick<ClassEnrollment, 'status' | 'cancelled_at' | 'attended_at' | 'updated_at'>>
+        Insert: Partial<ClassEnrollment> & { user_id: string; class_id: string }
+        Update: Partial<ClassEnrollment>
+        Relationships: []
       }
       recording_purchases: {
         Row: RecordingPurchase
-        Insert: Omit<RecordingPurchase, 'id' | 'created_at' | 'purchased_at'> & {
-          id?: string
-          purchased_at?: string
-          created_at?: string
-        }
-        Update: never // Purchases are immutable
+        Insert: Partial<RecordingPurchase> & { user_id: string; recording_id: string }
+        Update: Partial<RecordingPurchase>
+        Relationships: []
       }
       recording_access: {
         Row: RecordingAccess
-        Insert: Omit<RecordingAccess, 'id' | 'created_at' | 'granted_at'> & {
-          id?: string
-          granted_at?: string
-          created_at?: string
-        }
-        Update: Partial<Pick<RecordingAccess, 'expires_at'>>
+        Insert: Partial<RecordingAccess> & { user_id: string; recording_id: string }
+        Update: Partial<RecordingAccess>
+        Relationships: []
       }
       payments: {
         Row: Payment
-        Insert: Omit<Payment, 'id' | 'created_at' | 'updated_at'> & {
-          id?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: Pick<Payment, 'status' | 'gateway_payment_id' | 'gateway_signature' | 'gateway_payload' | 'updated_at'>
+        Insert: Partial<Payment>
+        Update: Partial<Payment>
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      get_my_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
     }
     Enums: {
@@ -169,6 +169,9 @@ export type Database = {
       payment_status: PaymentStatus
       payment_type: PaymentType
       payment_gateway: PaymentGateway
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }

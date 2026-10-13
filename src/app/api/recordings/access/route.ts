@@ -21,11 +21,23 @@ import { createClient } from '@/lib/supabase/server'
 import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
 import { client as sanityClient } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
+import { recordingAccessSchema } from '@/lib/security/validation'
+import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
 
 export async function GET(req: NextRequest) {
   try {
-    const classId = req.nextUrl.searchParams.get('classId')
-    if (!classId) return fail('classId is required.')
+    // 0. Rate limiting check
+    const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.VIDEO_ACCESS)
+    if (!rateLimit.allowed) {
+      return rateLimitExceededResponse(rateLimit)
+    }
+
+    const classIdParam = req.nextUrl.searchParams.get('classId')
+    const parsed = recordingAccessSchema.safeParse({ classId: classIdParam })
+    if (!parsed.success) {
+      return fail(parsed.error.issues[0]?.message || 'Invalid parameters', 400)
+    }
+    const { classId } = parsed.data
 
     // 1. Authenticate
     const supabase = await createClient()
@@ -50,7 +62,7 @@ export async function GET(req: NextRequest) {
       .single()
 
     const hasEnrollment = !!enrollment
-    const hasMembership = membership && new Date(membership.expires_at) > new Date()
+    const hasMembership = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
     if (!hasEnrollment && !hasMembership) {
       return fail('Access denied. Please enroll in this class or subscribe to a membership.', 403)

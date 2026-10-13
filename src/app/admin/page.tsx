@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
-import { Card } from '@/components/atoms/Card'
 import { Users, GraduationCap, Crown, CreditCard } from 'lucide-react'
 
 export const instant = false

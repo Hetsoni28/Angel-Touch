@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'act' // React 19 / Turbopack standard
+import { useState } from 'react'
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/atoms/Button'
@@ -41,11 +41,28 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
         name: 'Angel Touch',
         description: 'Premium Membership',
         order_id: result.data.id, // For true subscriptions this would be subscription_id
-        handler: function (response: any) {
-          // Razorpay returns razorpay_payment_id, razorpay_order_id, razorpay_signature
-          // Our Webhook handles the actual database update.
-          // We just redirect the user to a success screen.
-          router.push('/customer/dashboard?success=membership')
+        handler: async function (response: any) {
+          try {
+            // Server-side payment verification
+            const verifyRes = await fetch('/api/payments/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                type: 'membership',
+                referenceId: planId,
+              }),
+            })
+            const verifyData = await verifyRes.json()
+            if (!verifyRes.ok) {
+              throw new Error(verifyData.error || 'Payment verification failed.')
+            }
+            router.push('/customer/dashboard?success=membership')
+          } catch (err: any) {
+            alert(err.message || 'Payment verification failed.')
+          }
         },
         prefill: {
           // You could pass user details here if available in context

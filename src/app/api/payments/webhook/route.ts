@@ -22,10 +22,17 @@ import { NextRequest } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { ok, fail, serverError } from '@/lib/api/response'
 import { sendEmail } from '@/lib/email/service'
-import crypto from 'crypto'
+import { verifyRazorpayWebhookSignature } from '@/lib/security/crypto'
+import { checkRateLimit, rateLimitExceededResponse } from '@/lib/security/rateLimit'
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Webhook Rate Limiting (120 requests/min to protect against DoS)
+    const rateLimit = checkRateLimit(req, { windowMs: 60 * 1000, max: 120, prefix: 'webhook' })
+    if (!rateLimit.allowed) {
+      return rateLimitExceededResponse(rateLimit)
+    }
+
     const rawBody = await req.text()
     const signature = req.headers.get('x-razorpay-signature')
 
@@ -33,13 +40,9 @@ export async function POST(req: NextRequest) {
       return fail('Missing webhook signature or secret.', 400)
     }
 
-    // 1. Verify HMAC signature — rejects any fake/tampered webhook
-    const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_WEBHOOK_SECRET)
-      .update(rawBody)
-      .digest('hex')
-
-    if (expectedSignature !== signature) {
+    // 1. Verify HMAC signature with timing-safe comparison — rejects any fake/tampered webhook
+    const isValid = verifyRazorpayWebhookSignature(rawBody, signature)
+    if (!isValid) {
       return fail('Invalid webhook signature.', 401)
     }
 
@@ -198,7 +201,7 @@ export async function POST(req: NextRequest) {
           await serviceSupabase
             .from('memberships')
             .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
-            .eq('gateway_subscription_id', paymentRecord.razorpay_order_id)
+            .eq('gateway_subscription_id', paymentRecord.razorpay_order_id || '')
         }
       }
     }

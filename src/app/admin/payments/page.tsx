@@ -95,7 +95,7 @@ export default async function AdminPaymentsPage() {
                       {payment.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4">{new Date(payment.created_at).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">{payment.created_at ? new Date(payment.created_at).toLocaleDateString() : '—'}</td>
                 </tr>
               )
             })}

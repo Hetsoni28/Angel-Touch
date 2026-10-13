@@ -30,7 +30,7 @@ export default async function RecordingsPage() {
       .eq('status', 'active')
       .single()
 
-    isMember = !!membership && new Date(membership.expires_at) > new Date()
+    isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
     // Check Class Enrollments
     const { data: enrollments } = await supabase

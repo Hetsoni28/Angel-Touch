@@ -2,10 +2,12 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
 import type { Payment } from '@/lib/supabase/types'
+import { connection } from 'next/server'
 
 export const instant = false // Allow dynamic Sanity fetches without suspense block
 
 export default async function CustomerBillingPage() {
+  await connection()
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -86,7 +88,7 @@ export default async function CustomerBillingPage() {
                       {payment.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4">{new Date(payment.created_at).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">{payment.created_at ? new Date(payment.created_at).toLocaleDateString() : '—'}</td>
                 </tr>
               )
             })}

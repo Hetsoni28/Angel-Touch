@@ -24,7 +24,7 @@ export default async function VideoLibraryPage() {
     .eq('status', 'active')
     .single()
 
-  const isMember = !!membership && new Date(membership.expires_at) > new Date()
+  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
   // 2. Fetch Class Enrollments (if they are not a member, they can only watch what they bought)
   const { data: enrollments } = await supabase
