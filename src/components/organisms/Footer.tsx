@@ -5,15 +5,11 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const services = [
-  { label: 'Advanced Skin Treatments', href: '/treatments' },
-  { label: 'Aroma Facials', href: '/treatments' },
-  { label: 'Aromatherapy & Wellness', href: '/treatments' },
-  { label: 'Shirodhara Oil Therapy', href: '/treatments' },
-  { label: 'Hair Spa, Smoothening & Keratin', href: '/treatments' },
-  { label: 'Hair Colouring & Re-moulding', href: '/treatments' },
-  { label: 'Bridal & Wedding Makeup', href: '/treatments' },
-  { label: 'Nail Art, Manicure & Pedicure', href: '/treatments' },
-  { label: 'Skincare Academy (Levels 1–3)', href: '/classes' },
+  { label: 'Facial', href: '/treatments?category=facial' },
+  { label: 'Shirodhara', href: '/treatments?category=shirodhara' },
+  { label: 'Hair Care & Spa', href: '/treatments?category=hair-spa' },
+  { label: 'Bridal Makeup', href: '/treatments?category=bridal-makeup' },
+  { label: 'Clean Up & D-Tan', href: '/treatments?category=clean-up' },
 ]
 
 const explore = [
