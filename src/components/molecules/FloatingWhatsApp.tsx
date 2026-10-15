@@ -12,10 +12,11 @@ export function FloatingWhatsApp() {
       href={generateWhatsAppLink({ type: 'GENERAL' })}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300 group"
-      aria-label="Chat on WhatsApp"
+      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-all duration-300 group"
+      aria-label="Chat with Angel Touch concierge on WhatsApp (opens in a new tab)"
     >
       <svg
+        aria-hidden="true"
         className="w-7 h-7"
         fill="currentColor"
         viewBox="0 0 24 24"
@@ -25,7 +26,7 @@ export function FloatingWhatsApp() {
       </svg>
       
       {/* Tooltip */}
-      <span className="absolute right-16 px-3 py-1.5 bg-white text-[#1e2228] text-[12px] font-medium rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap border border-[#dde7dd]">
+      <span className="absolute right-16 px-3 py-1.5 bg-white text-[#1e2228] text-[12px] font-medium rounded shadow-sm opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap border border-[#dde7dd]">
         Chat with us
       </span>
     </a>

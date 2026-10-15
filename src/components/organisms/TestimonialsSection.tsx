@@ -30,7 +30,7 @@ export function TestimonialsSection() {
                 </blockquote>
                 <footer>
                   <p className="text-[11px] font-semibold tracking-[0.2em] text-[#1e2228] uppercase">{t.name}</p>
-                  <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-1">{t.role}</p>
+                  <p className="text-[11px] tracking-[0.14em] text-[#5c5a58] uppercase mt-1">{t.role}</p>
                 </footer>
               </div>
             </FadeIn>

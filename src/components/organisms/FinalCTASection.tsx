@@ -48,19 +48,19 @@ export function FinalCTASection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center px-8 py-3.5 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                className="inline-flex items-center justify-center min-h-[44px] px-8 py-3.5 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
               >
                 Explore Products
               </Link>
               <Link
                 href="/treatments"
-                className="inline-flex items-center justify-center px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                className="inline-flex items-center justify-center min-h-[44px] px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
               >
                 Explore Treatments
               </Link>
               <Link
                 href="/classes"
-                className="inline-flex items-center justify-center px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+                className="inline-flex items-center justify-center min-h-[44px] px-8 py-3.5 border border-[#dde7dd] bg-white/60 hover:bg-white hover:border-[#2e7a3a] text-[#1e2228] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
               >
                 Explore Classes
               </Link>

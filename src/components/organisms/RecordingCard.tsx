@@ -48,30 +48,46 @@ export function RecordingCard({ slug, title, imageUrl, description, date, price,
         
         <div className="pt-4 border-t border-[#dde7dd] mt-auto">
           {status === 'watch' && (
-            <Link href={`/customer/library/${slug}`} className="flex items-center justify-between w-full text-[#1e2228] hover:text-[#2e7a3a] transition-colors group/btn">
+            <Link 
+              href={`/customer/library/${slug}`} 
+              aria-label={`Watch recording: ${title}`}
+              className="flex items-center justify-between w-full min-h-[44px] text-[#1e2228] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors group/btn"
+            >
               <span className="text-[11px] font-semibold tracking-widest uppercase">Watch Recording</span>
-              <PlayCircle className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+              <PlayCircle className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
           )}
 
           {status === 'upgrade' && (
             <div className="flex flex-col gap-3">
-              <span className="text-[11px] text-[#8a8d87] font-semibold tracking-widest uppercase">Available with Membership</span>
-              <Link href="/membership" className="flex items-center justify-center w-full px-4 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-widest uppercase transition-colors">
-                <Crown className="w-4 h-4 mr-2" /> View Membership
+              <span className="text-[11px] text-[#6b6e68] font-semibold tracking-widest uppercase">Available with Membership</span>
+              <Link 
+                href="/membership" 
+                aria-label={`View membership options to access ${title}`}
+                className="flex items-center justify-center w-full min-h-[44px] px-4 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors rounded-sm"
+              >
+                <Crown className="w-4 h-4 mr-2" aria-hidden="true" /> View Membership
               </Link>
             </div>
           )}
 
           {status === 'buy' && (
             <div className="flex flex-col gap-3">
-              <span className="text-[11px] text-[#8a8d87] font-semibold tracking-widest uppercase">Available for ₹{price}</span>
+              <span className="text-[11px] text-[#6b6e68] font-semibold tracking-widest uppercase">Available for ₹{price}</span>
               <div className="flex gap-2">
-                <Link href={`/classes/${slug}`} className="flex-1 flex items-center justify-center px-4 py-3 bg-transparent border border-[#2e7a3a] text-[#2e7a3a] hover:bg-[#2e7a3a] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors">
+                <Link 
+                  href={`/classes/${slug}`} 
+                  aria-label={`View details for ${title}`}
+                  className="flex-1 flex items-center justify-center min-h-[44px] px-4 py-3 bg-transparent border border-[#2e7a3a] text-[#2e7a3a] hover:bg-[#2e7a3a] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] transition-colors rounded-sm"
+                >
                   Details
                 </Link>
-                <Link href={`/classes/${slug}/checkout`} className="flex-1 flex items-center justify-center px-4 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors">
-                  <ShoppingBag className="w-4 h-4 mr-2" /> Purchase
+                <Link 
+                  href={`/classes/${slug}/checkout`} 
+                  aria-label={`Purchase recording: ${title} for ₹${price}`}
+                  className="flex-1 flex items-center justify-center min-h-[44px] px-4 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors rounded-sm"
+                >
+                  <ShoppingBag className="w-4 h-4 mr-2" aria-hidden="true" /> Purchase
                 </Link>
               </div>
             </div>

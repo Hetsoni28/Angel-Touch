@@ -24,6 +24,8 @@ export function WelcomeAnimation() {
       {!shouldHide && (
         <motion.div
           key="welcome-overlay"
+          role="region"
+          aria-label="Welcome introduction"
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#FAF8F2] overflow-hidden"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
@@ -38,10 +40,11 @@ export function WelcomeAnimation() {
             initial={{ opacity: 0, scale: 1.05, x: -15, y: -5 }}
             animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
             transition={{ duration: 3.5, ease: [0.25, 1, 0.5, 1], delay: 0.2 }}
+            aria-hidden="true"
           >
             <Image
               src="/images/botanical_welcome_shadows.jpg"
-              alt="Botanical shadow background"
+              alt=""
               fill
               className="object-cover"
               style={{ objectPosition: 'left center' }}
@@ -83,8 +86,8 @@ export function WelcomeAnimation() {
           {/* Skip Button (Accessibility) */}
           <button 
             onClick={() => setShouldHide(true)}
-            className="absolute bottom-10 text-[10px] uppercase tracking-widest text-[#8a8d87] hover:text-[#1e2228] transition-colors focus:outline-none focus:ring-2 focus:ring-[#2E7A3A] focus:ring-offset-4 focus:ring-offset-[#FAF8F2] opacity-50 hover:opacity-100"
-            aria-label="Skip welcome animation"
+            className="absolute bottom-8 min-h-[44px] min-w-[64px] flex items-center justify-center text-[11px] uppercase tracking-widest text-[#5c5a58] hover:text-[#1e2228] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E7A3A] focus-visible:ring-offset-2 rounded"
+            aria-label="Skip welcome introduction"
           >
             Skip
           </button>

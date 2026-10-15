@@ -101,10 +101,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${playfairDisplay.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ivory text-body">
+        {/* Skip to main content link for keyboard & screen reader users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-5 focus:py-3 focus:bg-[#2e7a3a] focus:text-white focus:text-[11px] focus:font-semibold focus:tracking-widest focus:uppercase focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#2e7a3a]"
+        >
+          Skip to main content
+        </a>
         <Suspense fallback={null}>
           <Header />
         </Suspense>
-        <main className="flex-1">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+          {children}
+        </main>
         <Suspense fallback={null}>
           <Footer />
           <FloatingWhatsApp />

@@ -51,7 +51,10 @@ export async function FeaturedTreatmentsSection() {
             </div>
           </FadeIn>
           <FadeIn delay={0.2} direction="none">
-            <Link href="/treatments" className="at-link shrink-0">
+            <Link 
+              href="/treatments" 
+              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+            >
               View all treatments &rarr;
             </Link>
           </FadeIn>
@@ -81,7 +84,7 @@ export async function FeaturedTreatmentsSection() {
                     {t.name}
                   </h3>
                   {t.duration && (
-                    <span className="shrink-0 text-[10px] tracking-[0.14em] text-[#5c8f60] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
+                    <span className="shrink-0 text-[10px] tracking-[0.14em] text-[#1e5f2e] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
                       {t.duration}
                     </span>
                   )}
@@ -94,7 +97,8 @@ export async function FeaturedTreatmentsSection() {
                 <div className="pt-2 border-t border-[#dde7dd]/60">
                   <Link
                     href={`/treatments/${t.slug?.current || t.slug}`}
-                    className="at-link at-link-green"
+                    className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                    aria-label={`Enquire or book treatment: ${t.name}`}
                   >
                     Enquire / Book &rarr;
                   </Link>

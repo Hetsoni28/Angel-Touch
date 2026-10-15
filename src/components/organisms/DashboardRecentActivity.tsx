@@ -14,9 +14,9 @@ interface DashboardRecentActivityProps {
 
 export function DashboardRecentActivity({ payments }: DashboardRecentActivityProps) {
   return (
-    <section className="bg-white border border-[#dde7dd] p-8">
-      <h2 className="text-[#8a8d87] text-[11px] font-semibold tracking-widest uppercase mb-6 flex items-center">
-        <History className="w-3.5 h-3.5 mr-2" />
+    <section className="bg-white border border-[#dde7dd] p-8" aria-label="Recent Account Activity">
+      <h2 className="text-[#5c5a58] text-[11px] font-semibold tracking-widest uppercase mb-6 flex items-center">
+        <History className="w-3.5 h-3.5 mr-2" aria-hidden="true" />
         Recent Activity
       </h2>
       
@@ -31,13 +31,13 @@ export function DashboardRecentActivity({ payments }: DashboardRecentActivityPro
                   <p className="text-[14px] text-[#1e2228] font-medium mb-1">
                     {payment.payment_type === 'class_enrollment' ? 'Class Purchase' : 'Membership Purchase'}
                   </p>
-                  <p className="text-[12px] text-[#8a8d87]">
+                  <p className="text-[12px] text-[#5c5a58]">
                     {new Date(payment.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-[14px] font-playfair text-[#1e2228]">₹{payment.amount}</p>
-                  <p className={`text-[11px] uppercase tracking-wider font-semibold ${payment.status === 'succeeded' ? 'text-[#2e7a3a]' : 'text-[#8a8d87]'}`}>
+                  <p className={`text-[11px] uppercase tracking-wider font-semibold ${payment.status === 'succeeded' ? 'text-[#1e5f2e]' : 'text-[#5c5a58]'}`}>
                     {payment.status}
                   </p>
                 </div>

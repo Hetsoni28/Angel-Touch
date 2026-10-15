@@ -41,7 +41,7 @@ export function AboutSection() {
           {/* Content */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             <FadeIn delay={0.2}>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-4">
+              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4">
                 Our Sanctuary
               </p>
               <h2
@@ -63,7 +63,7 @@ export function AboutSection() {
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 mb-8 max-w-xl">
                 {services.map((s) => (
                   <li key={s} className="flex items-start gap-2 text-[13px] text-[#5c5a58] leading-snug">
-                    <span className="mt-1.5 w-1 h-1 rounded-full bg-[#5c8f60] shrink-0" />
+                    <span className="mt-1.5 w-1 h-1 rounded-full bg-[#1e5f2e] shrink-0" aria-hidden="true" />
                     {s}
                   </li>
                 ))}
@@ -71,7 +71,10 @@ export function AboutSection() {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <Link href="/services" className="at-link self-start">
+              <Link 
+                href="/treatments" 
+                className="at-link self-start inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+              >
                 Explore all services &rarr;
               </Link>
             </FadeIn>

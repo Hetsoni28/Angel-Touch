@@ -38,7 +38,7 @@ export function Card({ title, subtitle, imageUrl, href, children, badge }: CardP
       {/* Content Area */}
       <div className="p-6 flex flex-col flex-1">
         {subtitle && (
-          <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-[#8a8d87] mb-2">
+          <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-[#5c5a58] mb-2">
             {subtitle}
           </span>
         )}
@@ -58,7 +58,7 @@ export function Card({ title, subtitle, imageUrl, href, children, badge }: CardP
 
   if (href) {
     return (
-      <Link href={href} className="block h-full">
+      <Link href={href} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 rounded">
         {content}
       </Link>
     )

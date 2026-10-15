@@ -19,10 +19,10 @@ const principles = [
 export function WhyAngelTouch() {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         <Image
           src="/images/angel-touch-difference-bg.png"
-          alt="Angel Touch Difference Background"
+          alt=""
           fill
           className="object-cover object-center"
         />
@@ -45,7 +45,7 @@ export function WhyAngelTouch() {
           {principles.map((p, i) => (
             <FadeIn key={p.title} delay={0.1 * (i + 1)}>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 rounded-full bg-white/90 shadow-sm flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-white/90 shadow-sm flex items-center justify-center mb-6" aria-hidden="true">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2e7a3a]" />
                 </div>
                 <h3

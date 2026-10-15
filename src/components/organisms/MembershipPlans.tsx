@@ -21,22 +21,26 @@ export function MembershipPlans({ plans }: MembershipPlansProps) {
               <h3 className="font-playfair text-2xl text-[#1e2228] mb-2">{plan.name}</h3>
               <div className="flex items-baseline gap-1 mb-6">
                 <span className="text-3xl font-semibold text-[#1e2228]">₹{plan.price}</span>
-                <span className="text-[#8a8d87] text-[13px]">/ {plan.billingPeriod?.toLowerCase()}</span>
+                <span className="text-[#5c5a58] text-[13px]">/ {plan.billingPeriod?.toLowerCase()}</span>
               </div>
               
               <div className="flex-1">
                 <ul className="space-y-4 mb-8">
                   {plan.features?.map((feature: string, i: number) => (
                     <li key={i} className="flex items-start gap-3 text-[#5c5a58] text-[14px]">
-                      <Check className="w-5 h-5 text-[#2e7a3a] flex-shrink-0" />
+                      <Check className="w-5 h-5 text-[#2e7a3a] flex-shrink-0" aria-hidden="true" />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <Link href={`/membership/checkout?plan=${plan._id}`} className="w-full">
-                <Button className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] text-white py-4 rounded-none text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors">
+              <Link 
+                href={`/membership/checkout?plan=${plan._id}`} 
+                className="w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded"
+                aria-label={`Choose ${plan.name} plan for ₹${plan.price}`}
+              >
+                <Button className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] text-white py-4 min-h-[48px] rounded-none text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors">
                   Choose Plan
                 </Button>
               </Link>

@@ -49,7 +49,7 @@ export function Footer() {
       <div className="bg-[#2e7a3a] py-10 px-6 md:px-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/60 mb-2">
+            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/75 mb-2">
               Women-Only · Satellite, Ahmedabad
             </p>
             <h2
@@ -62,16 +62,17 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
             <a
               href="tel:+919723179638"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-white text-[#2e7a3a] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-[#f0f7f0] transition-colors duration-200"
+              aria-label="Call Angel Touch at +91 97231 79638"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 min-h-[44px] bg-white text-[#2e7a3a] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-[#f0f7f0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors duration-200"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               +91 97231 79638
             </a>
             <Link
               href="/contact"
-              className="inline-flex items-center px-7 py-3.5 border-2 border-white text-white text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-white hover:text-[#2e7a3a] transition-colors duration-200"
+              className="inline-flex items-center px-7 py-3.5 min-h-[44px] border-2 border-white text-white text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-white hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors duration-200"
             >
               Book Appointment
             </Link>
@@ -85,7 +86,7 @@ export function Footer() {
 
           {/* Brand + Hours + Social */}
           <div className="lg:col-span-4">
-            <Link href="/" className="block mb-6">
+            <Link href="/" className="inline-block mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded" aria-label="Angel Touch Home">
               <Image src="/logo.svg" alt="Angel Touch" width={220} height={64} className="h-16 w-auto" loading="lazy" />
             </Link>
             <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-sm mb-8">
@@ -99,7 +100,7 @@ export function Footer() {
                 {hours.map(h => (
                   <li key={h.day} className="flex items-center justify-between gap-4 text-[13px] border-b border-[#dde7dd]/60 pb-2 last:border-0">
                     <span className="text-[#5c5a58]">{h.day}</span>
-                    <span className="text-[#2e7a3a] font-semibold">{h.time}</span>
+                    <span className="text-[#1e5f2e] font-semibold">{h.time}</span>
                   </li>
                 ))}
               </ul>
@@ -112,9 +113,10 @@ export function Footer() {
                 href="https://www.instagram.com/angeltouch_by_heena_thaker/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[12px] font-medium text-[#5c5a58] hover:text-[#2e7a3a] transition-colors"
+                aria-label="Follow Angel Touch by Heena Thaker on Instagram (opens in a new tab)"
+                className="inline-flex items-center gap-2 text-[12px] font-medium text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded transition-colors"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
                 </svg>
                 @angeltouch_by_heena_thaker
@@ -130,9 +132,9 @@ export function Footer() {
                 <li key={s.label}>
                   <Link
                     href={s.href}
-                    className="flex items-center gap-2 text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] transition-colors group"
+                    className="flex items-center gap-2 text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors group"
                   >
-                    <span className="w-3 h-px bg-[#dde7dd] group-hover:bg-[#2e7a3a] transition-colors shrink-0" />
+                    <span className="w-3 h-px bg-[#dde7dd] group-hover:bg-[#2e7a3a] transition-colors shrink-0" aria-hidden="true" />
                     {s.label}
                   </Link>
                 </li>
@@ -146,7 +148,7 @@ export function Footer() {
             <ul className="flex flex-col gap-2.5 mb-8">
               {explore.map(item => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] transition-colors">
+                  <Link href={item.href} className="text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
                     {item.label}
                   </Link>
                 </li>
@@ -156,7 +158,7 @@ export function Footer() {
             <ul className="flex flex-col gap-2">
               {legal.map(item => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-[12px] text-[#8a8d87] hover:text-[#2e7a3a] transition-colors">
+                  <Link href={item.href} className="text-[12px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
                     {item.label}
                   </Link>
                 </li>
@@ -169,7 +171,7 @@ export function Footer() {
             <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-5">Visit Us</p>
 
             <div className="flex items-start gap-3 mb-5 pb-5 border-b border-[#dde7dd]">
-              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
@@ -183,7 +185,7 @@ export function Footer() {
                   href="https://www.google.com/maps/search/Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad/@23.02937,72.504909,15z/data=!3m1!1e3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] font-semibold tracking-widest uppercase text-[#2e7a3a] hover:underline"
+                  className="text-[11px] font-semibold tracking-widest uppercase text-[#2e7a3a] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
                 >
                   Get Directions ↗
                 </a>
@@ -191,10 +193,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center gap-3 mb-5 pb-5 border-b border-[#dde7dd]">
-              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
               </svg>
-              <a href="tel:+919723179638" className="text-[13px] font-semibold text-[#1e2228] hover:text-[#2e7a3a] transition-colors">
+              <a href="tel:+919723179638" className="text-[13px] font-semibold text-[#1e2228] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
                 +91 97231 79638
               </a>
             </div>
@@ -202,6 +204,7 @@ export function Footer() {
             {/* Embedded real map */}
             <div className="w-full h-32 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-500">
               <iframe
+                title="Angel Touch Salon Location Map in Satellite, Ahmedabad"
                 src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad&t=k&z=16&ie=UTF8&iwloc=B&output=embed"
                 width="100%"
                 height="100%"
@@ -218,11 +221,11 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-[#dde7dd] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center">
-          <p className="text-[11px] text-[#8a8d87] tracking-widest uppercase">
+          <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
             © 2025 Angel Touch by Heena Thaaker · All rights reserved
           </p>
-          <p className="text-[11px] text-[#8a8d87] tracking-widest uppercase">
-            Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer" className="font-bold text-[#5c8f60] hover:text-[#2e7a3a] transition-colors">HNTech</a>
+          <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
+            Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1e5f2e] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">HNTech</a>
           </p>
         </div>
 

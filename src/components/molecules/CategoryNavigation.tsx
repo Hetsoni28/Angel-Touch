@@ -16,31 +16,36 @@ function CategoryNavContent({ categories }: { categories: CategoryProps[] }) {
   const currentCat = searchParams.get('category') || 'all'
 
   return (
-    <div className="flex items-center gap-6 md:gap-10 overflow-x-auto pb-4 no-scrollbar">
+    <nav aria-label="Product categories" className="flex items-center gap-6 md:gap-10 overflow-x-auto pb-4 no-scrollbar">
       <Link
         href="/shop"
-        className={`shrink-0 text-[12px] font-medium tracking-[0.14em] uppercase pb-2 border-b-2 transition-colors ${
+        aria-current={currentCat === 'all' ? 'page' : undefined}
+        className={`shrink-0 min-h-[44px] flex items-center text-[12px] font-medium tracking-[0.14em] uppercase pb-2 border-b-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm ${
           currentCat === 'all'
-            ? 'text-[#2e7a3a] border-[#2e7a3a]'
-            : 'text-[#8a8d87] border-transparent hover:text-[#1e2228]'
+            ? 'text-[#2e7a3a] border-[#2e7a3a] font-semibold'
+            : 'text-[#4a4846] border-transparent hover:text-[#1e2228]'
         }`}
       >
         All Products
       </Link>
-      {categories.map((cat) => (
-        <Link
-          key={cat._id}
-          href={`/shop?category=${cat.slug}`}
-          className={`shrink-0 text-[12px] font-medium tracking-[0.14em] uppercase pb-2 border-b-2 transition-colors ${
-            currentCat === cat.slug
-              ? 'text-[#2e7a3a] border-[#2e7a3a]'
-              : 'text-[#8a8d87] border-transparent hover:text-[#1e2228]'
-          }`}
-        >
-          {cat.name}
-        </Link>
-      ))}
-    </div>
+      {categories.map((cat) => {
+        const isActive = currentCat === cat.slug
+        return (
+          <Link
+            key={cat._id}
+            href={`/shop?category=${cat.slug}`}
+            aria-current={isActive ? 'page' : undefined}
+            className={`shrink-0 min-h-[44px] flex items-center text-[12px] font-medium tracking-[0.14em] uppercase pb-2 border-b-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm ${
+              isActive
+                ? 'text-[#2e7a3a] border-[#2e7a3a] font-semibold'
+                : 'text-[#4a4846] border-transparent hover:text-[#1e2228]'
+            }`}
+          >
+            {cat.name}
+          </Link>
+        )
+      })}
+    </nav>
   )
 }
 

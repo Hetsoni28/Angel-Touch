@@ -65,7 +65,10 @@ export async function UpcomingClassesSection() {
             </div>
           </FadeIn>
           <FadeIn delay={0.2} direction="none">
-            <Link href="/classes" className="at-link shrink-0">
+            <Link 
+              href="/classes" 
+              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+            >
               See full schedule &rarr;
             </Link>
           </FadeIn>
@@ -100,11 +103,11 @@ export async function UpcomingClassesSection() {
                   <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#dde7dd]/80">
                     <div>
                       <p className="text-[11px] tracking-[0.16em] text-[#1e2228] font-medium uppercase">{dateStr}</p>
-                      <p className="text-[11px] tracking-[0.14em] text-[#8a8d87] uppercase mt-0.5">{timeStr}</p>
+                      <p className="text-[11px] tracking-[0.14em] text-[#5c5a58] uppercase mt-0.5">{timeStr}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-[1.2rem] font-medium text-[#1e2228]">₹{cls.price || '9,999'}</p>
-                      <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-500' : 'text-[#5c8f60]'}`}>
+                      <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-700' : 'text-[#1e5f2e]'}`}>
                         {isFull ? 'Sold out' : `${spotsLeft} of ${capacity} seats left`}
                       </p>
                     </div>
@@ -123,11 +126,15 @@ export async function UpcomingClassesSection() {
 
                   <div className="pt-2 border-t border-[#dde7dd]/60 flex items-center justify-between">
                     {!isFull ? (
-                      <Link href={`/classes/${cls.slug?.current || cls.slug}`} className="at-link at-link-green">
+                      <Link 
+                        href={`/classes/${cls.slug?.current || cls.slug}`} 
+                        className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                        aria-label={`View class details: ${cls.title}`}
+                      >
                         View Class &rarr;
                       </Link>
                     ) : (
-                      <span className="text-[11px] tracking-[0.18em] uppercase text-[#8a8d87]">
+                      <span className="text-[11px] tracking-[0.18em] uppercase text-[#5c5a58] min-h-[44px] flex items-center">
                         Join waitlist &rarr;
                       </span>
                     )}

@@ -52,7 +52,7 @@ export function WhyChooseUsSection() {
             {principles.map((p, index) => (
               <FadeIn key={p.n} delay={0.1 * (index + 2)}>
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-semibold text-[#edc179] tracking-[0.2em] mb-4">{p.n}</span>
+                  <span className="text-[11px] font-semibold text-[#8c6218] tracking-[0.2em] mb-4">{p.n}</span>
                   <h3
                     className="text-[1.3rem] font-medium text-[#1e2228] mb-3 leading-snug"
                     style={{ fontFamily: 'var(--font-heading)' }}

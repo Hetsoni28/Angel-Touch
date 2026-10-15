@@ -126,8 +126,8 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
 
   if (success) {
     return (
-      <div className="bg-[#e9f3e9] text-[#1e5f2e] p-6 rounded-lg flex flex-col items-center justify-center text-center">
-        <CheckCircle2 className="w-12 h-12 mb-4" />
+      <div className="bg-[#e9f3e9] text-[#1e5f2e] p-6 rounded-lg flex flex-col items-center justify-center text-center" role="status" aria-live="polite">
+        <CheckCircle2 className="w-12 h-12 mb-4" aria-hidden="true" />
         <h3 className="text-lg font-playfair font-semibold mb-2">Payment Successful!</h3>
         <p className="text-sm">Your enrollment is confirmed. Redirecting to your dashboard...</p>
       </div>
@@ -145,12 +145,12 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
 
         if (isCancelled) {
           return (
-            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6">
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#735118]">
-                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#8c6218]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
-                  <p className="text-[11px] text-[#8a8d87] mt-1">Click the button below whenever you are ready to retry.</p>
+                  <p className="text-[11px] text-[#5c5a58] mt-1">Click the button below whenever you are ready to retry.</p>
                 </div>
               </div>
             </div>
@@ -159,12 +159,12 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
 
         if (isDelayed) {
           return (
-            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6">
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-6" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#735118]">
-                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#8c6218]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
-                  <p className="text-[11px] text-[#8a8d87] mt-1">Please do not submit a second payment. Contact us if your status does not update within 15 minutes.</p>
+                  <p className="text-[11px] text-[#5c5a58] mt-1">Please do not submit a second payment. Contact us if your status does not update within 15 minutes.</p>
                 </div>
               </div>
             </div>
@@ -173,13 +173,13 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
 
         if (isDuplicate) {
           return (
-            <div className="bg-[#f0f9f0] border-l-2 border-[#2e7a3a] p-4 mb-6">
+            <div className="bg-[#f0f9f0] border-l-2 border-[#2e7a3a] p-4 mb-6" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#1e5f2e]">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#2e7a3a]" />
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#2e7a3a]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
                   <div className="mt-2">
-                    <Link href="/customer/classes" className="text-[11px] font-bold text-[#2e7a3a] uppercase tracking-wider hover:underline">
+                    <Link href="/customer/classes" className="text-[11px] font-bold text-[#2e7a3a] uppercase tracking-wider hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm">
                       View in My Classes &rarr;
                     </Link>
                   </div>
@@ -190,9 +190,9 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
         }
 
         return (
-          <div className="bg-[#fef2f2] border-l-2 border-red-500 p-4 mb-6 flex flex-col gap-2">
+          <div className="bg-[#fef2f2] border-l-2 border-red-500 p-4 mb-6 flex flex-col gap-2" role="alert" aria-live="assertive">
             <div className="flex items-start gap-3 text-red-700">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-[13px] leading-relaxed font-medium">{error}</p>
             </div>
             <div className="pl-7 pt-1">
@@ -200,7 +200,8 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
                 href={`https://wa.me/919723179638?text=Hello%2C%20I%20encountered%20an%20issue%20during%20checkout%20for%20${encodeURIComponent(classTitle)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] font-semibold text-[#8a8d87] hover:text-[#2e7a3a] uppercase tracking-wider transition-colors"
+                aria-label="Contact WhatsApp concierge for payment assistance (opens in new window)"
+                className="text-[11px] font-semibold text-[#5c5a58] hover:text-[#2e7a3a] uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
               >
                 Need payment assistance? Contact WhatsApp concierge &rarr;
               </a>
@@ -212,7 +213,8 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
       <Button
         onClick={handlePayment}
         disabled={loading}
-        className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] text-white py-4 rounded-none text-xs font-semibold tracking-widest uppercase transition-colors"
+        aria-busy={loading}
+        className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] disabled:bg-[#6b6e68] text-white py-4 min-h-[48px] rounded-none text-xs font-semibold tracking-widest uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
       >
         {loading ? 'Initializing Secure Checkout...' : `Pay ₹${amount} Securely`}
       </Button>

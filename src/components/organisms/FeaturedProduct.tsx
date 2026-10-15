@@ -13,7 +13,7 @@ export function FeaturedProduct({ product }: { product: ProductCardProps }) {
           
           <div className="order-2 lg:order-1 lg:col-span-5 lg:col-start-1 xl:col-start-2 flex flex-col justify-center">
             <FadeIn delay={0.1}>
-              <p className="text-[10px] tracking-[0.2em] font-semibold text-[#5c8f60] uppercase mb-4 md:mb-6">
+              <p className="text-[10px] tracking-[0.2em] font-semibold text-[#1e5f2e] uppercase mb-4 md:mb-6">
                 Featured
               </p>
             </FadeIn>
@@ -37,7 +37,11 @@ export function FeaturedProduct({ product }: { product: ProductCardProps }) {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <Link href={`/shop/${typeof product.slug === 'object' ? product.slug?.current : product.slug}`} className="at-link at-link-green">
+              <Link 
+                href={`/shop/${typeof product.slug === 'object' ? product.slug?.current : product.slug}`} 
+                className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                aria-label={`View featured product details: ${product.name}`}
+              >
                 View Product &rarr;
               </Link>
             </FadeIn>

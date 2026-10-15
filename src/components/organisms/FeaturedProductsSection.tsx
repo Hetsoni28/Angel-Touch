@@ -59,7 +59,12 @@ export async function FeaturedProductsSection() {
             </p>
           </FadeIn>
           <FadeIn delay={0.2} direction="none">
-            <Link href="/shop" className="at-link shrink-0">View all products &rarr;</Link>
+            <Link 
+              href="/shop" 
+              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+            >
+              View all products &rarr;
+            </Link>
           </FadeIn>
         </div>
 
@@ -77,7 +82,7 @@ export async function FeaturedProductsSection() {
                     loading="lazy"
                   />
                 </div>
-                <p className="text-[10px] tracking-[0.22em] text-[#8a8d87] uppercase mb-1.5">{product.category || 'Product'}</p>
+                <p className="text-[10px] tracking-[0.22em] text-[#5c5a58] uppercase mb-1.5">{product.category || 'Product'}</p>
                 <h3
                   className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
                   style={{ fontFamily: 'var(--font-heading)' }}
@@ -87,7 +92,11 @@ export async function FeaturedProductsSection() {
                 <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow line-clamp-3">
                   {product.description || product.shortDescription || ''}
                 </p>
-                <Link href={`/shop/${product.slug}`} className="at-link at-link-green">
+                <Link 
+                  href={`/shop/${product.slug}`} 
+                  className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                  aria-label={`View product details: ${product.name}`}
+                >
                   View Product &rarr;
                 </Link>
               </article>

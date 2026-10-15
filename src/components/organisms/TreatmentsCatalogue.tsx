@@ -92,7 +92,11 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                   
                   {/* Image */}
                   <div className="w-full lg:w-1/2">
-                    <Link href={`/treatments/${treatment.slug}`} className="block relative w-full aspect-[4/3] sm:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group">
+                    <Link 
+                      href={`/treatments/${treatment.slug}`} 
+                      className="block relative w-full aspect-[4/3] sm:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
+                      aria-label={`View treatment details: ${treatment.name}`}
+                    >
                       {treatment.imageUrl ? (
                         <Image
                           src={treatment.imageUrl}
@@ -103,7 +107,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                           loading="lazy"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[#8a8d87] text-sm">
+                        <div className="w-full h-full flex items-center justify-center text-[#5c5a58] text-sm">
                           No image
                         </div>
                       )}
@@ -113,13 +117,16 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                   {/* Content */}
                   <div className={`w-full lg:w-1/2 flex flex-col ${isEven ? 'lg:items-start' : 'lg:items-start'}`}>
                     <div className="flex items-center gap-4 mb-4 sm:mb-6">
-                      <span className="w-8 h-px bg-[#5c8f60]" />
-                      <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#5c8f60]">
+                      <span className="w-8 h-px bg-[#1e5f2e]" aria-hidden="true" />
+                      <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#1e5f2e]">
                         Signature Treatment
                       </span>
                     </div>
 
-                    <Link href={`/treatments/${treatment.slug}`}>
+                    <Link 
+                      href={`/treatments/${treatment.slug}`}
+                      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                    >
                       <h4
                         className="text-[1.8rem] sm:text-[2.2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.1] mb-4 sm:mb-6 hover:text-[#2e7a3a] transition-colors"
                         style={{ fontFamily: 'var(--font-heading)' }}
@@ -129,7 +136,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                     </Link>
                     
                     {treatment.duration && (
-                      <p className="text-[11px] tracking-[0.16em] uppercase text-[#8a8d87] font-medium mb-8">
+                      <p className="text-[11px] tracking-[0.16em] uppercase text-[#5c5a58] font-medium mb-8">
                         {treatment.duration} Minutes
                       </p>
                     )}
@@ -140,12 +147,13 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
 
                     <Link
                       href={`/treatments/${treatment.slug}`}
-                      className="group inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] uppercase text-[#1e2228] hover:text-[#2e7a3a] transition-colors"
+                      aria-label={`Discover more about ${treatment.name}`}
+                      className="group inline-flex items-center min-h-[44px] gap-3 text-[11px] font-semibold tracking-[0.18em] uppercase text-[#1e2228] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
                     >
                       <span className="border-b border-[#1e2228] group-hover:border-[#2e7a3a] pb-1 transition-colors">
                         Discover More
                       </span>
-                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="1.5" d="M5 12h14m-6-6l6 6-6 6"/>
                       </svg>
                     </Link>

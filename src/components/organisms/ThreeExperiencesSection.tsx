@@ -27,7 +27,7 @@ export function ThreeExperiencesSection() {
                   loading="lazy"
                 />
               </div>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">01 — Products</p>
+              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-2">01 — Products</p>
               <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
                 Thoughtfully crafted Ayurvedic products.
               </h3>
@@ -35,12 +35,17 @@ export function ThreeExperiencesSection() {
                 Pure botanical formulations made with traditional methods. Designed to nourish, protect, and restore.
               </p>
               <div className="pt-3 border-t border-[#dde7dd]/50">
-                <Link href="/shop" className="at-link">Explore Products →</Link>
+                <Link 
+                  href="/shop" 
+                  className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                >
+                  Explore Products →
+                </Link>
               </div>
             </div>
           </FadeIn>
 
-          {}
+          {/* Treatment experience */}
           <FadeIn delay={0.2} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
               <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
@@ -53,7 +58,7 @@ export function ThreeExperiencesSection() {
                   loading="lazy"
                 />
               </div>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">02 — Treatments</p>
+              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-2">02 — Treatments</p>
               <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
                 Personalised healing and beauty treatments.
               </h3>
@@ -61,12 +66,17 @@ export function ThreeExperiencesSection() {
                 Rooted in the Angel Touch approach — careful, considered therapies that respect both body and tradition.
               </p>
               <div className="pt-3 border-t border-[#dde7dd]/50">
-                <Link href="/treatments" className="at-link">Explore Treatments →</Link>
+                <Link 
+                  href="/treatments" 
+                  className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                >
+                  Explore Treatments →
+                </Link>
               </div>
             </div>
           </FadeIn>
 
-          {}
+          {/* Learning experience */}
           <FadeIn delay={0.3} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
               <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
@@ -79,7 +89,7 @@ export function ThreeExperiencesSection() {
                   loading="lazy"
                 />
               </div>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-2">03 — Learning</p>
+              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-2">03 — Learning</p>
               <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
                 Learn the art of Ayurvedic formulation.
               </h3>
@@ -87,7 +97,12 @@ export function ThreeExperiencesSection() {
                 Focused, intimate product-making classes that give you the knowledge to create your own natural beauty products.
               </p>
               <div className="pt-3 border-t border-[#dde7dd]/50">
-                <Link href="/classes" className="at-link">Explore Classes →</Link>
+                <Link 
+                  href="/classes" 
+                  className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                >
+                  Explore Classes →
+                </Link>
               </div>
             </div>
           </FadeIn>

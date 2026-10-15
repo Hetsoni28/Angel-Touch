@@ -107,12 +107,12 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
 
         if (isCancelled) {
           return (
-            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-4 text-left">
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-4 text-left" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#735118]">
-                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#8c6218]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
-                  <p className="text-[11px] text-[#8a8d87] mt-1">You can subscribe whenever you are ready.</p>
+                  <p className="text-[11px] text-[#5c5a58] mt-1">You can subscribe whenever you are ready.</p>
                 </div>
               </div>
             </div>
@@ -121,12 +121,12 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
 
         if (isDelayed) {
           return (
-            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-4 text-left">
+            <div className="bg-[#faf8f2] border-l-2 border-[#edc179] p-4 mb-4 text-left" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#735118]">
-                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#b38538]" />
+                <Clock className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#8c6218]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
-                  <p className="text-[11px] text-[#8a8d87] mt-1">Please avoid paying twice; your membership will activate upon bank clearance.</p>
+                  <p className="text-[11px] text-[#5c5a58] mt-1">Please avoid paying twice; your membership will activate upon bank clearance.</p>
                 </div>
               </div>
             </div>
@@ -135,13 +135,13 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
 
         if (isAlreadyActive) {
           return (
-            <div className="bg-[#f0f9f0] border-l-2 border-[#2e7a3a] p-4 mb-4 text-left">
+            <div className="bg-[#f0f9f0] border-l-2 border-[#2e7a3a] p-4 mb-4 text-left" role="status" aria-live="polite">
               <div className="flex items-start gap-3 text-[#1e5f2e]">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#2e7a3a]" />
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#2e7a3a]" aria-hidden="true" />
                 <div>
                   <p className="text-[13px] font-medium leading-relaxed">{error}</p>
                   <div className="mt-2 flex gap-4">
-                    <Link href="/customer/library" className="text-[11px] font-bold text-[#2e7a3a] uppercase tracking-wider hover:underline">
+                    <Link href="/customer/library" className="text-[11px] font-bold text-[#2e7a3a] uppercase tracking-wider hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm">
                       Explore Library &rarr;
                     </Link>
                   </div>
@@ -152,9 +152,9 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
         }
 
         return (
-          <div className="bg-[#fef2f2] border-l-2 border-red-500 p-4 mb-4 text-left flex flex-col gap-2">
+          <div className="bg-[#fef2f2] border-l-2 border-red-500 p-4 mb-4 text-left flex flex-col gap-2" role="alert" aria-live="assertive">
             <div className="flex items-start gap-3 text-red-700">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-[13px] leading-relaxed font-medium">{error}</p>
             </div>
             <div className="pl-7 pt-1">
@@ -162,7 +162,8 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
                 href="https://wa.me/919723179638?text=Hello%2C%20I%20encountered%20an%20issue%20during%20membership%20checkout"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] font-semibold text-[#8a8d87] hover:text-[#2e7a3a] uppercase tracking-wider transition-colors"
+                aria-label="Contact WhatsApp concierge for assistance with membership (opens in new window)"
+                className="text-[11px] font-semibold text-[#5c5a58] hover:text-[#2e7a3a] uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
               >
                 Need concierge assistance? Contact WhatsApp concierge &rarr;
               </a>
@@ -174,16 +175,17 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
       <Button 
         onClick={handleCheckout} 
         disabled={isLoading || disabled}
-        className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] text-white py-4 mt-2 text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors"
+        aria-busy={isLoading}
+        className="w-full bg-[#1e2228] hover:bg-[#2e7a3a] disabled:bg-[#6b6e68] text-white py-4 min-h-[48px] mt-2 text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
       >
         {isLoading ? (
           <span className="flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin mr-2" />
+            <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin mr-2" aria-hidden="true" />
             Processing...
           </span>
         ) : (
           <span className="flex items-center justify-center">
-            <Lock className="w-4 h-4 mr-2" /> Subscribe for ₹{amount}
+            <Lock className="w-4 h-4 mr-2" aria-hidden="true" /> Subscribe for ₹{amount}
           </span>
         )}
       </Button>

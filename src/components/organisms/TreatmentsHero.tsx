@@ -46,7 +46,7 @@ export function TreatmentsHero() {
           <FadeIn delay={0.4}>
             <Link
               href="#catalogue"
-              className="inline-flex self-start items-center justify-center px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200"
+              className="inline-flex self-start items-center justify-center min-h-[44px] px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
             >
               Explore Treatments
             </Link>

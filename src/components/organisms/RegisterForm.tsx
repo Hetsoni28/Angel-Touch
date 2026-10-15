@@ -14,10 +14,10 @@ export function RegisterForm() {
   // Success State (Check your inbox)
   if (state.success && state.message) {
     return (
-      <div className="w-full text-center fade-in-up">
+      <div className="w-full text-center fade-in-up" role="status" aria-live="polite">
         <div className="mb-8 flex justify-center">
           <div className="w-20 h-20 rounded-full bg-[#e9f3e9] flex items-center justify-center">
-            <CheckCircle2 className="w-10 h-10 text-[#2e7a3a]" />
+            <CheckCircle2 className="w-10 h-10 text-[#2e7a3a]" aria-hidden="true" />
           </div>
         </div>
         <h2 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-4">
@@ -27,9 +27,12 @@ export function RegisterForm() {
           {state.message}
         </p>
         <div className="pt-8 border-t border-[#dde7dd]">
-          <p className="text-[12px] text-[#8a8d87]">
-            Didn't receive the email? Check your spam folder, or{' '}
-            <button onClick={() => window.location.reload()} className="text-[#1e2228] font-semibold hover:text-[#2e7a3a] transition-colors">
+          <p className="text-[12px] text-[#5c5a58]">
+            Didn&apos;t receive the email? Check your spam folder, or{' '}
+            <button 
+              onClick={() => window.location.reload()} 
+              className="text-[#1e2228] font-semibold underline underline-offset-2 hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
+            >
               click here to try again
             </button>.
           </p>
@@ -50,15 +53,19 @@ export function RegisterForm() {
 
       {/* Global error */}
       {state.error && (
-        <div className="mb-8 px-4 py-3 bg-red-50 border-l-2 border-red-500 text-red-700 text-[13px]">
+        <div 
+          className="mb-8 px-4 py-3 bg-red-50 border-l-2 border-red-500 text-red-700 text-[13px]" 
+          role="alert" 
+          aria-live="assertive"
+        >
           {state.error}
         </div>
       )}
 
-      <form action={action} className="flex flex-col gap-6">
+      <form action={action} className="flex flex-col gap-6" noValidate>
         {/* Full Name */}
         <div>
-          <label htmlFor="fullName" className="block text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] mb-2">
+          <label htmlFor="fullName" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
             Full Name
           </label>
           <input
@@ -67,16 +74,25 @@ export function RegisterForm() {
             type="text"
             autoComplete="name"
             required
-            className={`w-full bg-transparent border-b pb-3 text-[15px] text-[#1e2228] focus:outline-none transition-colors rounded-none ${state.fieldErrors?.fullName ? 'border-red-500 focus:border-red-600' : 'border-[#dde7dd] focus:border-[#2e7a3a]'}`}
+            aria-required="true"
+            aria-invalid={Boolean(state.fieldErrors?.fullName)}
+            aria-describedby={state.fieldErrors?.fullName ? "fullName-error" : undefined}
+            className={`w-full bg-transparent border-b pb-3 text-[15px] text-[#1e2228] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] transition-colors rounded-none ${
+              state.fieldErrors?.fullName 
+                ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-500' 
+                : 'border-[#dde7dd] focus:border-[#2e7a3a]'
+            }`}
           />
           {state.fieldErrors?.fullName && (
-            <p className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">{state.fieldErrors.fullName[0]}</p>
+            <p id="fullName-error" role="alert" className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">
+              {state.fieldErrors.fullName[0]}
+            </p>
           )}
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] mb-2">
+          <label htmlFor="email" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
             Email Address
           </label>
           <input
@@ -85,16 +101,25 @@ export function RegisterForm() {
             type="email"
             autoComplete="email"
             required
-            className={`w-full bg-transparent border-b pb-3 text-[15px] text-[#1e2228] focus:outline-none transition-colors rounded-none ${state.fieldErrors?.email ? 'border-red-500 focus:border-red-600' : 'border-[#dde7dd] focus:border-[#2e7a3a]'}`}
+            aria-required="true"
+            aria-invalid={Boolean(state.fieldErrors?.email)}
+            aria-describedby={state.fieldErrors?.email ? "email-error" : undefined}
+            className={`w-full bg-transparent border-b pb-3 text-[15px] text-[#1e2228] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] transition-colors rounded-none ${
+              state.fieldErrors?.email 
+                ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-500' 
+                : 'border-[#dde7dd] focus:border-[#2e7a3a]'
+            }`}
           />
           {state.fieldErrors?.email && (
-            <p className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">{state.fieldErrors.email[0]}</p>
+            <p id="email-error" role="alert" className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">
+              {state.fieldErrors.email[0]}
+            </p>
           )}
         </div>
 
         {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-[10px] font-bold tracking-widest uppercase text-[#8a8d87] mb-2">
+          <label htmlFor="password" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
             Password
           </label>
           <div className="relative w-full">
@@ -104,19 +129,29 @@ export function RegisterForm() {
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
               required
-              className={`w-full bg-transparent border-b pb-3 pr-10 text-[15px] text-[#1e2228] focus:outline-none transition-colors rounded-none ${state.fieldErrors?.password ? 'border-red-500 focus:border-red-600' : 'border-[#dde7dd] focus:border-[#2e7a3a]'}`}
+              aria-required="true"
+              aria-invalid={Boolean(state.fieldErrors?.password)}
+              aria-describedby={state.fieldErrors?.password ? "password-error" : undefined}
+              className={`w-full bg-transparent border-b pb-3 pr-12 text-[15px] text-[#1e2228] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] transition-colors rounded-none ${
+                state.fieldErrors?.password 
+                  ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-500' 
+                  : 'border-[#dde7dd] focus:border-[#2e7a3a]'
+              }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-0 bottom-3 my-auto text-[#8a8d87] hover:text-[#1e2228] transition-colors"
+              className="absolute right-0 top-0 bottom-2 my-auto min-w-[44px] min-h-[44px] flex items-center justify-center text-[#5c5a58] hover:text-[#1e2228] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded transition-colors"
               aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? <EyeOff className="w-4 h-4" aria-hidden="true" /> : <Eye className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
           {state.fieldErrors?.password && (
-            <p className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">{state.fieldErrors.password[0]}</p>
+            <p id="password-error" role="alert" className="mt-2 text-[11px] text-red-600 font-medium tracking-wide">
+              {state.fieldErrors.password[0]}
+            </p>
           )}
         </div>
 
@@ -124,24 +159,25 @@ export function RegisterForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="mt-6 w-full group relative flex justify-center items-center py-4 bg-[#1e2228] hover:bg-[#2e7a3a] disabled:bg-[#8a8d87] text-white text-[11px] font-semibold tracking-widest uppercase transition-all duration-300"
+          aria-busy={isPending}
+          className="mt-6 w-full group relative flex justify-center items-center min-h-[48px] py-4 bg-[#1e2228] hover:bg-[#2e7a3a] disabled:bg-[#6b6e68] text-white text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-all duration-300"
         >
           {isPending ? 'Creating Account...' : 'Create Account'}
-          {!isPending && <ArrowRight className="absolute right-6 w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />}
+          {!isPending && <ArrowRight className="absolute right-6 w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" aria-hidden="true" />}
         </button>
       </form>
 
       {/* Divider */}
       <div className="mt-10 mb-8 flex items-center gap-4">
-        <span className="flex-1 h-px bg-[#dde7dd]" />
-        <span className="text-[10px] text-[#8a8d87] uppercase tracking-widest font-semibold">Already registered?</span>
-        <span className="flex-1 h-px bg-[#dde7dd]" />
+        <span className="flex-1 h-px bg-[#dde7dd]" aria-hidden="true" />
+        <span className="text-[10px] text-[#5c5a58] uppercase tracking-widest font-semibold">Already registered?</span>
+        <span className="flex-1 h-px bg-[#dde7dd]" aria-hidden="true" />
       </div>
 
       {/* Login link */}
       <Link 
         href="/login" 
-        className="block w-full py-4 text-center border border-[#1e2228] text-[#1e2228] hover:bg-[#faf8f2] text-[11px] font-semibold tracking-widest uppercase transition-colors"
+        className="flex items-center justify-center w-full min-h-[48px] py-4 text-center border border-[#1e2228] text-[#1e2228] hover:bg-[#faf8f2] text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
       >
         Sign in instead
       </Link>

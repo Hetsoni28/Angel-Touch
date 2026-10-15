@@ -25,7 +25,7 @@ function GridContent({ products }: { products: ShopProduct[] }) {
 
   if (filtered.length === 0) {
     return (
-      <div className="py-24 text-center bg-white border border-[#dde7dd]/60 col-span-full">
+      <div className="py-24 text-center bg-white border border-[#dde7dd]/60 col-span-full" role="status">
         <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
           No products in this category.
         </h3>

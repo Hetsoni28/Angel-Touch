@@ -23,18 +23,19 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
   }
 
   return (
-    <div className={cn("flex items-center justify-center space-x-4 py-8", className)}>
+    <nav aria-label="Pagination Navigation" className={cn("flex items-center justify-center space-x-4 py-8", className)}>
       <Button 
         variant="outline" 
         size="sm" 
         onClick={handlePrevious} 
         disabled={currentPage === 1}
+        aria-label="Go to previous page"
         className="min-w-[100px]"
       >
         Previous
       </Button>
       
-      <span className="text-[12px] font-medium text-[#5c5a58] tracking-[0.1em] uppercase">
+      <span className="text-[12px] font-medium text-[#4a4846] tracking-[0.1em] uppercase" aria-live="polite" aria-atomic="true">
         Page {currentPage} of {totalPages}
       </span>
       
@@ -43,10 +44,11 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
         size="sm" 
         onClick={handleNext} 
         disabled={currentPage === totalPages}
+        aria-label="Go to next page"
         className="min-w-[100px]"
       >
         Next
       </Button>
-    </div>
+    </nav>
   )
 }

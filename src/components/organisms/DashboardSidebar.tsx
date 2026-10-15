@@ -26,8 +26,8 @@ export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const navItems = getDashboardNavItems(isAdmin)
 
   return (
-    <aside className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
-      <nav className="flex flex-col gap-2 sticky top-32">
+    <aside aria-label="Dashboard Sidebar Navigation" className="hidden md:block md:w-64 lg:w-72 flex-shrink-0">
+      <nav aria-label="Dashboard Links" className="flex flex-col gap-2 sticky top-32">
         {navItems.map((item) => {
           const isActive = item.href === '/customer/dashboard' 
             ? pathname === '/customer/dashboard' 
@@ -38,13 +38,14 @@ export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center px-5 py-4 text-[13px] font-semibold tracking-widest uppercase transition-all duration-200 border-l-2 ${
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex items-center min-h-[44px] px-5 py-3.5 text-[13px] font-semibold tracking-widest uppercase transition-all duration-200 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 rounded-r ${
                 isActive 
                   ? 'border-[#2e7a3a] bg-white text-[#1e5f2e] shadow-sm' 
                   : 'border-transparent text-[#5c5a58] hover:bg-white hover:text-[#1e2228]'
               }`}
             >
-              <Icon className="w-4 h-4 mr-4" />
+              <Icon className="w-4 h-4 mr-4" aria-hidden="true" />
               {item.label}
             </Link>
           )
@@ -54,9 +55,10 @@ export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
           <form action={logoutAction}>
             <button
               type="submit"
-              className="w-full flex items-center px-5 py-4 text-[13px] font-semibold tracking-widest uppercase text-[#5c5a58] hover:text-[#d32f2f] hover:bg-white transition-all duration-200 border-l-2 border-transparent"
+              aria-label="Sign out of your account"
+              className="w-full flex items-center min-h-[44px] px-5 py-3.5 text-[13px] font-semibold tracking-widest uppercase text-[#5c5a58] hover:text-[#d32f2f] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d32f2f] focus-visible:ring-offset-2 rounded-r transition-all duration-200 border-l-2 border-transparent"
             >
-              <LogOut className="w-4 h-4 mr-4" />
+              <LogOut className="w-4 h-4 mr-4" aria-hidden="true" />
               Sign Out
             </button>
           </form>
