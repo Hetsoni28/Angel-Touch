@@ -145,7 +145,7 @@ export default async function MasterclassDetailPage({ params }: Props) {
       {/* ── 1. Class Hero ── */}
       <section className="relative w-full h-[50vh] min-h-[350px] sm:min-h-[400px] md:h-[60vh] bg-[#1e2228]">
         <Image
-          src={masterclass.imageUrl}
+          src={masterclass.imageUrl || '/images/learning_hero.jpg'}
           alt={masterclass.title}
           fill
           className="object-cover object-center opacity-60 mix-blend-overlay"
@@ -245,10 +245,16 @@ export default async function MasterclassDetailPage({ params }: Props) {
             <div className="sticky top-32 bg-white border border-[#dde7dd] p-8 shadow-sm">
               
               <div className="mb-8">
-                <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-2">Enrollment Fee</p>
-                <p className="text-[2.5rem] font-medium text-[#2e7a3a]" style={{ fontFamily: 'var(--font-heading)' }}>
-                  ₹{masterclass.price}
-                </p>
+                <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-2">Class Access</p>
+                {masterclass.price ? (
+                  <p className="text-[2.5rem] font-medium text-[#2e7a3a]" style={{ fontFamily: 'var(--font-heading)' }}>
+                    ₹{masterclass.price}
+                  </p>
+                ) : (
+                  <p className="text-[1.8rem] font-medium text-[#2e7a3a]" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Live Workshop
+                  </p>
+                )}
               </div>
 
               <div className="space-y-6 mb-8 border-y border-[#dde7dd] py-6">
@@ -260,10 +266,12 @@ export default async function MasterclassDetailPage({ params }: Props) {
                   <span className="text-[14px] text-[#8a8d87]">Time</span>
                   <span className="text-[14px] font-medium text-[#1e2228]">{formattedTime} IST</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[14px] text-[#8a8d87]">Duration</span>
-                  <span className="text-[14px] font-medium text-[#1e2228]">{masterclass.duration}</span>
-                </div>
+                {masterclass.duration && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-[14px] text-[#8a8d87]">Duration</span>
+                    <span className="text-[14px] font-medium text-[#1e2228]">{masterclass.duration}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-center">
                   <span className="text-[14px] text-[#8a8d87]">Location</span>
                   <span className="text-[14px] font-medium text-[#1e2228]">Online (Zoom)</span>
@@ -324,12 +332,23 @@ export default async function MasterclassDetailPage({ params }: Props) {
                     </Button>
                   </Link>
                 </div>
-              ) : (
+              ) : masterclass.price ? (
                 <Link href={`/classes/${masterclass.slug}/checkout`}>
                   <Button variant="primary" size="lg" className="w-full">
                     Join This Class
                   </Button>
                 </Link>
+              ) : (
+                <a
+                  href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to register for the masterclass: ${masterclass.title}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full"
+                >
+                  <Button variant="primary" size="lg" className="w-full">
+                    Register on WhatsApp
+                  </Button>
+                </a>
               )}
             </div>
           </div>

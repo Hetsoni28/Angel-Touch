@@ -200,12 +200,12 @@ export default async function ClassesPage() {
                   <Card
                     key={cls._id}
                     title={cls.title}
-                    imageUrl={cls.imageUrl}
+                    imageUrl={cls.imageUrl || '/images/learning_hero.jpg'}
                     href={`/classes/${cls.slug}`}
                     badge={<Badge variant="live" className="tracking-widest text-[10px]">UPCOMING</Badge>}
                   >
                     <p className="text-[14px] text-[#5c5a58] mb-6 line-clamp-2 leading-[1.6]">
-                      {cls.shortDescription}
+                      {cls.shortDescription || 'Hands-on formulation masterclass taught by Heena Thaker.'}
                     </p>
                     
                     <div className="flex items-center justify-between mt-auto pt-6 border-t border-[#dde7dd]">
@@ -213,9 +213,15 @@ export default async function ClassesPage() {
                         <span className="text-[12px] text-[#8a8d87] mb-1">
                           {formattedDate} • {formattedTime}
                         </span>
-                        <span className="text-[18px] font-medium text-[#1e2228]">
-                          ₹{cls.price}
-                        </span>
+                        {cls.price ? (
+                          <span className="text-[18px] font-medium text-[#1e2228]">
+                            ₹{cls.price}
+                          </span>
+                        ) : (
+                          <span className="text-[12px] font-semibold tracking-wider text-[#1e5f2e] uppercase">
+                            Live Workshop
+                          </span>
+                        )}
                       </div>
                       <Link href={`/classes/${cls.slug}`}>
                         <Button variant="outline" size="sm">View Class</Button>
@@ -259,12 +265,12 @@ export default async function ClassesPage() {
                 <Card
                   key={cls._id}
                   title={cls.title}
-                  imageUrl={cls.imageUrl}
+                  imageUrl={cls.imageUrl || '/images/learning_hero.jpg'}
                   href={`/classes/${cls.slug}`}
                   badge={<Badge variant="recorded" className="tracking-widest text-[10px]">RECORDED</Badge>}
                 >
                   <p className="text-[14px] text-[#5c5a58] mb-6 line-clamp-2 leading-[1.6]">
-                    {cls.shortDescription}
+                    {cls.shortDescription || 'Recorded formulation masterclass from the Angel Touch archives.'}
                   </p>
                   
                   <div className="flex items-center justify-between mt-auto pt-6 border-t border-[#dde7dd]">

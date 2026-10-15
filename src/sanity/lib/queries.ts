@@ -37,7 +37,7 @@ export const ALL_MASTERCLASSES_QUERY = groq`
     _id,
     title,
     "slug": slug.current,
-    "imageUrl": image.asset->url,
+    "imageUrl": coalesce(image.asset->url, null),
     shortDescription,
     date,
     duration,
@@ -49,12 +49,12 @@ export const MASTERCLASS_BY_SLUG_QUERY = groq`
   *[_type == "masterclass" && slug.current == $slug][0] {
     _id,
     title,
-    "imageUrl": image.asset->url,
-    description,
-    whatYouWillLearn,
-    whatIsIncluded,
+    "slug": slug.current,
+    "imageUrl": coalesce(image.asset->url, null),
+    shortDescription,
     date,
     duration,
-    price
+    price,
+    recordingUrl
   }
 `
