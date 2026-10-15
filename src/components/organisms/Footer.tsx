@@ -223,7 +223,7 @@ export function Footer() {
           <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
             Designed & Developed by{' '}
             <a
-              href="https://hntech.in"
+              href="https://www.hntech.in"
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-[#1e5f2e] hover:text-[#2e7a3a] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
