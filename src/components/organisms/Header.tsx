@@ -54,15 +54,36 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#dde7dd] shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 h-[88px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 h-[80px] sm:h-[88px] flex items-center justify-between relative">
           
-          {/* Logo */}
+          {/* Mobile Menu Toggle (Left on mobile, hidden on lg) */}
+          <div className="flex items-center lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-navigation-menu"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+              className="text-[#1e2228] w-11 h-11 flex items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
+            >
+              {mobileOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu strokeWidth={1.75} className="w-6 h-6" aria-hidden="true" />}
+            </button>
+          </div>
+
+          {/* Logo (Centered on mobile, left-aligned on lg) */}
           <Link 
             href="/" 
-            className="flex-shrink-0 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 rounded-sm"
+            className="flex-shrink-0 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 rounded-sm absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 z-10"
             aria-label="Angel Touch Home"
           >
-            <Image src="/logo.svg" alt="Angel Touch by Heena Thaker" width={220} height={64} className="h-12 sm:h-16 w-auto object-contain" priority />
+            <Image 
+              src="/logo.svg" 
+              alt="Angel Touch by Heena Thaker" 
+              width={220} 
+              height={64} 
+              className="h-10 sm:h-12 lg:h-16 w-auto max-w-[155px] sm:max-w-[190px] lg:max-w-none object-contain" 
+              priority 
+            />
           </Link>
 
           {/* Desktop Nav */}
@@ -98,7 +119,7 @@ export function Header() {
           </nav>
 
           {/* Action Area */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-4">
             <form action="/search" method="GET" className="hidden sm:flex items-center group bg-transparent rounded-full border border-transparent hover:border-[#dde7dd] focus-within:border-[#dde7dd] hover:bg-white focus-within:bg-white transition-all duration-300">
               <input
                 type="text"
@@ -118,7 +139,7 @@ export function Header() {
             <Link
               href="/customer/dashboard"
               aria-label="Customer Dashboard and Account"
-              className="hidden sm:flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors w-10 h-10 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
+              className="flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors w-10 h-10 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
             >
               <User strokeWidth={1.75} className="w-[18px] h-[18px]" aria-hidden="true" />
             </Link>
@@ -128,16 +149,6 @@ export function Header() {
             >
               Explore Classes
             </Link>
-            <button
-              type="button"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-navigation-menu"
-              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-              className="lg:hidden text-[#1e2228] w-11 h-11 flex items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
-            >
-              {mobileOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu strokeWidth={1.75} className="w-6 h-6" aria-hidden="true" />}
-            </button>
           </div>
 
         </div>
