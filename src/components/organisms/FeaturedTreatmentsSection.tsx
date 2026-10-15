@@ -109,13 +109,15 @@ export async function FeaturedTreatmentsSection() {
                   </p>
 
                   <div className="pt-2 border-t border-[#dde7dd]/60">
-                    <Link
-                      href={`/treatments/${t.slug?.current || t.slug}`}
+                    <a
+                      href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to book an appointment for: ${t.name}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                      aria-label={`Enquire or book treatment: ${t.name}`}
+                      aria-label={`Enquire or book treatment on WhatsApp: ${t.name}`}
                     >
-                      Enquire / Book &rarr;
-                    </Link>
+                      Enquire / Book on WhatsApp &rarr;
+                    </a>
                   </div>
                 </article>
               </FadeIn>

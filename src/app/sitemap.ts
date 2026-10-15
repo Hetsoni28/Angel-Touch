@@ -80,13 +80,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.75,
     }))
 
-    const treatmentRoutes: MetadataRoute.Sitemap = (data.treatments ?? []).map((t) => ({
-      url: `${SITE_URL}/treatments/${t.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.75,
-    }))
-
     const classRoutes: MetadataRoute.Sitemap = (data.masterclasses ?? []).map((m) => ({
       url: `${SITE_URL}/classes/${m.slug}`,
       lastModified: new Date(),
@@ -94,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    dynamicRoutes = [...productRoutes, ...treatmentRoutes, ...classRoutes]
+    dynamicRoutes = [...productRoutes, ...classRoutes]
   } catch {
     // Sitemap still works with static routes if Sanity is unreachable
   }
