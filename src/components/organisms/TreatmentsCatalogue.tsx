@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -73,23 +73,67 @@ function resolveTreatmentImage(t: Treatment, index: number): string {
   return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
 }
 
+const OFFICIAL_CATEGORIES = [
+  { key: 'threading', label: '1. Threading' },
+  { key: 'bleach-dtan', label: '2. Bleach / D-Tan' },
+  { key: 'clean-up', label: '3. Clean Up' },
+  { key: 'waxing', label: '4. Waxing' },
+  { key: 'facial', label: '5. Facial' },
+  { key: 'skin', label: '6. Skin Care' },
+  { key: 'shirodhara', label: '7. Shirodhara' },
+  { key: 'hair-cut', label: '8. Hair Cut' },
+  { key: 'scalp-analysis-hair-regrowth', label: '9. Scalp Analysis & Hair Regrowth' },
+  { key: 'hair-treatments', label: '10. Hair Treatments' },
+  { key: 'technical-style-services', label: '11. Technical & Style Services' },
+  { key: 'special-hair-care', label: '12. Special Hair Care' },
+  { key: 'hair-care-style', label: '13. Hair Care & Style' },
+  { key: 'hair-spa', label: '14. Hair Spa' },
+  { key: 'body-scrub', label: '15. Body Scrub' },
+  { key: 'body-wrap', label: '16. Body Wrap' },
+  { key: 'steam-bath', label: '17. Steam Bath' },
+  { key: 'hand-feet-care', label: '18. Hand & Feet Care' },
+  { key: 'body-care-spa', label: '19. Body Care & Spa' },
+  { key: 'body-spa', label: '20. Body Spa' },
+  { key: 'family-makeup', label: '21. All Family Makeup Services' },
+  { key: 'occasion-makeup', label: '22. Engagement / Occasion Makeup' },
+  { key: 'bridal-makeup', label: '23. Bridal Makeup Services' },
+  { key: 'bridal-packages', label: '24. Bridal Packages' },
+  { key: 'nail-art', label: '25. Nail Art Services' },
+]
+
 export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
   const displayTreatments = treatments || []
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Collect unique categories present in the data
-  const availableCategories = useMemo(() => {
-    const cats = new Set<string>()
-    displayTreatments.forEach((t) => {
-      if (t.category) cats.add(t.category)
-    })
-    return Array.from(cats)
-  }, [displayTreatments])
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setIsOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   const filteredTreatments = useMemo(() => {
     if (selectedCategory === 'all') return displayTreatments
     return displayTreatments.filter((t) => t.category === selectedCategory)
   }, [displayTreatments, selectedCategory])
+
+  const selectedCategoryLabel = useMemo(() => {
+    if (selectedCategory === 'all') return 'All Treatments'
+    const found = OFFICIAL_CATEGORIES.find((c) => c.key === selectedCategory)
+    return found ? found.label : (CATEGORY_MAP[selectedCategory] || selectedCategory)
+  }, [selectedCategory])
 
   if (displayTreatments.length === 0) {
     return (
@@ -143,8 +187,8 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
           </FadeIn>
         </div>
 
-        {/* Grid Header & Category Filter Tabs */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16">
+        {/* Grid Header & Proper Category Dropdown */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16 pb-8 border-b border-[#dde7dd]/70">
           <FadeIn>
             <h3
               className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
@@ -153,46 +197,139 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
               Explore our treatments.
             </h3>
             <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-              Find an experience that feels right for you.
+              Find an experience tailored to your needs.
             </p>
           </FadeIn>
 
-          {/* Category Tabs (if treatments have categories) */}
-          {availableCategories.length > 1 && (
-            <div className="flex flex-wrap gap-2 pt-2 md:pt-0">
+          {/* Proper Category Dropdown List */}
+          <div className="relative shrink-0 w-full md:w-auto" ref={dropdownRef}>
+            <label htmlFor="treatment-category-filter" className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-2">
+              Filter by Menu Category
+            </label>
+            <div className="relative">
               <button
+                id="treatment-category-filter"
                 type="button"
-                onClick={() => setSelectedCategory('all')}
-                className={`text-[11px] font-semibold tracking-[0.14em] uppercase px-4 py-2 border transition-all ${
-                  selectedCategory === 'all'
-                    ? 'bg-[#1e5f2e] text-white border-[#1e5f2e]'
-                    : 'bg-[#faf8f2] text-[#5c5a58] border-[#dde7dd] hover:border-[#1e5f2e]'
-                }`}
+                onClick={() => setIsOpen((prev) => !prev)}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                className="w-full md:min-w-[300px] flex items-center justify-between gap-4 px-4 py-3 bg-[#faf8f2] hover:bg-white border border-[#dde7dd] hover:border-[#1e5f2e] focus:outline-none focus:ring-2 focus:ring-[#1e5f2e]/30 transition-all text-left shadow-sm"
               >
-                All
-              </button>
-              {availableCategories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`text-[11px] font-semibold tracking-[0.14em] uppercase px-4 py-2 border transition-all ${
-                    selectedCategory === cat
-                      ? 'bg-[#1e5f2e] text-white border-[#1e5f2e]'
-                      : 'bg-[#faf8f2] text-[#5c5a58] border-[#dde7dd] hover:border-[#1e5f2e]'
-                  }`}
+                <span className="text-[12px] font-semibold tracking-[0.08em] uppercase text-[#1e2228] truncate">
+                  {selectedCategoryLabel}
+                </span>
+                <svg
+                  className={`w-4 h-4 text-[#1e5f2e] shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
-                  {CATEGORY_MAP[cat] || cat}
-                </button>
-              ))}
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {isOpen && (
+                <div
+                  role="listbox"
+                  className="absolute right-0 left-0 md:left-auto md:w-[320px] mt-1.5 bg-white border border-[#dde7dd] shadow-xl z-50 max-h-80 overflow-y-auto py-1 animate-in fade-in-50 duration-150"
+                >
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={selectedCategory === 'all'}
+                    onClick={() => {
+                      setSelectedCategory('all')
+                      setIsOpen(false)
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-[12px] tracking-[0.04em] flex items-center justify-between transition-colors ${
+                      selectedCategory === 'all'
+                        ? 'bg-[#e9f3e9] text-[#1e5f2e] font-semibold'
+                        : 'text-[#1e2228] hover:bg-[#faf8f2]'
+                    }`}
+                  >
+                    <span>All Treatments</span>
+                    <span className="text-[11px] text-[#8a8d87]">
+                      ({displayTreatments.length})
+                    </span>
+                  </button>
+                  
+                  <div className="my-1 border-t border-[#dde7dd]/60" />
+
+                  {OFFICIAL_CATEGORIES.map((cat) => {
+                    const count = displayTreatments.filter((t) => t.category === cat.key).length
+                    const isSelected = selectedCategory === cat.key
+
+                    return (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        onClick={() => {
+                          setSelectedCategory(cat.key)
+                          setIsOpen(false)
+                        }}
+                        className={`w-full text-left px-4 py-2.5 text-[12px] tracking-[0.04em] flex items-center justify-between transition-colors ${
+                          isSelected
+                            ? 'bg-[#e9f3e9] text-[#1e5f2e] font-semibold'
+                            : 'text-[#1e2228] hover:bg-[#faf8f2]'
+                        }`}
+                      >
+                        <span className="truncate pr-2">{cat.label}</span>
+                        {count > 0 && (
+                          <span className={`text-[11px] shrink-0 ${isSelected ? 'text-[#1e5f2e] font-bold' : 'text-[#8a8d87]'}`}>
+                            ({count})
+                          </span>
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
 
         {/* Treatments Editorial Layout */}
-        <div className="flex flex-col gap-24 md:gap-36">
-          {filteredTreatments.map((treatment, index) => {
-            const isEven = index % 2 !== 0
+        {filteredTreatments.length === 0 ? (
+          <FadeIn>
+            <div className="text-center py-20 bg-[#faf8f2] border border-[#dde7dd]/70 p-8 max-w-2xl mx-auto shadow-sm">
+              <p className="text-[10px] font-semibold tracking-[0.24em] uppercase text-[#1e5f2e] mb-3">
+                Angel Touch Service Menu
+              </p>
+              <h4
+                className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] mb-4"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                {selectedCategoryLabel}
+              </h4>
+              <p className="text-[15px] text-[#5c5a58] leading-relaxed mb-8 max-w-md mx-auto">
+                Bespoke services in this category are available by appointment at our private women-only sanctuary in Satellite, Ahmedabad.
+              </p>
+              <div className="flex items-center justify-center gap-4 flex-wrap">
+                <a
+                  href={`https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(selectedCategoryLabel)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3.5 bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-[#164722] transition-colors"
+                >
+                  Inquire via WhatsApp
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('all')}
+                  className="px-6 py-3.5 border border-[#1e2228] text-[#1e2228] text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-white transition-colors"
+                >
+                  View All Treatments
+                </button>
+              </div>
+            </div>
+          </FadeIn>
+        ) : (
+          <div className="flex flex-col gap-24 md:gap-36">
+            {filteredTreatments.map((treatment, index) => {
+              const isEven = index % 2 !== 0
             const imageSrc = resolveTreatmentImage(treatment, index)
             const categoryLabel = treatment.category
               ? (CATEGORY_MAP[treatment.category] || treatment.category)
@@ -268,6 +405,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
             )
           })}
         </div>
+      )}
 
       </div>
     </section>
