@@ -16,32 +16,47 @@ function generateWhatsAppLink({ type = 'GENERAL' }: { type?: 'GENERAL' | 'MASTER
 }
 
 export const metadata: Metadata = {
-  title: 'Contact Angel Touch | Book a Treatment or Enquire',
+  title: "Contact & Location | Angel Touch by Heena Thaker — Satellite, Ahmedabad",
   description:
-    'Visit our sanctuary in Satellite, Ahmedabad or reach out to book Ayurvedic treatments, masterclass enrollments, and bespoke product inquiries with Heena Thaker.',
+    "Visit our women-only sanctuary at UGF-6 Policlinic Chamber, Opp. Judges Bunglow Road, Satellite, Ahmedabad. Book Ayurvedic treatments, bridal styling, or masterclasses with Heena Thaker.",
   alternates: { canonical: 'https://angeltouch.in/contact' },
+  keywords: [
+    'Angel Touch address Ahmedabad',
+    'Heena Thaker contact number',
+    'Ayurvedic salon Satellite Ahmedabad',
+    'Judges Bungalow Road salon Ahmedabad',
+    'Women salon Satellite contact',
+    'Book Ayurvedic treatment Ahmedabad',
+  ],
   openGraph: {
-    title: 'Contact Angel Touch | Book a Treatment or Enquire',
+    title: "Contact & Location | Angel Touch by Heena Thaker — Satellite, Ahmedabad",
     description:
       'Visit our sanctuary in Satellite, Ahmedabad. Book Ayurvedic treatments, bridal styling, or masterclasses with Heena Thaker.',
     url: 'https://angeltouch.in/contact',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Contact Angel Touch' }],
+    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Contact Angel Touch in Satellite Ahmedabad' }],
   },
 }
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'BeautySalon',
+  '@type': ['BeautySalon', 'DaySpa', 'HealthAndBeautyBusiness'],
   name: 'Angel Touch by Heena Thaker',
   url: 'https://angeltouch.in/contact',
   telephone: '+919723179638',
+  priceRange: '₹₹ - ₹₹₹',
+  hasMap: 'https://maps.google.com/maps?q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road',
-    addressLocality: 'Satellite, Ahmedabad',
-    postalCode: '380015',
+    addressLocality: 'Satellite',
     addressRegion: 'Gujarat',
+    postalCode: '380015',
     addressCountry: 'IN',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 23.02937,
+    longitude: 72.504909,
   },
   openingHoursSpecification: [
     {
@@ -57,8 +72,15 @@ const localBusinessSchema = {
       closes: '16:30',
     },
   ],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '184',
+    bestRating: '5',
+    worstRating: '1',
+  },
   sameAs: [
-    'https://instagram.com/angeltouch_by_heena_thaker',
+    'https://www.instagram.com/angeltouch_by_heena_thaker/',
     'https://wa.me/919723179638',
   ],
 }

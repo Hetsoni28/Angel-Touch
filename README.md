@@ -84,8 +84,8 @@ npm install
 ### Step 3: Setup Environment Variables
 Ask the lead developer for the `.env.local` file, or create it in the root folder and fill in these keys from the Supabase and Sanity dashboards:
 ```env
-# Next.js Site URL (Required for Supabase auth redirects)
-NEXT_PUBLIC_SITE_URL=http://localhost:3002
+# Next.js Site URL (Required for Supabase auth redirects and SEO)
+NEXT_PUBLIC_SITE_URL=https://angeltouch.in
 
 # Supabase Keys (Find these in Project Settings -> API)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url

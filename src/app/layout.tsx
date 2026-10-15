@@ -35,16 +35,19 @@ export const metadata: Metadata = {
     'Angel Touch by Heena Thaker — India\'s premium women-only Ayurvedic salon, wellness centre, and certified beauty school. Authentic skin treatments, Shirodhara, Abhyanga, handcrafted Ayurvedic products, and live masterclasses.',
 
   keywords: [
-    'Angel Touch',
-    'Heena Thaker',
-    'Ayurvedic salon India',
-    'Ayurvedic treatments',
-    'Shirodhara',
-    'Abhyanga massage',
-    'Ayurvedic skincare',
-    'natural beauty products',
-    'Ayurvedic masterclass',
-    'women wellness centre',
+    'Angel Touch Ahmedabad',
+    'Heena Thaker salon',
+    'Ayurvedic salon Ahmedabad',
+    'Women salon Satellite Ahmedabad',
+    'Shirodhara therapy Ahmedabad',
+    'Abhyanga body massage Ahmedabad',
+    'Ayurvedic skin treatment Ahmedabad',
+    'Bridal makeup artist Satellite Ahmedabad',
+    'Botanical hair spa Ahmedabad',
+    'Ayurvedic skincare India',
+    'Natural beauty products Ahmedabad',
+    'Ayurvedic formulation masterclass',
+    'Women wellness sanctuary Satellite',
   ],
 
   authors: [{ name: 'Heena Thaker', url: SITE_URL }],
@@ -91,6 +94,14 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+
+  other: {
+    'geo.region': 'IN-GJ',
+    'geo.placename': 'Ahmedabad, Satellite, Gujarat',
+    'geo.position': '23.02937;72.504909',
+    'ICBM': '23.02937, 72.504909',
+    'format-detection': 'telephone=yes',
   },
 };
 
