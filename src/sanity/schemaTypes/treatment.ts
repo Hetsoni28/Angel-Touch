@@ -59,6 +59,13 @@ export const treatment = defineType({
       initialValue: 'facial',
     }),
     defineField({
+      name: 'description',
+      title: 'Description (Optional)',
+      type: 'text',
+      rows: 2,
+      description: 'Optional short summary of this service. If left empty, a default salon note will be displayed.',
+    }),
+    defineField({
       name: 'featured',
       title: 'Feature on Homepage',
       type: 'boolean',

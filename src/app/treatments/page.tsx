@@ -31,24 +31,16 @@ export const metadata: Metadata = {
 }
 
 
-import { OFFICIAL_MENU_TREATMENTS } from '@/data/treatmentsData'
-
 export const instant = false
 
 export default async function TreatmentsPage() {
-  let treatments = OFFICIAL_MENU_TREATMENTS
+  let treatments = []
 
   try {
-    const data = await client.fetch(ALL_TREATMENTS_QUERY)
-    if (data && data.length > 0) {
-      const sanitySlugs = new Set(data.map((d: any) => d.slug))
-      treatments = [
-        ...data,
-        ...OFFICIAL_MENU_TREATMENTS.filter((t) => !sanitySlugs.has(t.slug))
-      ]
-    }
-  } catch {
-    treatments = OFFICIAL_MENU_TREATMENTS
+    treatments = await client.fetch(ALL_TREATMENTS_QUERY)
+  } catch (error) {
+    console.error('Failed to fetch treatments from Sanity:', error)
+    treatments = []
   }
 
   return (

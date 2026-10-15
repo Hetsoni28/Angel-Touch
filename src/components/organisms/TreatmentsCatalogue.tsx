@@ -3,14 +3,68 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { Pagination } from '@/components/molecules/Pagination'
-import { CATEGORY_MAP, OFFICIAL_CATEGORIES } from '@/data/treatmentsData'
+
+export const CATEGORY_MAP: Record<string, string> = {
+  'threading': '1. Threading',
+  'bleach-dtan': '2. Bleach / D-Tan',
+  'clean-up': '3. Clean Up',
+  'waxing': '4. Waxing',
+  'facial': '5. Facial',
+  'skin': '6. Skin Care',
+  'shirodhara': '7. Shirodhara',
+  'hair-cut': '8. Hair Cut',
+  'scalp-analysis-hair-regrowth': '9. Scalp Analysis & Hair Regrowth',
+  'hair-treatments': '10. Hair Treatments',
+  'technical-style-services': '11. Technical & Style Services',
+  'special-hair-care': '12. Special Hair Care',
+  'hair-care-style': '13. Hair Care & Style',
+  'hair-spa': '14. Hair Spa',
+  'body-scrub': '15. Body Scrub',
+  'body-wrap': '16. Body Wrap',
+  'steam-bath': '17. Steam Bath',
+  'hand-feet-care': '18. Hand & Feet Care',
+  'body-care-spa': '19. Body Care & Spa',
+  'body-spa': '20. Body Spa',
+  'family-makeup': '21. All Family Makeup Services',
+  'occasion-makeup': '22. Engagement / Occasion Makeup',
+  'bridal-makeup': '23. Bridal Makeup Services',
+  'bridal-packages': '24. Bridal Packages',
+  'nail-art': '25. Nail Art Services',
+}
+
+export const OFFICIAL_CATEGORIES = [
+  { key: 'threading', label: '1. Threading' },
+  { key: 'bleach-dtan', label: '2. Bleach / D-Tan' },
+  { key: 'clean-up', label: '3. Clean Up' },
+  { key: 'waxing', label: '4. Waxing' },
+  { key: 'facial', label: '5. Facial' },
+  { key: 'skin', label: '6. Skin Care' },
+  { key: 'shirodhara', label: '7. Shirodhara' },
+  { key: 'hair-cut', label: '8. Hair Cut' },
+  { key: 'scalp-analysis-hair-regrowth', label: '9. Scalp Analysis & Hair Regrowth' },
+  { key: 'hair-treatments', label: '10. Hair Treatments' },
+  { key: 'technical-style-services', label: '11. Technical & Style Services' },
+  { key: 'special-hair-care', label: '12. Special Hair Care' },
+  { key: 'hair-care-style', label: '13. Hair Care & Style' },
+  { key: 'hair-spa', label: '14. Hair Spa' },
+  { key: 'body-scrub', label: '15. Body Scrub' },
+  { key: 'body-wrap', label: '16. Body Wrap' },
+  { key: 'steam-bath', label: '17. Steam Bath' },
+  { key: 'hand-feet-care', label: '18. Hand & Feet Care' },
+  { key: 'body-care-spa', label: '19. Body Care & Spa' },
+  { key: 'body-spa', label: '20. Body Spa' },
+  { key: 'family-makeup', label: '21. All Family Makeup Services' },
+  { key: 'occasion-makeup', label: '22. Engagement / Occasion Makeup' },
+  { key: 'bridal-makeup', label: '23. Bridal Makeup Services' },
+  { key: 'bridal-packages', label: '24. Bridal Packages' },
+  { key: 'nail-art', label: '25. Nail Art Services' },
+]
 
 type Treatment = {
   _id: string
   name: string
   slug: string
   category?: string
-  imageUrl?: string
   description?: string
   featured?: boolean
 }
@@ -97,31 +151,6 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
     return filteredTreatments.slice(startIndex, startIndex + ITEMS_PER_PAGE)
   }, [filteredTreatments, startIndex])
 
-  if (displayTreatments.length === 0) {
-    return (
-      <section id="catalogue" className="bg-white py-24 md:py-32 border-t border-[#dde7dd]/70">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
-          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#1e5f2e] mb-3">
-            Angel Touch Menu
-          </p>
-          <h2 className="text-[2rem] font-medium text-[#1e2228] mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
-            Services by Appointment
-          </h2>
-          <p className="text-[15px] text-[#5c5a58] max-w-md mx-auto mb-8">
-            Please contact us directly on WhatsApp to inquire about services and book your private session.
-          </p>
-          <a
-            href="https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20inquire%20about%20your%20services"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#1e5f2e] hover:bg-[#164722] text-white text-[11px] font-semibold tracking-[0.16em] uppercase rounded-sm transition-colors"
-          >
-            Inquire via WhatsApp
-          </a>
-        </div>
-      </section>
-    )
-  }
 
   return (
     <section id="catalogue" ref={catalogueTopRef} className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">

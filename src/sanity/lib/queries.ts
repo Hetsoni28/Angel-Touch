@@ -28,11 +28,7 @@ export const ALL_TREATMENTS_QUERY = groq`
     "slug": slug.current,
     category,
     featured,
-    "imageUrl": coalesce(
-      image.asset->url,
-      images[0].asset->url,
-      null
-    )
+    description
   } | order(name asc)
 `
 
