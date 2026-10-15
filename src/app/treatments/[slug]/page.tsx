@@ -15,33 +15,33 @@ const fallbackTreatments = [
     _id: 't1',
     name: 'Advanced Aroma Facial',
     slug: 'advanced-aroma-facial',
-    imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
+    category: 'facial',
+    imageUrl: '/images/face_mask.jpg',
     description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
-    duration: 60,
   },
   {
     _id: 't2',
     name: 'Shirodhara Therapy',
     slug: 'shirodhara',
+    category: 'shirodhara',
     imageUrl: '/images/ayurvedic_shirodhara.jpg',
     description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
-    duration: 45,
   },
   {
     _id: 't3',
     name: 'Botanical Hair Spa',
     slug: 'botanical-hair-spa',
-    imageUrl: '/images/ayurvedic_hair_elixir_1791410293201.jpg',
+    category: 'hair-spa',
+    imageUrl: '/images/ayurvedic_hair_elixir.jpg',
     description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
-    duration: 60,
   },
   {
     _id: 't4',
     name: 'Bridal Styling',
     slug: 'bridal-styling',
-    imageUrl: '/images/ayurvedic_beauty_editorial_1791410358517.jpg',
+    category: 'bridal-makeup',
+    imageUrl: '/images/ayurvedic_editorial_bg.jpg',
     description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
-    duration: 120,
   }
 ]
 
@@ -52,15 +52,7 @@ const TREATMENT_BY_SLUG_QUERY = groq`
     name,
     "slug": slug.current,
     category,
-    price,
-    duration,
     featured,
-    "description": coalesce(
-      description,
-      shortDescription,
-      description[0].children[0].text,
-      ""
-    ),
     "imageUrl": coalesce(
       image.asset->url,
       images[0].asset->url,
@@ -232,25 +224,6 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                   </h1>
                 </div>
 
-                <div className="flex items-center flex-wrap gap-3">
-                  {treatment.duration && (
-                    <div className="shrink-0 flex items-center gap-3 bg-white px-5 py-3 border border-[#dde7dd]/60 shadow-sm">
-                      <svg className="w-4 h-4 text-[#5c8f60]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#1e2228]">
-                        {treatment.duration} Minutes
-                      </span>
-                    </div>
-                  )}
-                  {treatment.price && (
-                    <div className="shrink-0 flex items-center gap-2 bg-[#e9f3e9] px-5 py-3 border border-[#1e5f2e]/20 shadow-sm">
-                      <span className="text-[12px] font-semibold tracking-[0.1em] text-[#1e5f2e]">
-                        {treatment.price}
-                      </span>
-                    </div>
-                  )}
-                </div>
               </div>
             </FadeIn>
           </div>
@@ -288,16 +261,9 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                   >
                     Reserve your time
                   </h3>
-                  <p className="text-[14px] text-[#5c5a58] leading-[1.7] mb-6">
+                  <p className="text-[14px] text-[#5c5a58] leading-[1.7] mb-8">
                     To ensure the highest quality of care, all treatments are by appointment only. Let us know when you&apos;d like to visit.
                   </p>
-                  
-                  {treatment.price && (
-                    <div className="flex items-baseline justify-between mb-6 pb-6 border-b border-[#dde7dd]/60">
-                      <span className="text-[11px] tracking-[0.14em] uppercase text-[#5c5a58] font-medium">Rate / Price</span>
-                      <span className="text-[17px] font-semibold text-[#1e5f2e]">{treatment.price}</span>
-                    </div>
-                  )}
 
                   <a
                     href={generateWhatsAppLink({ 

@@ -27,15 +27,7 @@ export const ALL_TREATMENTS_QUERY = groq`
     name,
     "slug": slug.current,
     category,
-    price,
-    duration,
     featured,
-    "description": coalesce(
-      description,
-      shortDescription,
-      description[0].children[0].text,
-      ""
-    ),
     "imageUrl": coalesce(
       image.asset->url,
       images[0].asset->url,

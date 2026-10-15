@@ -95,18 +95,13 @@ export async function FeaturedTreatmentsSection() {
                     >
                       {t.name}
                     </h3>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {t.duration && (
-                        <span className="text-[10px] tracking-[0.14em] text-[#1e5f2e] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
-                          {typeof t.duration === 'number' ? `${t.duration} mins` : t.duration}
-                        </span>
-                      )}
-                      {t.price && (
+                    {t.price && (
+                      <div className="shrink-0">
                         <span className="text-[11px] font-semibold text-[#1e5f2e] bg-[#faf8f2] border border-[#dde7dd] px-2.5 py-0.5">
                           {t.price}
                         </span>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow line-clamp-3">

@@ -10,10 +10,8 @@ type Treatment = {
   name: string
   slug: string
   category?: string
-  price?: string
   imageUrl?: string
   description?: string
-  duration?: number
 }
 
 const CATEGORY_MAP: Record<string, string> = {
@@ -243,21 +241,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                       </h4>
                     </Link>
                     
-                    {/* Duration & Price badges */}
-                    {(treatment.duration || treatment.price) && (
-                      <div className="flex items-center flex-wrap gap-2.5 mb-6">
-                        {treatment.duration && (
-                          <span className="text-[11px] tracking-[0.14em] uppercase text-[#5c5a58] font-medium bg-[#faf8f2] px-3.5 py-1.5 border border-[#dde7dd]">
-                            {treatment.duration} Minutes
-                          </span>
-                        )}
-                        {treatment.price && (
-                          <span className="text-[11px] tracking-[0.12em] font-semibold text-[#1e5f2e] bg-[#e9f3e9] px-3.5 py-1.5 border border-[#1e5f2e]/20">
-                            {treatment.price}
-                          </span>
-                        )}
-                      </div>
-                    )}
+
                     
                     <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8] mb-8 max-w-md">
                       {treatment.description || 'An intentional Ayurvedic ritual designed to honour your natural beauty and restore radiant wellbeing.'}
