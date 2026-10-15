@@ -61,51 +61,71 @@ export async function FeaturedTreatmentsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {treatments.map((t: any, index: number) => (
-            <FadeIn key={t._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-              <article className="group flex flex-col h-full bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
-                
-                <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] relative">
-                  <Image
-                    src={t.imageUrl || '/images/ayurvedic_abhyanga.jpg'}
-                    alt={t.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
+          {treatments.map((t: any, index: number) => {
+            const fallbackImage = (t.name || '').toLowerCase().includes('shirodhara')
+              ? '/images/ayurvedic_shirodhara.jpg'
+              : (t.name || '').toLowerCase().includes('hair')
+              ? '/images/ayurvedic_hair_elixir.jpg'
+              : (t.name || '').toLowerCase().includes('facial')
+              ? '/images/face_mask.jpg'
+              : index % 2 === 0
+              ? '/images/ayurvedic_abhyanga.jpg'
+              : '/images/ayurvedic_shirodhara.jpg'
+            const imgSrc = t.imageUrl || fallbackImage
 
-                <div className="flex items-center justify-between gap-4 mb-3">
-                  <h3
-                    className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] leading-snug"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {t.name}
-                  </h3>
-                  {t.duration && (
-                    <span className="shrink-0 text-[10px] tracking-[0.14em] text-[#1e5f2e] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
-                      {t.duration}
-                    </span>
-                  )}
-                </div>
+            return (
+              <FadeIn key={t._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+                <article className="group flex flex-col h-full bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
+                  
+                  <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] relative">
+                    <Image
+                      src={imgSrc}
+                      alt={t.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  </div>
 
-                <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow line-clamp-3">
-                  {t.shortDescription || t.description || ''}
-                </p>
+                  <div className="flex items-center justify-between gap-4 mb-3">
+                    <h3
+                      className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] leading-snug"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      {t.name}
+                    </h3>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {t.duration && (
+                        <span className="text-[10px] tracking-[0.14em] text-[#1e5f2e] font-semibold uppercase bg-[#e9f3e9] px-3 py-1">
+                          {typeof t.duration === 'number' ? `${t.duration} mins` : t.duration}
+                        </span>
+                      )}
+                      {t.price && (
+                        <span className="text-[11px] font-semibold text-[#1e5f2e] bg-[#faf8f2] border border-[#dde7dd] px-2.5 py-0.5">
+                          {t.price}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-                <div className="pt-2 border-t border-[#dde7dd]/60">
-                  <Link
-                    href={`/treatments/${t.slug?.current || t.slug}`}
-                    className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                    aria-label={`Enquire or book treatment: ${t.name}`}
-                  >
-                    Enquire / Book &rarr;
-                  </Link>
-                </div>
-              </article>
-            </FadeIn>
-          ))}
+                  <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow line-clamp-3">
+                    {t.shortDescription || t.description || ''}
+                  </p>
+
+                  <div className="pt-2 border-t border-[#dde7dd]/60">
+                    <Link
+                      href={`/treatments/${t.slug?.current || t.slug}`}
+                      className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                      aria-label={`Enquire or book treatment: ${t.name}`}
+                    >
+                      Enquire / Book &rarr;
+                    </Link>
+                  </div>
+                </article>
+              </FadeIn>
+            )
+          })}
         </div>
 
       </div>

@@ -45,17 +45,47 @@ const fallbackTreatments = [
   }
 ]
 
-// We use a basic groq query for the detail page
+// We use a comprehensive groq query for the detail page
 const TREATMENT_BY_SLUG_QUERY = groq`
   *[_type == "treatment" && slug.current == $slug][0] {
     _id,
     name,
     "slug": slug.current,
-    "imageUrl": images[0].asset->url,
-    "description": description[0].children[0].text,
-    duration
+    category,
+    price,
+    duration,
+    featured,
+    "description": coalesce(
+      description,
+      shortDescription,
+      description[0].children[0].text,
+      ""
+    ),
+    "imageUrl": coalesce(
+      image.asset->url,
+      images[0].asset->url,
+      null
+    )
   }
 `
+
+function resolveTreatmentImage(t: { imageUrl?: string; category?: string; name?: string }): string {
+  if (t.imageUrl) return t.imageUrl
+  const lowerName = (t.name || '').toLowerCase()
+  if (lowerName.includes('shirodhara')) return '/images/ayurvedic_shirodhara.jpg'
+  if (lowerName.includes('hair') || lowerName.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
+  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow')) return '/images/face_mask.jpg'
+  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body')) return '/images/ayurvedic_abhyanga.jpg'
+  if (lowerName.includes('bridal') || lowerName.includes('makeup')) return '/images/ayurvedic_editorial_bg.jpg'
+  
+  if (t.category === 'hair-care') return '/images/ayurvedic_hair_elixir.jpg'
+  if (t.category === 'ayurvedic-spa') return '/images/ayurvedic_shirodhara.jpg'
+  if (t.category === 'facials-skin') return '/images/face_mask.jpg'
+  if (t.category === 'bridal-styling') return '/images/ayurvedic_editorial_bg.jpg'
+  if (t.category === 'grooming') return '/images/ayurvedic_abhyanga.jpg'
+
+  return '/images/ayurvedic_abhyanga.jpg'
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -75,7 +105,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (treatment) {
     const title = `${treatment.name} | Ayurvedic Treatment`
     const description = treatment.description || 'Authentic Ayurvedic therapy at Angel Touch.'
-    const image = treatment.imageUrl || '/images/og-default.jpg'
+    const image = resolveTreatmentImage(treatment)
 
     return {
       title,
@@ -85,13 +115,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: `${treatment.name} | Angel Touch`,
         description,
         url: `https://angeltouch.in/treatments/${slug}`,
-        images: [{ url: image, alt: treatment.name }],
+        images: [{ url: image.startsWith('http') ? image : `https://angeltouch.in${image}`, alt: treatment.name }],
       },
       twitter: {
         card: 'summary_large_image',
         title: `${treatment.name} | Angel Touch`,
         description,
-        images: [image],
+        images: [image.startsWith('http') ? image : `https://angeltouch.in${image}`],
       },
     }
   }
@@ -122,6 +152,8 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
     }
   }
 
+  const displayImage = resolveTreatmentImage(treatment)
+
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -146,7 +178,7 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
       '@type': 'City',
       name: 'Ahmedabad',
     },
-    image: treatment.imageUrl?.startsWith('http') ? treatment.imageUrl : `https://angeltouch.in${treatment.imageUrl}`,
+    image: displayImage.startsWith('http') ? displayImage : `https://angeltouch.in${displayImage}`,
   }
 
   return (
@@ -161,18 +193,14 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
         <header className="relative w-full min-h-[50vh] sm:min-h-[60vh] md:min-h-[75vh] flex flex-col justify-end">
           
           <div className="absolute inset-0 z-0">
-            {treatment.imageUrl ? (
-              <Image
-                src={treatment.imageUrl}
-                alt={treatment.name}
-                fill
-                sizes="100vw"
-                className="object-cover object-[center_30%] sm:object-center"
-                priority
-              />
-            ) : (
-              <div className="w-full h-full bg-[#e9f3e9]" />
-            )}
+            <Image
+              src={displayImage}
+              alt={treatment.name}
+              fill
+              sizes="100vw"
+              className="object-cover object-[center_30%] sm:object-center"
+              priority
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f2] via-[#faf8f2]/60 to-[#faf8f2]/10 sm:via-[#faf8f2]/40" />
           </div>
 
@@ -201,16 +229,25 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                   </h1>
                 </div>
 
-                {treatment.duration && (
-                  <div className="shrink-0 flex items-center gap-3 bg-white px-5 py-3 border border-[#dde7dd]/60 shadow-sm">
-                    <svg className="w-4 h-4 text-[#5c8f60]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#1e2228]">
-                      {treatment.duration} Minutes
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center flex-wrap gap-3">
+                  {treatment.duration && (
+                    <div className="shrink-0 flex items-center gap-3 bg-white px-5 py-3 border border-[#dde7dd]/60 shadow-sm">
+                      <svg className="w-4 h-4 text-[#5c8f60]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#1e2228]">
+                        {treatment.duration} Minutes
+                      </span>
+                    </div>
+                  )}
+                  {treatment.price && (
+                    <div className="shrink-0 flex items-center gap-2 bg-[#e9f3e9] px-5 py-3 border border-[#1e5f2e]/20 shadow-sm">
+                      <span className="text-[12px] font-semibold tracking-[0.1em] text-[#1e5f2e]">
+                        {treatment.price}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </FadeIn>
           </div>
@@ -248,15 +285,22 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                   >
                     Reserve your time
                   </h3>
-                  <p className="text-[14px] text-[#5c5a58] leading-[1.7] mb-8">
+                  <p className="text-[14px] text-[#5c5a58] leading-[1.7] mb-6">
                     To ensure the highest quality of care, all treatments are by appointment only. Let us know when you&apos;d like to visit.
                   </p>
                   
+                  {treatment.price && (
+                    <div className="flex items-baseline justify-between mb-6 pb-6 border-b border-[#dde7dd]/60">
+                      <span className="text-[11px] tracking-[0.14em] uppercase text-[#5c5a58] font-medium">Rate / Price</span>
+                      <span className="text-[17px] font-semibold text-[#1e5f2e]">{treatment.price}</span>
+                    </div>
+                  )}
+
                   <a
                     href={generateWhatsAppLink({ 
                       type: 'TREATMENT', 
                       itemName: treatment.name,
-                      itemUrl: `https://angeltouch.com/treatments/${slug}`
+                      itemUrl: `https://angeltouch.in/treatments/${slug}`
                     })}
                     target="_blank"
                     rel="noopener noreferrer"

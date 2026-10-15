@@ -26,9 +26,21 @@ export const ALL_TREATMENTS_QUERY = groq`
     _id,
     name,
     "slug": slug.current,
-    "imageUrl": images[0].asset->url,
-    "description": description[0].children[0].text,
-    duration
+    category,
+    price,
+    duration,
+    featured,
+    "description": coalesce(
+      description,
+      shortDescription,
+      description[0].children[0].text,
+      ""
+    ),
+    "imageUrl": coalesce(
+      image.asset->url,
+      images[0].asset->url,
+      null
+    )
   } | order(name asc)
 `
 
