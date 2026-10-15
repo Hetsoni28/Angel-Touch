@@ -17,11 +17,31 @@ type Treatment = {
 }
 
 const CATEGORY_MAP: Record<string, string> = {
-  'ayurvedic-spa': 'Ayurvedic & Spa',
-  'facials-skin': 'Facials & Skin',
-  'hair-care': 'Hair Rituals',
-  'bridal-styling': 'Bridal Styling',
-  'grooming': 'Essential Grooming',
+  'threading': 'Threading',
+  'bleach-dtan': 'Bleach / D-Tan',
+  'clean-up': 'Clean Up',
+  'waxing': 'Waxing',
+  'facial': 'Facial',
+  'skin': 'Skin Care',
+  'shirodhara': 'Shirodhara',
+  'hair-cut': 'Hair Cut',
+  'scalp-analysis-hair-regrowth': 'Scalp & Hair Regrowth',
+  'hair-treatments': 'Hair Treatments',
+  'technical-style-services': 'Technical & Styling',
+  'special-hair-care': 'Special Hair Care',
+  'hair-care-style': 'Hair Care & Style',
+  'hair-spa': 'Hair Spa',
+  'body-scrub': 'Body Scrub',
+  'body-wrap': 'Body Wrap',
+  'steam-bath': 'Steam Bath',
+  'hand-feet-care': 'Hand & Feet Care',
+  'body-care-spa': 'Body Care & Spa',
+  'body-spa': 'Body Spa',
+  'family-makeup': 'Family Makeup',
+  'occasion-makeup': 'Occasion Makeup',
+  'bridal-makeup': 'Bridal Makeup',
+  'bridal-packages': 'Bridal Packages',
+  'nail-art': 'Nail Art',
 }
 
 const FALLBACK_IMAGES = [
@@ -39,16 +59,18 @@ function resolveTreatmentImage(t: Treatment, index: number): string {
   const lowerName = (t.name || '').toLowerCase()
   if (lowerName.includes('shirodhara')) return '/images/ayurvedic_shirodhara.jpg'
   if (lowerName.includes('hair') || lowerName.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
-  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow') || lowerName.includes('face') || lowerName.includes('fruit')) return '/images/face_mask.jpg'
-  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body')) return '/images/ayurvedic_abhyanga.jpg'
-  if (lowerName.includes('bridal') || lowerName.includes('makeup')) return '/images/ayurvedic_editorial_bg.jpg'
-  if (lowerName.includes('oil') || lowerName.includes('kesar')) return '/images/kesar_radiance_oil.jpg'
+  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow') || lowerName.includes('clean') || lowerName.includes('bleach') || lowerName.includes('tan')) return '/images/face_mask.jpg'
+  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body') || lowerName.includes('scrub') || lowerName.includes('wrap') || lowerName.includes('steam')) return '/images/ayurvedic_abhyanga.jpg'
+  if (lowerName.includes('bridal') || lowerName.includes('makeup') || lowerName.includes('ceremony')) return '/images/ayurvedic_editorial_bg.jpg'
+  if (lowerName.includes('nail') || lowerName.includes('hand') || lowerName.includes('feet') || lowerName.includes('waxing') || lowerName.includes('threading')) return '/images/kesar_radiance_oil.jpg'
 
-  if (t.category === 'hair-care') return '/images/ayurvedic_hair_elixir.jpg'
-  if (t.category === 'ayurvedic-spa') return '/images/ayurvedic_shirodhara.jpg'
-  if (t.category === 'facials-skin') return '/images/face_mask.jpg'
-  if (t.category === 'bridal-styling') return '/images/ayurvedic_editorial_bg.jpg'
-  if (t.category === 'grooming') return '/images/ayurvedic_abhyanga.jpg'
+  const cat = t.category || ''
+  if (cat.includes('hair') || cat.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
+  if (cat === 'shirodhara') return '/images/ayurvedic_shirodhara.jpg'
+  if (cat === 'facial' || cat === 'skin' || cat === 'clean-up' || cat === 'bleach-dtan') return '/images/face_mask.jpg'
+  if (cat.includes('body') || cat === 'steam-bath') return '/images/ayurvedic_abhyanga.jpg'
+  if (cat.includes('makeup') || cat.includes('bridal')) return '/images/ayurvedic_editorial_bg.jpg'
+  if (cat === 'nail-art' || cat === 'hand-feet-care' || cat === 'waxing' || cat === 'threading') return '/images/kesar_radiance_oil.jpg'
 
   return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
 }
@@ -237,11 +259,9 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                       </div>
                     )}
                     
-                    {treatment.description && (
-                      <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8] mb-8 max-w-md">
-                        {treatment.description}
-                      </p>
-                    )}
+                    <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8] mb-8 max-w-md">
+                      {treatment.description || 'An intentional Ayurvedic ritual designed to honour your natural beauty and restore radiant wellbeing.'}
+                    </p>
 
                     <div className="flex items-center gap-6">
                       <Link

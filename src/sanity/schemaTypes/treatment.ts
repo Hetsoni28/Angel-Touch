@@ -25,37 +25,38 @@ export const treatment = defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category',
+      title: 'Menu Category',
       type: 'string',
       options: {
         list: [
-          { title: 'Ayurvedic & Spa Therapies', value: 'ayurvedic-spa' },
-          { title: 'Facials & Skin Rituals', value: 'facials-skin' },
-          { title: 'Hair Rituals & Spa', value: 'hair-care' },
-          { title: 'Bridal & Occasion Styling', value: 'bridal-styling' },
-          { title: 'Essential Grooming', value: 'grooming' },
+          { title: '1. Threading', value: 'threading' },
+          { title: '2. Bleach / D-Tan', value: 'bleach-dtan' },
+          { title: '3. Clean Up', value: 'clean-up' },
+          { title: '4. Waxing', value: 'waxing' },
+          { title: '5. Facial', value: 'facial' },
+          { title: '6. Skin', value: 'skin' },
+          { title: '7. Shirodhara', value: 'shirodhara' },
+          { title: '8. Hair Cut', value: 'hair-cut' },
+          { title: '9. Scalp Analysis & Hair Regrowth', value: 'scalp-analysis-hair-regrowth' },
+          { title: '10. Hair Treatments', value: 'hair-treatments' },
+          { title: '11. Technical & Style Services', value: 'technical-style-services' },
+          { title: '12. Special Hair Care', value: 'special-hair-care' },
+          { title: '13. Hair Care & Style', value: 'hair-care-style' },
+          { title: '14. Hair Spa', value: 'hair-spa' },
+          { title: '15. Body Scrub', value: 'body-scrub' },
+          { title: '16. Body Wrap', value: 'body-wrap' },
+          { title: '17. Steam Bath', value: 'steam-bath' },
+          { title: '18. Hand & Feet Care', value: 'hand-feet-care' },
+          { title: '19. Body Care & Spa', value: 'body-care-spa' },
+          { title: '20. Body Spa', value: 'body-spa' },
+          { title: '21. All Family Makeup Services', value: 'family-makeup' },
+          { title: '22. Engagement / Ring Ceremony / Baby Shower Makeup Services', value: 'occasion-makeup' },
+          { title: '23. Bridal Makeup Services', value: 'bridal-makeup' },
+          { title: '24. Bridal Packages', value: 'bridal-packages' },
+          { title: '25. Nail Art Services', value: 'nail-art' },
         ],
       },
-      initialValue: 'facials-skin',
-    }),
-    defineField({
-      name: 'duration',
-      title: 'Duration (minutes)',
-      type: 'number',
-      description: 'e.g., 45, 60, or 90',
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price / Rate (Optional)',
-      type: 'string',
-      description: 'e.g., ₹1,500 or Starting from ₹999',
-    }),
-    defineField({
-      name: 'description',
-      title: 'Short Description',
-      type: 'text',
-      rows: 3,
-      description: 'Brief 1-2 sentence description of the treatment benefits.',
+      initialValue: 'facial',
     }),
     defineField({
       name: 'featured',
@@ -69,19 +70,11 @@ export const treatment = defineType({
     select: {
       title: 'name',
       category: 'category',
-      duration: 'duration',
-      price: 'price',
     },
-    prepare({ title, category, duration, price }) {
-      const details = [
-        category ? category.replace('-', ' ') : null,
-        duration ? `${duration} mins` : null,
-        price || null,
-      ].filter(Boolean).join(' • ')
-
+    prepare({ title, category }) {
       return {
         title: title || 'Untitled Treatment',
-        subtitle: details || 'Service',
+        subtitle: category ? category.replace('-', ' ') : 'Service',
       }
     },
   },

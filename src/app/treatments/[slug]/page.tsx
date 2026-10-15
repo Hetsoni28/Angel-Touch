@@ -74,15 +74,18 @@ function resolveTreatmentImage(t: { imageUrl?: string; category?: string; name?:
   const lowerName = (t.name || '').toLowerCase()
   if (lowerName.includes('shirodhara')) return '/images/ayurvedic_shirodhara.jpg'
   if (lowerName.includes('hair') || lowerName.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
-  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow')) return '/images/face_mask.jpg'
-  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body')) return '/images/ayurvedic_abhyanga.jpg'
-  if (lowerName.includes('bridal') || lowerName.includes('makeup')) return '/images/ayurvedic_editorial_bg.jpg'
+  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow') || lowerName.includes('clean') || lowerName.includes('bleach') || lowerName.includes('tan')) return '/images/face_mask.jpg'
+  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body') || lowerName.includes('scrub') || lowerName.includes('wrap') || lowerName.includes('steam')) return '/images/ayurvedic_abhyanga.jpg'
+  if (lowerName.includes('bridal') || lowerName.includes('makeup') || lowerName.includes('ceremony')) return '/images/ayurvedic_editorial_bg.jpg'
+  if (lowerName.includes('nail') || lowerName.includes('hand') || lowerName.includes('feet') || lowerName.includes('waxing') || lowerName.includes('threading')) return '/images/kesar_radiance_oil.jpg'
   
-  if (t.category === 'hair-care') return '/images/ayurvedic_hair_elixir.jpg'
-  if (t.category === 'ayurvedic-spa') return '/images/ayurvedic_shirodhara.jpg'
-  if (t.category === 'facials-skin') return '/images/face_mask.jpg'
-  if (t.category === 'bridal-styling') return '/images/ayurvedic_editorial_bg.jpg'
-  if (t.category === 'grooming') return '/images/ayurvedic_abhyanga.jpg'
+  const cat = t.category || ''
+  if (cat.includes('hair') || cat.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
+  if (cat === 'shirodhara') return '/images/ayurvedic_shirodhara.jpg'
+  if (cat === 'facial' || cat === 'skin' || cat === 'clean-up' || cat === 'bleach-dtan') return '/images/face_mask.jpg'
+  if (cat.includes('body') || cat === 'steam-bath') return '/images/ayurvedic_abhyanga.jpg'
+  if (cat.includes('makeup') || cat.includes('bridal')) return '/images/ayurvedic_editorial_bg.jpg'
+  if (cat === 'nail-art' || cat === 'hand-feet-care' || cat === 'waxing' || cat === 'threading') return '/images/kesar_radiance_oil.jpg'
 
   return '/images/ayurvedic_abhyanga.jpg'
 }
@@ -269,7 +272,7 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                 </h2>
                 <div className="prose prose-lg prose-p:text-[#5c5a58] prose-p:leading-[1.8] prose-p:mb-6 max-w-none">
                   <p className="text-[16px] md:text-[18px]">
-                    {treatment.description}
+                    {treatment.description || 'An intentional ritual designed to honour your natural beauty, combining advanced aesthetic techniques with time-tested Ayurvedic wisdom at our private women-only sanctuary in Satellite, Ahmedabad.'}
                   </p>
                 </div>
               </FadeIn>
