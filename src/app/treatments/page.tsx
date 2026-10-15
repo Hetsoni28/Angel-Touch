@@ -31,60 +31,30 @@ export const metadata: Metadata = {
 }
 
 
-const fallbackTreatments = [
-  {
-    _id: 't1',
-    name: 'Advanced Aroma Facial',
-    slug: 'advanced-aroma-facial',
-    category: 'facial',
-    imageUrl: '/images/face_mask.jpg',
-    description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
-  },
-  {
-    _id: 't2',
-    name: 'Shirodhara Therapy',
-    slug: 'shirodhara',
-    category: 'shirodhara',
-    imageUrl: '/images/ayurvedic_shirodhara.jpg',
-    description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
-  },
-  {
-    _id: 't3',
-    name: 'Botanical Hair Spa',
-    slug: 'botanical-hair-spa',
-    category: 'hair-spa',
-    imageUrl: '/images/ayurvedic_hair_elixir.jpg',
-    description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
-  },
-  {
-    _id: 't4',
-    name: 'Bridal Styling',
-    slug: 'bridal-styling',
-    category: 'bridal-makeup',
-    imageUrl: '/images/ayurvedic_editorial_bg.jpg',
-    description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
-  }
-]
+import { OFFICIAL_MENU_TREATMENTS } from '@/data/treatmentsData'
 
 export const instant = false
 
 export default async function TreatmentsPage() {
-  let sanityTreatments = []
+  let treatments = OFFICIAL_MENU_TREATMENTS
+
   try {
     const data = await client.fetch(ALL_TREATMENTS_QUERY)
     if (data && data.length > 0) {
-      sanityTreatments = data
-    } else {
-      sanityTreatments = fallbackTreatments
+      const sanitySlugs = new Set(data.map((d: any) => d.slug))
+      treatments = [
+        ...data,
+        ...OFFICIAL_MENU_TREATMENTS.filter((t) => !sanitySlugs.has(t.slug))
+      ]
     }
   } catch {
-    sanityTreatments = fallbackTreatments
+    treatments = OFFICIAL_MENU_TREATMENTS
   }
 
   return (
     <>
       <TreatmentsHero />
-      <TreatmentsCatalogue treatments={sanityTreatments} />
+      <TreatmentsCatalogue treatments={treatments} />
       <WhyAngelTouch />
       <InquiryCTA />
     </>

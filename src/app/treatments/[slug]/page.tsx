@@ -1,6 +1,5 @@
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
-import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
@@ -10,40 +9,7 @@ import type { Metadata } from 'next'
 
 export const instant = false
 
-const fallbackTreatments = [
-  {
-    _id: 't1',
-    name: 'Advanced Aroma Facial',
-    slug: 'advanced-aroma-facial',
-    category: 'facial',
-    imageUrl: '/images/face_mask.jpg',
-    description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
-  },
-  {
-    _id: 't2',
-    name: 'Shirodhara Therapy',
-    slug: 'shirodhara',
-    category: 'shirodhara',
-    imageUrl: '/images/ayurvedic_shirodhara.jpg',
-    description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
-  },
-  {
-    _id: 't3',
-    name: 'Botanical Hair Spa',
-    slug: 'botanical-hair-spa',
-    category: 'hair-spa',
-    imageUrl: '/images/ayurvedic_hair_elixir.jpg',
-    description: 'Intensive nourishment for the scalp and hair using natural Ayurvedic ingredients to restore strength and shine.',
-  },
-  {
-    _id: 't4',
-    name: 'Bridal Styling',
-    slug: 'bridal-styling',
-    category: 'bridal-makeup',
-    imageUrl: '/images/ayurvedic_editorial_bg.jpg',
-    description: 'Flawless, elegant bridal makeup and hair styling for your special day, available in-salon or on location.',
-  }
-]
+import { OFFICIAL_MENU_TREATMENTS, CATEGORY_MAP } from '@/data/treatmentsData'
 
 // We use a comprehensive groq query for the detail page
 const TREATMENT_BY_SLUG_QUERY = groq`
@@ -94,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   if (!treatment) {
-    treatment = fallbackTreatments.find(t => t.slug === slug)
+    treatment = OFFICIAL_MENU_TREATMENTS.find(t => t.slug === slug)
   }
 
   if (treatment) {
@@ -140,14 +106,16 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
 
   // Fallback for static demo if Sanity doesn't return anything
   if (!treatment) {
-    treatment = fallbackTreatments.find(t => t.slug === slug)
+    treatment = OFFICIAL_MENU_TREATMENTS.find(t => t.slug === slug)
     
     if (!treatment) {
       notFound()
     }
   }
 
-  const displayImage = resolveTreatmentImage(treatment)
+  const categoryLabel = treatment.category 
+    ? (CATEGORY_MAP[treatment.category] || treatment.category) 
+    : 'Angel Touch Service'
 
   const serviceSchema = {
     '@context': 'https://schema.org',
@@ -173,7 +141,6 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
       '@type': 'City',
       name: 'Ahmedabad',
     },
-    image: displayImage.startsWith('http') ? displayImage : `https://angeltouch.in${displayImage}`,
   }
 
   return (
@@ -184,24 +151,11 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
       />
       <article className="min-h-screen bg-[#faf8f2]">
         
-        {/* Editorial Hero */}
-        <header className="relative w-full min-h-[50vh] sm:min-h-[60vh] md:min-h-[75vh] flex flex-col justify-end">
-          
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={displayImage}
-              alt={treatment.name}
-              fill
-              sizes="100vw"
-              className="object-cover object-[center_30%] sm:object-center"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f2] via-[#faf8f2]/60 to-[#faf8f2]/10 sm:via-[#faf8f2]/40" />
-          </div>
-
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pb-12 sm:pb-16 md:pb-24">
+        {/* Luxury Typographic Header (No Image) */}
+        <header className="pt-28 md:pt-36 pb-12 md:pb-16 bg-white border-b border-[#dde7dd]/70">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
             <FadeIn>
-              <div className="mb-6 md:mb-10">
+              <div className="mb-6 md:mb-8">
                 <DynamicBreadcrumbs 
                   items={[
                     { label: 'Home', href: '/' },
@@ -211,23 +165,27 @@ export default async function TreatmentDetailPage({ params }: { params: Promise<
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-16">
-                <div className="max-w-2xl">
-                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-4 sm:mb-5">
-                    Signature Treatment
-                  </p>
-                  <h1
-                    className="text-[2.1rem] sm:text-[3rem] md:text-[3.8rem] lg:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08]"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {treatment.name}
-                  </h1>
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                  <span className="w-8 h-px bg-[#1e5f2e]" aria-hidden="true" />
+                  <span className="text-[11px] font-semibold tracking-[0.22em] text-[#1e5f2e] uppercase">
+                    {categoryLabel}
+                  </span>
                 </div>
+                
+                <h1
+                  className="text-[2.2rem] sm:text-[3rem] md:text-[3.8rem] lg:text-[4.2rem] font-medium text-[#1e2228] leading-[1.1] mb-5"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {treatment.name}
+                </h1>
 
+                <p className="text-[15px] md:text-[17px] text-[#5c5a58] leading-[1.8] max-w-2xl">
+                  Handcrafted with authentic Ayurvedic principles and personal care at our private women-only sanctuary in Satellite, Ahmedabad.
+                </p>
               </div>
             </FadeIn>
           </div>
-
         </header>
 
         {/* Details Content */}

@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Link from 'next/link'
-import Image from 'next/image'
+import { CATEGORY_MAP, OFFICIAL_CATEGORIES } from '@/data/treatmentsData'
 
 type Treatment = {
   _id: string
@@ -12,101 +12,28 @@ type Treatment = {
   category?: string
   imageUrl?: string
   description?: string
+  featured?: boolean
 }
-
-const CATEGORY_MAP: Record<string, string> = {
-  'threading': 'Threading',
-  'bleach-dtan': 'Bleach / D-Tan',
-  'clean-up': 'Clean Up',
-  'waxing': 'Waxing',
-  'facial': 'Facial',
-  'skin': 'Skin Care',
-  'shirodhara': 'Shirodhara',
-  'hair-cut': 'Hair Cut',
-  'scalp-analysis-hair-regrowth': 'Scalp & Hair Regrowth',
-  'hair-treatments': 'Hair Treatments',
-  'technical-style-services': 'Technical & Styling',
-  'special-hair-care': 'Special Hair Care',
-  'hair-care-style': 'Hair Care & Style',
-  'hair-spa': 'Hair Spa',
-  'body-scrub': 'Body Scrub',
-  'body-wrap': 'Body Wrap',
-  'steam-bath': 'Steam Bath',
-  'hand-feet-care': 'Hand & Feet Care',
-  'body-care-spa': 'Body Care & Spa',
-  'body-spa': 'Body Spa',
-  'family-makeup': 'Family Makeup',
-  'occasion-makeup': 'Occasion Makeup',
-  'bridal-makeup': 'Bridal Makeup',
-  'bridal-packages': 'Bridal Packages',
-  'nail-art': 'Nail Art',
-}
-
-const FALLBACK_IMAGES = [
-  '/images/face_mask.jpg',
-  '/images/ayurvedic_shirodhara.jpg',
-  '/images/ayurvedic_hair_elixir.jpg',
-  '/images/ayurvedic_abhyanga.jpg',
-  '/images/kesar_radiance_oil.jpg',
-  '/images/ayurvedic_editorial_bg.jpg',
-]
-
-function resolveTreatmentImage(t: Treatment, index: number): string {
-  if (t.imageUrl) return t.imageUrl
-
-  const lowerName = (t.name || '').toLowerCase()
-  if (lowerName.includes('shirodhara')) return '/images/ayurvedic_shirodhara.jpg'
-  if (lowerName.includes('hair') || lowerName.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
-  if (lowerName.includes('facial') || lowerName.includes('skin') || lowerName.includes('glow') || lowerName.includes('clean') || lowerName.includes('bleach') || lowerName.includes('tan')) return '/images/face_mask.jpg'
-  if (lowerName.includes('abhyanga') || lowerName.includes('massage') || lowerName.includes('body') || lowerName.includes('scrub') || lowerName.includes('wrap') || lowerName.includes('steam')) return '/images/ayurvedic_abhyanga.jpg'
-  if (lowerName.includes('bridal') || lowerName.includes('makeup') || lowerName.includes('ceremony')) return '/images/ayurvedic_editorial_bg.jpg'
-  if (lowerName.includes('nail') || lowerName.includes('hand') || lowerName.includes('feet') || lowerName.includes('waxing') || lowerName.includes('threading')) return '/images/kesar_radiance_oil.jpg'
-
-  const cat = t.category || ''
-  if (cat.includes('hair') || cat.includes('scalp')) return '/images/ayurvedic_hair_elixir.jpg'
-  if (cat === 'shirodhara') return '/images/ayurvedic_shirodhara.jpg'
-  if (cat === 'facial' || cat === 'skin' || cat === 'clean-up' || cat === 'bleach-dtan') return '/images/face_mask.jpg'
-  if (cat.includes('body') || cat === 'steam-bath') return '/images/ayurvedic_abhyanga.jpg'
-  if (cat.includes('makeup') || cat.includes('bridal')) return '/images/ayurvedic_editorial_bg.jpg'
-  if (cat === 'nail-art' || cat === 'hand-feet-care' || cat === 'waxing' || cat === 'threading') return '/images/kesar_radiance_oil.jpg'
-
-  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
-}
-
-const OFFICIAL_CATEGORIES = [
-  { key: 'threading', label: '1. Threading' },
-  { key: 'bleach-dtan', label: '2. Bleach / D-Tan' },
-  { key: 'clean-up', label: '3. Clean Up' },
-  { key: 'waxing', label: '4. Waxing' },
-  { key: 'facial', label: '5. Facial' },
-  { key: 'skin', label: '6. Skin Care' },
-  { key: 'shirodhara', label: '7. Shirodhara' },
-  { key: 'hair-cut', label: '8. Hair Cut' },
-  { key: 'scalp-analysis-hair-regrowth', label: '9. Scalp Analysis & Hair Regrowth' },
-  { key: 'hair-treatments', label: '10. Hair Treatments' },
-  { key: 'technical-style-services', label: '11. Technical & Style Services' },
-  { key: 'special-hair-care', label: '12. Special Hair Care' },
-  { key: 'hair-care-style', label: '13. Hair Care & Style' },
-  { key: 'hair-spa', label: '14. Hair Spa' },
-  { key: 'body-scrub', label: '15. Body Scrub' },
-  { key: 'body-wrap', label: '16. Body Wrap' },
-  { key: 'steam-bath', label: '17. Steam Bath' },
-  { key: 'hand-feet-care', label: '18. Hand & Feet Care' },
-  { key: 'body-care-spa', label: '19. Body Care & Spa' },
-  { key: 'body-spa', label: '20. Body Spa' },
-  { key: 'family-makeup', label: '21. All Family Makeup Services' },
-  { key: 'occasion-makeup', label: '22. Engagement / Occasion Makeup' },
-  { key: 'bridal-makeup', label: '23. Bridal Makeup Services' },
-  { key: 'bridal-packages', label: '24. Bridal Packages' },
-  { key: 'nail-art', label: '25. Nail Art Services' },
-]
 
 export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
   const displayTreatments = treatments || []
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const catalogueTopRef = useRef<HTMLDivElement>(null)
 
+  // Listen to URL query parameter e.g. /treatments?category=facial
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const catParam = params.get('category')
+      if (catParam && (catParam === 'all' || OFFICIAL_CATEGORIES.some(c => c.key === catParam))) {
+        setSelectedCategory(catParam)
+      }
+    }
+  }, [])
+
+  // Close dropdown on click outside or escape key
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -124,98 +51,124 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
     }
   }, [])
 
-  const filteredTreatments = useMemo(() => {
-    if (selectedCategory === 'all') return displayTreatments
-    return displayTreatments.filter((t) => t.category === selectedCategory)
-  }, [displayTreatments, selectedCategory])
+  const handleSelectCategory = (catKey: string) => {
+    setSelectedCategory(catKey)
+    setIsOpen(false)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (catKey === 'all') {
+        url.searchParams.delete('category')
+      } else {
+        url.searchParams.set('category', catKey)
+      }
+      window.history.replaceState({}, '', url.toString())
+    }
+  }
 
+  // Active category readable label
   const selectedCategoryLabel = useMemo(() => {
     if (selectedCategory === 'all') return 'All Treatments'
     const found = OFFICIAL_CATEGORIES.find((c) => c.key === selectedCategory)
     return found ? found.label : (CATEGORY_MAP[selectedCategory] || selectedCategory)
   }, [selectedCategory])
 
+  // Grouped treatments for structured display
+  const categoryGroups = useMemo(() => {
+    if (selectedCategory !== 'all') {
+      const items = displayTreatments.filter((t) => t.category === selectedCategory)
+      const found = OFFICIAL_CATEGORIES.find((c) => c.key === selectedCategory)
+      const label = found ? found.label : (CATEGORY_MAP[selectedCategory] || selectedCategory)
+      return [{ key: selectedCategory, label, items }]
+    }
+
+    // When 'all', group every official category that has items
+    const groups: { key: string; label: string; items: Treatment[] }[] = []
+    for (const cat of OFFICIAL_CATEGORIES) {
+      const items = displayTreatments.filter((t) => t.category === cat.key)
+      if (items.length > 0) {
+        groups.push({ key: cat.key, label: cat.label, items })
+      }
+    }
+
+    // Any uncategorized items
+    const knownKeys = new Set(OFFICIAL_CATEGORIES.map(c => c.key))
+    const otherItems = displayTreatments.filter((t) => !t.category || !knownKeys.has(t.category))
+    if (otherItems.length > 0) {
+      groups.push({ key: 'other', label: 'Additional Rituals', items: otherItems })
+    }
+
+    return groups
+  }, [displayTreatments, selectedCategory])
+
+  const totalFilteredCount = useMemo(() => {
+    return categoryGroups.reduce((acc, g) => acc + g.items.length, 0)
+  }, [categoryGroups])
+
   if (displayTreatments.length === 0) {
     return (
-      <section id="catalogue" className="relative py-32 md:py-48 min-h-[50vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/treatments-services-bg.png"
-            alt="Spa Treatment Background"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 text-center drop-shadow-md">
-          <h2 
-            className="text-[2.2rem] md:text-[3rem] font-medium text-[#1e2228] mb-6 drop-shadow-md" 
-            style={{ fontFamily: 'var(--font-heading)', textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
-          >
-            Treatments & Services
-          </h2>
-          <p 
-            className="text-[16px] text-[#2c2a28] font-medium drop-shadow-sm max-w-md mx-auto" 
-            style={{ textShadow: '0 1px 3px rgba(255,255,255,0.9)' }}
-          >
-            No treatments are currently available in the catalogue. Please check back later.
+      <section id="catalogue" className="bg-white py-24 md:py-32 border-t border-[#dde7dd]/70">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
+          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#1e5f2e] mb-3">
+            Angel Touch Menu
           </p>
+          <h2 className="text-[2rem] font-medium text-[#1e2228] mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
+            Services by Appointment
+          </h2>
+          <p className="text-[15px] text-[#5c5a58] max-w-md mx-auto mb-8">
+            Please contact us directly on WhatsApp to inquire about services and book your private session.
+          </p>
+          <a
+            href="https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20inquire%20about%20your%20services"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#1e5f2e] hover:bg-[#164722] text-white text-[11px] font-semibold tracking-[0.16em] uppercase rounded-sm transition-colors"
+          >
+            Inquire via WhatsApp
+          </a>
         </div>
       </section>
     )
   }
 
   return (
-    <section id="catalogue" className="bg-white py-24 md:py-32">
+    <section id="catalogue" ref={catalogueTopRef} className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-        {/* Editorial Introduction */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20 md:mb-28">
-          <FadeIn>
-            <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5c8f60] uppercase mb-5">
-              The Angel Touch Approach
-            </p>
-            <h2
-              className="text-[2rem] md:text-[2.8rem] font-medium text-[#1e2228] leading-[1.15] mb-6"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Beauty begins with thoughtful care.
-            </h2>
-            <div className="w-px h-12 bg-[#dde7dd] mx-auto mt-8 mb-8" />
-            <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8]">
-              Every treatment is an intentional ritual designed to honour your natural beauty. Delivered in our private women-only rooms in Satellite, Ahmedabad, we combine advanced aesthetic techniques with time-tested Ayurvedic wisdom.
-            </p>
-          </FadeIn>
-        </div>
+        {/* Section Heading & Category Selector */}
+        <div className="mb-12 md:mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pb-8 border-b border-[#dde7dd]/80">
+            <div>
+              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-3">
+                Official Salon Menu
+              </p>
+              <h2
+                className="text-[2rem] sm:text-[2.6rem] md:text-[3rem] font-medium text-[#1e2228] leading-[1.15]"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Treatments & Services
+              </h2>
+              <p className="mt-2 text-[14px] sm:text-[15px] text-[#5c5a58]">
+                {selectedCategory === 'all' 
+                  ? `Browse our comprehensive menu of ${displayTreatments.length} services across 25 categories.`
+                  : `Showing all services under ${selectedCategoryLabel} (${totalFilteredCount} total).`
+                }
+              </p>
+            </div>
 
-        {/* Grid Header & Proper Category Dropdown */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16 pb-8 border-b border-[#dde7dd]/70">
-          <FadeIn>
-            <h3
-              className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Explore our treatments.
-            </h3>
-            <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-              Find an experience tailored to your needs.
-            </p>
-          </FadeIn>
-
-          {/* Proper Category Dropdown List */}
-          <div className="relative shrink-0 w-full md:w-auto" ref={dropdownRef}>
-            <label htmlFor="treatment-category-filter" className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-2">
-              Filter by Menu Category
-            </label>
-            <div className="relative">
+            {/* Dropdown Menu Filter */}
+            <div className="relative shrink-0 w-full sm:w-auto" ref={dropdownRef}>
+              <label htmlFor="treatment-category-dropdown" className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mb-2">
+                Filter by Category
+              </label>
               <button
-                id="treatment-category-filter"
+                id="treatment-category-dropdown"
                 type="button"
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
-                className="w-full md:min-w-[300px] flex items-center justify-between gap-4 px-4 py-3 bg-[#faf8f2] hover:bg-white border border-[#dde7dd] hover:border-[#1e5f2e] focus:outline-none focus:ring-2 focus:ring-[#1e5f2e]/30 transition-all text-left shadow-sm"
+                className="w-full sm:min-w-[320px] flex items-center justify-between gap-4 px-4 py-3 bg-white hover:bg-[#f6fbf6] border border-[#dde7dd] hover:border-[#1e5f2e] focus:outline-none focus:ring-2 focus:ring-[#1e5f2e]/30 transition-all text-left shadow-sm rounded-sm"
               >
-                <span className="text-[12px] font-semibold tracking-[0.08em] uppercase text-[#1e2228] truncate">
+                <span className="text-[12px] font-semibold tracking-[0.06em] uppercase text-[#1e2228] truncate">
                   {selectedCategoryLabel}
                 </span>
                 <svg
@@ -232,16 +185,13 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
               {isOpen && (
                 <div
                   role="listbox"
-                  className="absolute right-0 left-0 md:left-auto md:w-[320px] mt-1.5 bg-white border border-[#dde7dd] shadow-xl z-50 max-h-80 overflow-y-auto py-1 animate-in fade-in-50 duration-150"
+                  className="absolute right-0 left-0 sm:left-auto sm:w-[340px] mt-2 bg-white border border-[#dde7dd] shadow-xl z-50 max-h-84 overflow-y-auto py-2 rounded-sm"
                 >
                   <button
                     type="button"
                     role="option"
                     aria-selected={selectedCategory === 'all'}
-                    onClick={() => {
-                      setSelectedCategory('all')
-                      setIsOpen(false)
-                    }}
+                    onClick={() => handleSelectCategory('all')}
                     className={`w-full text-left px-4 py-2.5 text-[12px] tracking-[0.04em] flex items-center justify-between transition-colors ${
                       selectedCategory === 'all'
                         ? 'bg-[#e9f3e9] text-[#1e5f2e] font-semibold'
@@ -266,10 +216,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                         type="button"
                         role="option"
                         aria-selected={isSelected}
-                        onClick={() => {
-                          setSelectedCategory(cat.key)
-                          setIsOpen(false)
-                        }}
+                        onClick={() => handleSelectCategory(cat.key)}
                         className={`w-full text-left px-4 py-2.5 text-[12px] tracking-[0.04em] flex items-center justify-between transition-colors ${
                           isSelected
                             ? 'bg-[#e9f3e9] text-[#1e5f2e] font-semibold'
@@ -289,12 +236,51 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
               )}
             </div>
           </div>
+
+          {/* Quick Category Buttons Bar (Horizontal Scrollable for direct 1-click access) */}
+          <div className="mt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <button
+              type="button"
+              onClick={() => handleSelectCategory('all')}
+              className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.1em] uppercase transition-all rounded-sm border ${
+                selectedCategory === 'all'
+                  ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
+                  : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
+              }`}
+            >
+              All Treatments
+            </button>
+
+            {OFFICIAL_CATEGORIES.map((cat) => {
+              const isSelected = selectedCategory === cat.key
+              const count = displayTreatments.filter((t) => t.category === cat.key).length
+              return (
+                <button
+                  key={cat.key}
+                  type="button"
+                  onClick={() => handleSelectCategory(cat.key)}
+                  className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.08em] uppercase transition-all rounded-sm border flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
+                      : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                  {count > 0 && (
+                    <span className={`text-[10px] ${isSelected ? 'text-white/80' : 'text-[#8a8d87]'}`}>
+                      ({count})
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {/* Treatments Editorial Layout */}
-        {filteredTreatments.length === 0 ? (
+        {/* Services List WITHOUT ANY IMAGES */}
+        {categoryGroups.length === 0 || totalFilteredCount === 0 ? (
           <FadeIn>
-            <div className="text-center py-20 bg-[#faf8f2] border border-[#dde7dd]/70 p-8 max-w-2xl mx-auto shadow-sm">
+            <div className="text-center py-20 bg-white border border-[#dde7dd]/70 p-8 max-w-2xl mx-auto shadow-sm rounded-sm">
               <p className="text-[10px] font-semibold tracking-[0.24em] uppercase text-[#1e5f2e] mb-3">
                 Angel Touch Service Menu
               </p>
@@ -312,14 +298,14 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                   href={`https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(selectedCategoryLabel)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3.5 bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-[#164722] transition-colors"
+                  className="px-6 py-3.5 bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-[#164722] transition-colors rounded-sm"
                 >
                   Inquire via WhatsApp
                 </a>
                 <button
                   type="button"
-                  onClick={() => setSelectedCategory('all')}
-                  className="px-6 py-3.5 border border-[#1e2228] text-[#1e2228] text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-white transition-colors"
+                  onClick={() => handleSelectCategory('all')}
+                  className="px-6 py-3.5 border border-[#1e2228] text-[#1e2228] text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-white transition-colors rounded-sm"
                 >
                   View All Treatments
                 </button>
@@ -327,88 +313,98 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
             </div>
           </FadeIn>
         ) : (
-          <div className="flex flex-col gap-24 md:gap-36">
-            {filteredTreatments.map((treatment, index) => {
-              const isEven = index % 2 !== 0
-            const imageSrc = resolveTreatmentImage(treatment, index)
-            const categoryLabel = treatment.category
-              ? (CATEGORY_MAP[treatment.category] || treatment.category)
-              : 'Signature Treatment'
-
-            return (
-              <FadeIn key={treatment._id || index} delay={0.1}>
-                <article className={`flex flex-col ${isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-24`}>
-                  
-                  {/* Image - Always has an authentic editorial photo */}
-                  <div className="w-full lg:w-1/2">
-                    <Link 
-                      href={`/treatments/${treatment.slug}`} 
-                      className="block relative w-full aspect-[4/3] sm:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
-                      aria-label={`View treatment details: ${treatment.name}`}
+          <div className="space-y-16 md:space-y-24">
+            {categoryGroups.map((group) => (
+              <div key={group.key} className="space-y-8">
+                
+                {/* Category Header */}
+                <div className="flex items-center justify-between pb-4 border-b border-[#dde7dd]">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-px bg-[#1e5f2e]" aria-hidden="true" />
+                    <h3 
+                      className="text-[1.4rem] sm:text-[1.8rem] font-medium text-[#1e2228]"
+                      style={{ fontFamily: 'var(--font-heading)' }}
                     >
-                      <Image
-                        src={imageSrc}
-                        alt={treatment.name}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
-                        loading="lazy"
-                      />
-                    </Link>
+                      {group.label}
+                    </h3>
                   </div>
+                  <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8a8d87]">
+                    {group.items.length} {group.items.length === 1 ? 'Service' : 'Services'}
+                  </span>
+                </div>
 
-                  {/* Content */}
-                  <div className="w-full lg:w-1/2 flex flex-col lg:items-start">
-                    <div className="flex items-center gap-4 mb-4 sm:mb-6">
-                      <span className="w-8 h-px bg-[#1e5f2e]" aria-hidden="true" />
-                      <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#1e5f2e]">
-                        {categoryLabel}
-                      </span>
-                    </div>
+                {/* Grid of Services (Strictly NO IMAGES) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                  {group.items.map((treatment, idx) => (
+                    <FadeIn key={treatment._id || idx} delay={Math.min(idx * 0.05, 0.3)}>
+                      <article className="group relative flex flex-col justify-between h-full p-6 sm:p-7 bg-white border border-[#dde7dd]/80 hover:border-[#2e7a3a] transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(46,122,58,0.08)] rounded-sm">
+                        
+                        <div>
+                          {/* Header badge */}
+                          <div className="flex items-center justify-between gap-3 mb-4">
+                            <span className="text-[10px] font-semibold tracking-[0.18em] text-[#1e5f2e] uppercase">
+                              {group.label}
+                            </span>
+                            <span className="text-[11px] font-mono text-[#8a8d87]/60">
+                              #{String(idx + 1).padStart(2, '0')}
+                            </span>
+                          </div>
 
-                    <Link 
-                      href={`/treatments/${treatment.slug}`}
-                      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                    >
-                      <h4
-                        className="text-[1.8rem] sm:text-[2.2rem] md:text-[2.6rem] font-medium text-[#1e2228] leading-[1.1] mb-4 sm:mb-6 hover:text-[#2e7a3a] transition-colors"
-                        style={{ fontFamily: 'var(--font-heading)' }}
-                      >
-                        {treatment.name}
-                      </h4>
-                    </Link>
-                    
+                          {/* Service Name */}
+                          <Link 
+                            href={`/treatments/${treatment.slug}`}
+                            className="block group-hover:text-[#1e5f2e] transition-colors"
+                          >
+                            <h4 
+                              className="text-[1.2rem] sm:text-[1.35rem] font-medium text-[#1e2228] leading-[1.3] mb-3"
+                              style={{ fontFamily: 'var(--font-heading)' }}
+                            >
+                              {treatment.name}
+                            </h4>
+                          </Link>
 
-                    
-                    <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8] mb-8 max-w-md">
-                      {treatment.description || 'An intentional Ayurvedic ritual designed to honour your natural beauty and restore radiant wellbeing.'}
-                    </p>
+                          {/* Service Description */}
+                          <p className="text-[13px] sm:text-[14px] text-[#5c5a58] leading-[1.7] mb-6 line-clamp-3">
+                            {treatment.description || 'An intentional Ayurvedic ritual designed to restore radiant balance and natural wellbeing.'}
+                          </p>
+                        </div>
 
-                    <div className="flex items-center gap-6">
-                      <Link
-                        href={`/treatments/${treatment.slug}`}
-                        aria-label={`Discover more about ${treatment.name}`}
-                        className="group inline-flex items-center min-h-[44px] gap-3 text-[11px] font-semibold tracking-[0.18em] uppercase text-[#1e2228] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
-                      >
-                        <span className="border-b border-[#1e2228] group-hover:border-[#2e7a3a] pb-1 transition-colors">
-                          Discover More
-                        </span>
-                        <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="1.5" d="M5 12h14m-6-6l6 6-6 6"/>
-                        </svg>
-                      </Link>
-                    </div>
-                  </div>
+                        {/* Card Footer Actions */}
+                        <div className="pt-4 border-t border-[#dde7dd]/60 flex items-center justify-between gap-4">
+                          <Link
+                            href={`/treatments/${treatment.slug}`}
+                            className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase text-[#1e2228] hover:text-[#1e5f2e] transition-colors"
+                          >
+                            <span>Details</span>
+                            <svg className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
 
-                </article>
-              </FadeIn>
-            )
-          })}
-        </div>
-      )}
+                          <a
+                            href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to book an appointment for: ${treatment.name}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#e9f3e9] hover:bg-[#1e5f2e] text-[#1e5f2e] hover:text-white text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition-all duration-200"
+                          >
+                            <span>Book</span>
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+                            </svg>
+                          </a>
+                        </div>
+
+                      </article>
+                    </FadeIn>
+                  ))}
+                </div>
+
+              </div>
+            ))}
+          </div>
+        )}
 
       </div>
     </section>
   )
 }
-
