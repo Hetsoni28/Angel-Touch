@@ -5,7 +5,16 @@ import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 export function FloatingWhatsApp() {
   const pathname = usePathname()
-  if (pathname.startsWith('/studio')) return null
+  if (
+    !pathname ||
+    pathname.startsWith('/studio') ||
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/customer') ||
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/account')
+  ) {
+    return null
+  }
 
   return (
     <a
