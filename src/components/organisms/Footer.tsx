@@ -81,7 +81,7 @@ export function Footer() {
       </div>
 
       {/* Main Footer Grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-16 md:pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
 
           {/* Brand + Hours + Social */}
@@ -220,12 +220,20 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-[#dde7dd] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center">
+        <div className="border-t border-[#dde7dd] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left pr-0 sm:pr-20 md:pr-24">
           <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
             © 2025 Angel Touch by Heena Thaaker · All rights reserved
           </p>
           <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
-            Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1e5f2e] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">HNTech</a>
+            Designed & Developed by{' '}
+            <a
+              href="https://hntech.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-[#1e5f2e] hover:text-[#2e7a3a] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
+            >
+              HNTech
+            </a>
           </p>
         </div>
 

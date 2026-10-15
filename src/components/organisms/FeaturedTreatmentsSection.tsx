@@ -18,7 +18,7 @@ export async function FeaturedTreatmentsSection() {
       {
         name: 'Advanced Aroma Facial',
         slug: 'advanced-aroma-facial',
-        imageUrl: '/images/ayurvedic_face_mask_jar_1791410290852.jpg',
+        imageUrl: '/images/face_mask.jpg',
         description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
       },
       {

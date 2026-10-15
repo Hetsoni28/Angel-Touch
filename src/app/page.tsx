@@ -70,7 +70,7 @@ const organizationSchema = {
       url: 'https://angeltouch.in',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://angeltouch.in/images/logo.png',
+        url: 'https://angeltouch.in/logo.svg',
         width: 200,
         height: 60,
       },
