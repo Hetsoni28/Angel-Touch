@@ -4,14 +4,15 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { Search, User, Menu, X } from 'lucide-react'
+import { Search, User, Menu, X, ChevronRight, Phone } from 'lucide-react'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 const navLinks = [
-  { label: 'Shop', href: '/shop' },
-  { label: 'Treatments', href: '/treatments' },
-  { label: 'Classes', href: '/classes' },
-  { label: 'Recordings', href: '/recordings' },
-  { label: 'Membership', href: '/membership' },
+  { label: 'Shop', href: '/shop', subtitle: 'Handcrafted Ayurvedic Skincare' },
+  { label: 'Treatments', href: '/treatments', subtitle: 'Shirodhara, Facials & Hair Spa' },
+  { label: 'Classes', href: '/classes', subtitle: 'Live Formulation Academy' },
+  { label: 'Recordings', href: '/recordings', subtitle: 'On-Demand Masterclass Vault' },
+  { label: 'Membership', href: '/membership', subtitle: 'Unlimited Vault Access' },
 ]
 
 export function Header() {
@@ -120,6 +121,16 @@ export function Header() {
 
           {/* Action Area */}
           <div className="flex items-center gap-1 sm:gap-4">
+            {/* Mobile Search Icon (Beside Login Icon on mobile) */}
+            <Link
+              href="/search"
+              aria-label="Search products, treatments, or classes"
+              className="flex sm:hidden items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors w-10 h-10 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
+            >
+              <Search strokeWidth={1.75} className="w-[18px] h-[18px]" aria-hidden="true" />
+            </Link>
+
+            {/* Desktop Expandable Search Form (sm and above) */}
             <form action="/search" method="GET" className="hidden sm:flex items-center group bg-transparent rounded-full border border-transparent hover:border-[#dde7dd] focus-within:border-[#dde7dd] hover:bg-white focus-within:bg-white transition-all duration-300">
               <input
                 type="text"
@@ -136,6 +147,7 @@ export function Header() {
                 <Search strokeWidth={1.75} className="w-[18px] h-[18px]" aria-hidden="true" />
               </button>
             </form>
+
             <Link
               href="/customer/dashboard"
               aria-label="Customer Dashboard and Account"
@@ -161,67 +173,132 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation Menu"
-          className="fixed inset-0 z-40 bg-[#faf8f2] flex flex-col pt-[88px] overflow-y-auto"
+          className="fixed inset-x-0 top-[80px] sm:top-[88px] bottom-0 z-[55] bg-[#faf8f2] flex flex-col justify-between overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="px-6 py-4 border-b border-[#dde7dd]">
-            <form action="/search" method="GET" className="flex items-center bg-white border border-[#dde7dd] px-4 py-2.5 rounded-sm focus-within:border-[#2e7a3a]">
-              <Search strokeWidth={1.75} className="w-4 h-4 text-[#6b6e68] mr-3 shrink-0" aria-hidden="true" />
-              <input
-                type="text"
-                name="q"
-                aria-label="Search products, classes, treatments in mobile menu"
-                placeholder="Search products, classes, treatments..."
-                className="w-full bg-transparent text-[14px] text-[#1e2228] outline-none placeholder-[#6b6e68] focus-visible:outline-none"
-              />
-            </form>
+          <div>
+            {/* Primary Navigation List */}
+            <nav aria-label="Mobile Navigation" className="flex flex-col py-1">
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                aria-current={pathname === '/' ? 'page' : undefined}
+                className={`flex items-center justify-between px-6 py-3.5 border-b border-[#dde7dd]/50 transition-colors ${
+                  pathname === '/' ? 'bg-[#e9f3e9]/70 text-[#1e5f2e]' : 'text-[#1e2228] hover:bg-white/50'
+                }`}
+              >
+                <div className="flex flex-col">
+                  <span className="text-[17px] font-medium" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Home
+                  </span>
+                  <span className="text-[10px] tracking-wider uppercase text-[#6b6e68]">
+                    Sanctuary Welcome & Overview
+                  </span>
+                </div>
+                <ChevronRight className={`w-4 h-4 ${pathname === '/' ? 'text-[#1e5f2e]' : 'text-[#8a8d87]'}`} aria-hidden="true" />
+              </Link>
+
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`flex items-center justify-between px-6 py-3.5 border-b border-[#dde7dd]/50 transition-colors ${
+                      isActive ? 'bg-[#e9f3e9]/70 text-[#1e5f2e]' : 'text-[#1e2228] hover:bg-white/50'
+                    }`}
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-[17px] font-medium" style={{ fontFamily: 'var(--font-heading)' }}>
+                        {link.label}
+                      </span>
+                      <span className="text-[10px] tracking-wider uppercase text-[#6b6e68]">
+                        {link.subtitle}
+                      </span>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 ${isActive ? 'text-[#1e5f2e]' : 'text-[#8a8d87]'}`} aria-hidden="true" />
+                  </Link>
+                )
+              })}
+            </nav>
+
+            {/* Secondary Pages (About & Contact / Location) */}
+            <div className="px-6 py-3 border-b border-[#dde7dd]/60 bg-white/40">
+              <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold tracking-wider uppercase">
+                <Link
+                  href="/about"
+                  onClick={() => setMobileOpen(false)}
+                  className="py-2.5 px-3 rounded-sm bg-white border border-[#dde7dd] text-[#4a4846] hover:text-[#1e5f2e] hover:border-[#1e5f2e] text-center transition-colors shadow-2xs"
+                >
+                  About Founder
+                </Link>
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileOpen(false)}
+                  className="py-2.5 px-3 rounded-sm bg-white border border-[#dde7dd] text-[#4a4846] hover:text-[#1e5f2e] hover:border-[#1e5f2e] text-center transition-colors shadow-2xs"
+                >
+                  Sanctuary & Map
+                </Link>
+              </div>
+            </div>
+
+            {/* Customer Account & Library Card */}
+            <div className="px-6 pt-3.5 pb-2">
+              <Link
+                href="/customer/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between p-3.5 rounded-sm bg-white border border-[#dde7dd] shadow-2xs hover:border-[#2e7a3a] transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#e9f3e9] flex items-center justify-center text-[#1e5f2e] shrink-0">
+                    <User className="w-4 h-4" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-semibold text-[#1e2228]">My Account & Dashboard</p>
+                    <p className="text-[11px] text-[#6b6e68]">Access enrolled classes & library</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#8a8d87]" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
 
-          <nav aria-label="Mobile Navigation" className="flex flex-col px-6 py-6 gap-4 border-b border-[#dde7dd]">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              aria-current={pathname === '/' ? 'page' : undefined}
-              className={`text-[20px] font-medium transition-colors py-2 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm ${
-                pathname === '/' ? 'text-[#2e7a3a] font-semibold' : 'text-[#1e2228] hover:text-[#2e7a3a]'
-              }`}
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Home
-            </Link>
-            {navLinks.map((link) => {
-              const isActive = pathname.startsWith(link.href)
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`text-[20px] font-medium transition-colors py-2 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm ${
-                    isActive ? 'text-[#2e7a3a] font-semibold' : 'text-[#1e2228] hover:text-[#2e7a3a]'
-                  }`}
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  {link.label}
-                </Link>
-              )
-            })}
-            <Link
-              href="/customer/dashboard"
-              onClick={() => setMobileOpen(false)}
-              className="text-[20px] font-medium text-[#2e7a3a] hover:text-[#1e5f2e] transition-colors flex items-center gap-2 pt-3 border-t border-[#dde7dd]/50 py-2 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              <User className="w-5 h-5" aria-hidden="true" /> My Account & Dashboard
-            </Link>
-          </nav>
-          <div className="px-6 mt-auto pb-8 pt-6 flex flex-col gap-3">
+          {/* Bottom Concierge & Primary Action */}
+          <div className="px-6 pt-3 pb-8 mt-auto border-t border-[#dde7dd]/60 bg-white/70">
+            {/* Quick Contact Row */}
+            <div className="flex items-center justify-between gap-2 text-[12px] mb-3">
+              <a
+                href={generateWhatsAppLink({ type: 'GENERAL' })}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Concierge"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white border border-[#25D366]/40 text-[#1e5f2e] rounded-sm font-medium hover:bg-[#e9f3e9] transition-colors shadow-2xs"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#25D366]" aria-hidden="true" />
+                WhatsApp
+              </a>
+              <a
+                href="tel:+919723179638"
+                aria-label="Call Angel Touch"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white border border-[#dde7dd] text-[#1e2228] rounded-sm font-medium hover:border-[#1e5f2e] transition-colors shadow-2xs"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#1e5f2e]" aria-hidden="true" />
+                +91 97231 79638
+              </a>
+            </div>
+
+            {/* Primary Action Button */}
             <Link
               href="/classes"
               onClick={() => setMobileOpen(false)}
-              className="block w-full min-h-[44px] text-center py-4 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e5f2e] focus-visible:ring-offset-2"
+              className="block w-full min-h-[46px] py-3.5 bg-[#2e7a3a] hover:bg-[#1e5f2e] text-white text-[11px] font-bold tracking-[0.2em] uppercase text-center rounded-sm shadow-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e5f2e]"
             >
-              Explore Classes
+              Explore Masterclasses
             </Link>
+            <p className="text-[10px] text-center text-[#6b6e68] tracking-widest uppercase mt-2.5">
+              Satellite, Ahmedabad · Women-Only Sanctuary
+            </p>
           </div>
         </div>
       )}
