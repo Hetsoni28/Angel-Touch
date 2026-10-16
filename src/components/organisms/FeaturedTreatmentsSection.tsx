@@ -9,10 +9,14 @@ export async function FeaturedTreatmentsSection() {
   try {
     const data = await client.fetch(ALL_TREATMENTS_QUERY)
     treatments = data.filter((t: any) => t.featured).slice(0, 2)
-    if (treatments.length === 0) {
+    if (treatments.length === 0 && data.length > 0) {
       treatments = data.slice(0, 2)
     }
   } catch {
+    // Ignore and proceed to fallback below
+  }
+
+  if (treatments.length === 0) {
     // Graceful fallback to signature treatments
     treatments = [
       {
@@ -29,8 +33,6 @@ export async function FeaturedTreatmentsSection() {
       }
     ]
   }
-
-  if (treatments.length === 0) return null
 
   return (
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
