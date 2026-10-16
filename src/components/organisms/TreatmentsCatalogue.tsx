@@ -71,13 +71,61 @@ type Treatment = {
 
 const ITEMS_PER_PAGE = 6
 
+function shuffleTreatments(items: Treatment[]): Treatment[] {
+  const arr = [...items]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
+function interleaveTreatments(items: Treatment[]): Treatment[] {
+  const groups: Record<string, Treatment[]> = {}
+  for (const item of items) {
+    const cat = item.category || 'other'
+    if (!groups[cat]) groups[cat] = []
+    groups[cat].push(item)
+  }
+  const result: Treatment[] = []
+  const catOrder = [
+    'facial', 'shirodhara', 'hair-spa', 'threading', 'body-spa', 'bridal-makeup',
+    'clean-up', 'skin', 'bleach-dtan', 'waxing', 'hair-cut', 'scalp-analysis-hair-regrowth',
+    'hair-treatments', 'technical-style-services', 'special-hair-care', 'hair-care-style',
+    'body-scrub', 'body-wrap', 'steam-bath', 'hand-feet-care', 'body-care-spa',
+    'family-makeup', 'occasion-makeup', 'bridal-packages', 'nail-art'
+  ].filter(k => groups[k])
+
+  let round = 0
+  let added = true
+  while (added) {
+    added = false
+    for (const cat of catOrder) {
+      if (groups[cat] && groups[cat][round]) {
+        result.push(groups[cat][round])
+        added = true
+      }
+    }
+    round++
+  }
+  return result.length > 0 ? result : items
+}
+
 export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
   const displayTreatments = treatments || []
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState(false)
+  const [shuffledAll, setShuffledAll] = useState<Treatment[]>(() => interleaveTreatments(displayTreatments))
   const dropdownRef = useRef<HTMLDivElement>(null)
   const catalogueTopRef = useRef<HTMLDivElement>(null)
+
+  // Shuffle randomly on client mount
+  useEffect(() => {
+    if (displayTreatments.length > 0) {
+      setShuffledAll(shuffleTreatments(displayTreatments))
+    }
+  }, [displayTreatments])
 
   // Listen to URL query parameter e.g. /treatments?category=facial
   useEffect(() => {
@@ -110,6 +158,9 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
   }, [])
 
   const handleSelectCategory = (catKey: string) => {
+    if (catKey === 'all') {
+      setShuffledAll(shuffleTreatments(displayTreatments))
+    }
     setSelectedCategory(catKey)
     setCurrentPage(1)
     setIsOpen(false)
@@ -138,11 +189,13 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
     return found ? found.label : (CATEGORY_MAP[selectedCategory] || selectedCategory)
   }, [selectedCategory])
 
-  // Filtered treatments by active category
+  // Filtered treatments by active category (randomized when viewing All Treatments)
   const filteredTreatments = useMemo(() => {
-    if (selectedCategory === 'all') return displayTreatments
+    if (selectedCategory === 'all') {
+      return shuffledAll.length > 0 ? shuffledAll : displayTreatments
+    }
     return displayTreatments.filter((t) => t.category === selectedCategory)
-  }, [displayTreatments, selectedCategory])
+  }, [displayTreatments, selectedCategory, shuffledAll])
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredTreatments.length / ITEMS_PER_PAGE)
@@ -169,12 +222,30 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
               >
                 Treatments & Services
               </h2>
-              <p className="mt-2 text-[14px] sm:text-[15px] text-[#5c5a58]">
-                {selectedCategory === 'all' 
-                  ? `Showing all ${filteredTreatments.length} services across 25 salon categories.`
-                  : `Showing all ${filteredTreatments.length} services under ${selectedCategoryLabel}.`
-                }
-              </p>
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
+                <p className="text-[14px] sm:text-[15px] text-[#5c5a58]">
+                  {selectedCategory === 'all' 
+                    ? `Showing a randomized discovery of all ${filteredTreatments.length} services across 25 salon categories.`
+                    : `Showing all ${filteredTreatments.length} services under ${selectedCategoryLabel}.`
+                  }
+                </p>
+                {selectedCategory === 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShuffledAll(shuffleTreatments(displayTreatments))
+                      setCurrentPage(1)
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#e9f3e9] hover:bg-[#1e5f2e] text-[#1e5f2e] hover:text-white border border-[#1e5f2e]/20 text-[11px] font-semibold tracking-[0.08em] uppercase rounded-sm transition-colors cursor-pointer"
+                    title="Shuffle random treatments"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Shuffle Random</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Dropdown Menu Filter */}
