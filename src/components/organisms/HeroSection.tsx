@@ -51,11 +51,11 @@ export function HeroSection() {
           </FadeIn>
         </div>
 
-        <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm">
+        <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-[#e9f3e9] overflow-hidden rounded-sm shadow-sm">
           <FadeIn direction="none" delay={0.3} className="w-full h-full relative">
             <Image
-              src="/images/ayurvedic_hero_editorial_1791405719098.jpg"
-              alt="Ayurvedic botanical ingredients arranged on ivory stone"
+              src="/images/hero_ayurvedic_wellness.jpg"
+              alt="Serene woman embracing holistic Ayurvedic wellness and natural beauty at Angel Touch"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center"
