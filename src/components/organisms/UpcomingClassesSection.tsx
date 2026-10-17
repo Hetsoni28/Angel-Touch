@@ -35,7 +35,7 @@ export async function UpcomingClassesSection() {
         _id: 'm2',
         title: 'Herbal Hair Elixir & Scalp Care',
         slug: 'herbal-hair-elixir-scalp-care',
-        imageUrl: '/images/ayurvedic_cosmetics_workspace_1791405719662.jpg',
+        imageUrl: '/images/ayurvedic_academy_workshop.jpg',
         shortDescription: 'Master the traditional slow infusion of Bhringraj, Amla, and Brahmi for restorative hair care.',
         date: '2026-11-22T10:00:00.000Z',
         duration: '3.5 Hours',

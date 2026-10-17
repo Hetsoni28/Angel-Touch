@@ -22,13 +22,13 @@ export async function FeaturedTreatmentsSection() {
       {
         name: 'Advanced Aroma Facial',
         slug: 'advanced-aroma-facial',
-        imageUrl: '/images/face_mask.jpg',
+        imageUrl: '/images/treatment_aroma_facial.jpg',
         description: 'A deeply restorative facial using pure botanical essential oils to clarify, hydrate and balance the skin.',
       },
       {
         name: 'Shirodhara Therapy',
         slug: 'shirodhara',
-        imageUrl: '/images/ayurvedic_shirodhara.jpg',
+        imageUrl: '/images/treatment_shirodhara.jpg',
         description: 'A continuous, rhythmic flow of warm medicated herbal oil over the forehead to support mental clarity and deep relaxation.',
       }
     ]
@@ -65,14 +65,14 @@ export async function FeaturedTreatmentsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {treatments.map((t: any, index: number) => {
             const fallbackImage = (t.name || '').toLowerCase().includes('shirodhara')
-              ? '/images/ayurvedic_shirodhara.jpg'
+              ? '/images/treatment_shirodhara.jpg'
               : (t.name || '').toLowerCase().includes('hair')
               ? '/images/ayurvedic_hair_elixir.jpg'
               : (t.name || '').toLowerCase().includes('facial')
-              ? '/images/face_mask.jpg'
+              ? '/images/treatment_aroma_facial.jpg'
               : index % 2 === 0
-              ? '/images/ayurvedic_abhyanga.jpg'
-              : '/images/ayurvedic_shirodhara.jpg'
+              ? '/images/treatment_aroma_facial.jpg'
+              : '/images/treatment_shirodhara.jpg'
             const imgSrc = t.imageUrl || fallbackImage
 
             return (

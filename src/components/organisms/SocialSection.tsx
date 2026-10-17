@@ -22,24 +22,24 @@ const InstagramIcon = ({ className }: { className?: string }) => (
 export function SocialSection() {
   const gridImages = [
     {
-      src: '/images/ayurvedic_abhyanga.jpg',
-      alt: 'Traditional Ayurvedic Abhyanga herbal oil preparation with fresh herbs',
+      src: '/images/treatment_shirodhara.jpg',
+      alt: 'Traditional Ayurvedic Shirodhara therapy in our quiet sanctuary',
     },
     {
-      src: '/images/ayurvedic_herbal_body_scrub_1791405717151.jpg',
-      alt: 'Handcrafted herbal scrub in artisanal ceramic vessel',
+      src: '/images/ayurvedic_facial_therapy.jpg',
+      alt: 'Restorative botanical facial therapy with kansa ritual',
     },
     {
-      src: '/images/ayurvedic_masterclass.jpg',
-      alt: 'Hands blending botanical extracts during product-making masterclass',
+      src: '/images/ayurvedic_academy_workshop.jpg',
+      alt: 'Hands-on beauty formulation academy masterclass with students',
     },
     {
-      src: '/images/ayurvedic_herbal_clay_powder_1791405720188.jpg',
-      alt: 'Neem and tulsi cleansing clay with ceramic apothecary jar',
+      src: '/images/treatment_aroma_facial.jpg',
+      alt: 'Soothing aroma facial massage with pure botanical oils',
     },
     {
-      src: '/images/ayurvedic_hair_elixir.jpg',
-      alt: 'Ashwagandha hair elixir with amla, hibiscus, and botanical herbs',
+      src: '/images/hero_ayurvedic_wellness.jpg',
+      alt: 'Holistic Ayurvedic wellness and natural beauty at Angel Touch',
     },
   ]
 

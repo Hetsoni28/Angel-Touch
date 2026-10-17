@@ -1,46 +1,31 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
-import { client } from '@/sanity/lib/client'
-import { ALL_PRODUCTS_QUERY } from '@/sanity/lib/queries'
 
 export async function FeaturedProductsSection() {
-  // Fetch real data from Sanity
-  let products = []
-  try {
-    const data = await client.fetch(ALL_PRODUCTS_QUERY)
-    products = data.filter((p: any) => p.featured).slice(0, 3)
-    if (products.length === 0) {
-      products = data.slice(0, 3)
+  const rituals = [
+    {
+      name: 'Botanical Hair Spa & Scalp Therapy',
+      slug: 'treatments?category=hair-spa',
+      category: 'Hair Care & Rituals',
+      imageUrl: '/images/treatment_hair_spa.jpg',
+      description: 'A deeply nourishing Ayurvedic hair ritual with warm botanical oil massage and gentle scalp revival for silky, lustrous locks.',
+    },
+    {
+      name: 'Bridal & Ceremony Artistry',
+      slug: 'treatments?category=bridal-makeup',
+      category: 'Bridal & Styling',
+      imageUrl: '/images/treatment_bridal_styling.jpg',
+      description: 'Exquisite traditional Gujarati and contemporary bridal makeup with authentic draping, fresh floral styling, and timeless royal elegance.',
+    },
+    {
+      name: 'Purifying Clean-Up & D-Tan Ritual',
+      slug: 'treatments?category=clean-up',
+      category: 'Skin & Aesthetics',
+      imageUrl: '/images/treatment_clean_up.jpg',
+      description: 'Refreshing botanical fruit enzyme cleanse and herbal tan removal designed to clarify congested pores and restore luminous skin tone.',
     }
-  } catch {
-    // Graceful fallback to signature products
-    products = [
-      {
-        name: 'Kesar Radiance Oil',
-        slug: 'kesar-radiance-oil',
-        category: 'Skin Care',
-        imageUrl: '/images/skincare_oil.jpg',
-        description: 'A lightweight facial oil blending pure saffron and sandalwood to restore natural luminosity.',
-      },
-      {
-        name: 'Ashwagandha Hair Elixir',
-        slug: 'ashwagandha-hair-elixir',
-        category: 'Hair Care',
-        imageUrl: '/images/hair_elixir.jpg',
-        description: 'A deeply nourishing botanical blend to strengthen roots, condition strands, and soothe the scalp.',
-      },
-      {
-        name: 'Neem & Tulsi Cleansing Clay',
-        slug: 'neem-tulsi-cleansing-clay',
-        category: 'Body Care',
-        imageUrl: '/images/green_clay.jpg',
-        description: 'A purifying green clay formulated with wildcrafted herbs for gentle, mindful daily use.',
-      }
-    ]
-  }
-
-  if (products.length === 0) return null
+  ]
 
   return (
     <section className="bg-white py-20 md:py-28">
@@ -52,52 +37,52 @@ export async function FeaturedProductsSection() {
               className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Made for your ritual.
+              Signature Sanctuary Rituals.
             </h2>
             <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed max-w-md">
-              Formulated from botanical ingredients drawn from Ayurvedic tradition. Crafted to integrate into your daily care.
+              Formulated from botanical ingredients drawn from Ayurvedic tradition. Crafted with dedicated care for hair, bridal, and glowing skin.
             </p>
           </FadeIn>
           <FadeIn delay={0.2} direction="none">
             <Link 
-              href="/shop" 
+              href="/treatments" 
               className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
             >
-              View all products &rarr;
+              View all services &rarr;
             </Link>
           </FadeIn>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
-          {products.map((product: any, index: number) => (
-            <FadeIn key={product._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
+          {rituals.map((ritual: any, index: number) => (
+            <FadeIn key={index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
               <article className="group flex flex-col h-full">
                 <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] relative">
                   <Image
-                    src={product.imageUrl || '/images/ayurvedic_hero_editorial_1791405719098.jpg'}
-                    alt={product.name}
+                    src={ritual.imageUrl}
+                    alt={ritual.name}
                     fill
                     sizes="(max-width: 640px) 100vw, 33vw"
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
                   />
                 </div>
-                <p className="text-[10px] tracking-[0.22em] text-[#5c5a58] uppercase mb-1.5">{product.category || 'Product'}</p>
+                <p className="text-[10px] tracking-[0.22em] text-[#5c5a58] uppercase mb-1.5">{ritual.category}</p>
                 <h3
                   className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  {product.name}
+                  {ritual.name}
                 </h3>
                 <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow line-clamp-3">
-                  {product.description || product.shortDescription || ''}
+                  {ritual.description}
                 </p>
                 <Link 
-                  href={`/shop/${product.slug}`} 
+                  href={`/${ritual.slug}`} 
                   className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                  aria-label={`View product details: ${product.name}`}
+                  aria-label={`View ritual details: ${ritual.name}`}
                 >
-                  View Product &rarr;
+                  Explore Service &rarr;
                 </Link>
               </article>
             </FadeIn>

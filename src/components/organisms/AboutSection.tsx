@@ -27,7 +27,7 @@ export function AboutSection() {
             <FadeIn delay={0.1} fullWidth className="max-w-sm">
               <div className="w-full overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom relative aspect-[4/5]">
                 <Image
-                  src="/images/ayurvedic_shirodhara.jpg"
+                  src="/images/treatment_shirodhara.jpg"
                   alt="Ayurvedic Treatment at Angel Touch"
                   fill
                   sizes="(max-width: 1024px) 100vw, 400px"
