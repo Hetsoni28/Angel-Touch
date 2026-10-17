@@ -14,13 +14,13 @@ export function ThreeExperiencesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 items-stretch">
 
-          {}
+          {/* Products / Natural Care experience */}
           <FadeIn delay={0.1} className="flex flex-col h-full">
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
               <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
                 <Image
-                  src="/images/ayurvedic_herbal_body_scrub_1791405717151.jpg"
-                  alt="Ayurvedic products"
+                  src="/images/ayurvedic_facial_therapy.jpg"
+                  alt="Ayurvedic botanical facial therapy"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -50,8 +50,8 @@ export function ThreeExperiencesSection() {
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
               <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
                 <Image
-                  src="/images/ayurvedic_abhyanga.jpg"
-                  alt="Ayurvedic treatments"
+                  src="/images/ayurvedic_shirodhara.jpg"
+                  alt="Authentic Ayurvedic Shirodhara and wellness treatments"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -81,8 +81,8 @@ export function ThreeExperiencesSection() {
             <div className="flex flex-col h-full bg-white border border-[#dde7dd]/70 p-6 sm:p-7">
               <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[4/3] relative">
                 <Image
-                  src="/images/ayurvedic_cosmetics_workspace_1791405719662.jpg"
-                  alt="Ayurvedic product-making classes"
+                  src="/images/ayurvedic_academy_workshop.jpg"
+                  alt="Ayurvedic beauty academy workshop"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
