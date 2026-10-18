@@ -4,9 +4,9 @@ import { FadeIn } from '@/components/atoms/FadeIn'
 const serviceCategories = [
   {
     number: '01',
-    label: 'Skin & Aesthetics',
-    title: 'Advanced Aesthetic Skin Treatments',
-    description: 'Expert facials, advanced skin therapies and aroma facials delivering visible, lasting results. Backed by a certified skincare academy offering Level 1, 2 & 3 courses.',
+    label: 'Skin & Aroma',
+    title: 'Advanced Skin Treatments & Aroma Facials',
+    description: 'Therapeutic aroma facials, botanical skincare, and advanced aesthetic therapies delivering radiant results. Backed by a certified skincare academy offering Level 1, 2 & 3 courses.',
     href: '/treatments?category=facial',
   },
   {
@@ -65,7 +65,7 @@ export function ServicesSection() {
                 Everything a woman deserves,<br className="hidden md:block" /> all in one place.
               </h2>
               <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-                From advanced skin treatments and Ayurvedic therapies to bridal styling and a beauty school — Angel Touch brings world-class services to Satellite, Ahmedabad.
+                From advanced skin treatments, pure aroma rituals, and Ayurvedic therapies to bridal styling and a beauty school — Angel Touch brings world-class services to Satellite, Ahmedabad.
               </p>
             </div>
           </FadeIn>

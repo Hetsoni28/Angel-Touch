@@ -31,6 +31,8 @@ const personSchema = {
   knowsAbout: [
     'Ayurveda',
     'Ayurvedic cosmetic formulation',
+    'Aromatherapy',
+    'Aroma facials',
     'Shirodhara',
     'Abhyanga',
     'Holistic skincare',
@@ -110,7 +112,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-[16px] text-[#5c5a58] leading-[1.85]">
                 <p>
-                  With a deep-rooted passion for holistic healing and natural aesthetics, Heena Thaker founded Angel Touch to bridge the gap between traditional Ayurvedic science and contemporary wellness needs.
+                  With a deep-rooted passion for holistic healing, pure aromatherapy and natural aesthetics, Heena Thaker founded Angel Touch to bridge the gap between traditional Ayurvedic science and contemporary wellness needs.
                 </p>
                 <p>
                   Having spent years studying the intricate formulations of herbal remedies, Heena envisioned a space where purity is never compromised. Every treatment protocol and product formulation is personally overseen by her, ensuring that the healing energy of the herbs is preserved from root to skin.
@@ -160,7 +162,7 @@ export default function AboutPage() {
             {[
               {
                 title: "100% Pure Ingredients",
-                description: "We source only the highest grade botanicals, cold-pressed oils, and raw clays. No synthetics, no parabens, no compromises."
+                description: "We source only the highest grade botanicals, therapeutic essential oils, cold-pressed oils, and raw clays. No synthetics, no parabens, no compromises."
               },
               {
                 title: "Handcrafted Formulations",

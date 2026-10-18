@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const services = [
-  { label: 'Facial', href: '/treatments?category=facial' },
+  { label: 'Aroma & Facial', href: '/treatments?category=facial' },
   { label: 'Shirodhara', href: '/treatments?category=shirodhara' },
   { label: 'Hair Care & Spa', href: '/treatments?category=hair-spa' },
   { label: 'Bridal Makeup', href: '/treatments?category=bridal-makeup' },
@@ -86,7 +86,7 @@ export function Footer() {
               <Image src="/logo.svg" alt="Angel Touch" width={220} height={64} className="h-16 w-auto" loading="lazy" />
             </Link>
             <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-sm mb-8">
-              A premium women-only salon and wellness centre founded by Heena Thaaker — offering advanced skin treatments, Ayurvedic therapies, professional hair services, bridal styling and a certified beauty school.
+              A premium women-only salon and wellness centre founded by Heena Thaaker — offering advanced skin treatments, restorative aromatherapy, Ayurvedic therapies, professional hair services, bridal styling and a certified beauty school.
             </p>
 
             {/* Hours */}

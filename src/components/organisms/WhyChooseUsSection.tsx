@@ -15,7 +15,7 @@ export function WhyChooseUsSection() {
     {
       n: '02',
       title: 'Rooted',
-      body: 'Inspired by centuries of Ayurvedic tradition and natural beauty practices that have stood the test of time.',
+      body: 'Inspired by centuries of Ayurvedic tradition, therapeutic aromatherapy, and natural beauty practices that have stood the test of time.',
     },
     {
       n: '03',

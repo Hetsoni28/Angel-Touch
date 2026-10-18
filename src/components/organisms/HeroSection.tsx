@@ -45,8 +45,8 @@ export function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.5}>
-            <p className="text-[11px] text-[#5c5a58] tracking-[0.16em] uppercase">
-              Ayurvedic tradition · Natural ingredients · Expert guidance
+            <p className="text-[11px] text-[#5c5a58] tracking-[0.14em] md:tracking-[0.16em] uppercase leading-relaxed">
+              Ayurvedic tradition &middot; Pure aromatherapy &middot; Natural ingredients &middot; Expert guidance
             </p>
           </FadeIn>
         </div>

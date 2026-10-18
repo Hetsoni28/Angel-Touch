@@ -48,7 +48,7 @@ export async function FeaturedTreatmentsSection() {
                 Personal care, thoughtfully approached.
               </h2>
               <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-                Each treatment at Angel Touch is a considered, personalised experience drawing on authentic Ayurvedic practice and applied with dedicated care.
+                Each treatment at Angel Touch is a considered, personalised experience drawing on restorative aromatherapy and authentic Ayurvedic practice, applied with dedicated care.
               </p>
             </div>
           </FadeIn>

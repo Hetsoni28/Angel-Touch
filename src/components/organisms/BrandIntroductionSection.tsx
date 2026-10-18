@@ -46,7 +46,7 @@ export function BrandIntroductionSection() {
                 Hello, I am Heena Thaker. Welcome to Angel Touch. 
               </p>
               <p className="text-[15px] sm:text-[16px] text-[#5c5a58] leading-[1.85] mb-10">
-                I believe that true beauty is cultivated through intention—drawing from centuries of Ayurvedic wisdom, selecting only what nature provides, and sharing that knowledge openly. My life&apos;s work is empowering women through pure botanicals, advanced aesthetic treatments, and the open sharing of formulation secrets through our academy.
+                I believe that true beauty is cultivated through intention—drawing from centuries of Ayurvedic wisdom, selecting only what nature provides, and sharing that knowledge openly. My life&apos;s work is empowering women through pure botanicals, therapeutic aromatherapy, advanced aesthetic treatments, and the open sharing of formulation secrets through our academy.
               </p>
             </FadeIn>
 

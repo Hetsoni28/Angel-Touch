@@ -19,7 +19,7 @@ export const instant = false
 export const metadata: Metadata = {
   title: "Angel Touch by Heena Thaker | Women's Ayurvedic Salon & Wellness — Ahmedabad",
   description:
-    "Exclusive women-only Ayurvedic salon, wellness sanctuary, and beauty school in Satellite, Ahmedabad. Authentic Shirodhara, restorative skin facials, bridal styling, botanical hair care, and certified formulation masterclasses by Heena Thaker.",
+    "Exclusive women-only Ayurvedic salon, wellness sanctuary, and beauty school in Satellite, Ahmedabad. Authentic Shirodhara, restorative aroma skin facials, bridal styling, botanical hair care, and certified formulation masterclasses by Heena Thaker.",
   alternates: {
     canonical: 'https://angeltouch.in',
   },
@@ -27,6 +27,8 @@ export const metadata: Metadata = {
     'Angel Touch Ahmedabad',
     'Heena Thaker salon',
     'Ayurvedic salon Ahmedabad',
+    'Aroma facial Satellite Ahmedabad',
+    'Aromatherapy Ahmedabad',
     'Women salon Satellite Ahmedabad',
     'Shirodhara therapy Ahmedabad',
     'Abhyanga body massage Ahmedabad',
@@ -167,7 +169,7 @@ const organizationSchema = {
           name: 'What makes Angel Touch a premier women-only Ayurvedic salon in Satellite, Ahmedabad?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Angel Touch by Heena Thaker is a premier women-only Ayurvedic sanctuary in Satellite, Ahmedabad. Located at UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road, Angel Touch provides authentic Shirodhara, Abhyanga massage, personalized herbal facials, botanical hair care, bridal styling, and certified beauty academy courses.',
+            text: 'Angel Touch by Heena Thaker is a premier women-only Ayurvedic sanctuary in Satellite, Ahmedabad. Located at UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road, Angel Touch provides authentic Shirodhara, Abhyanga massage, personalized aroma and herbal facials, botanical hair care, bridal styling, and certified beauty academy courses.',
           },
         },
         {

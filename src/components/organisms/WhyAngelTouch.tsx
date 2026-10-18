@@ -11,8 +11,8 @@ const principles = [
     description: 'Founded by Heena Thaaker, combining years of advanced aesthetic skin treatment expertise with a certified beauty academy.',
   },
   {
-    title: 'Ayurvedic Tradition',
-    description: 'We respect time-tested natural formulation and therapies, offering genuine Shirodhara and aromatherapy rituals.',
+    title: 'Ayurvedic Tradition & Aromatherapy',
+    description: 'We respect time-tested natural formulation and holistic wellness, offering genuine Shirodhara, restorative aroma facials, and pure botanical therapies.',
   },
 ]
 

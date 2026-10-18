@@ -60,10 +60,10 @@ export function ThreeExperiencesSection() {
               </div>
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-2">02 — Treatments</p>
               <h3 className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
-                Personalised healing and beauty treatments.
+                Aroma & Ayurvedic healing treatments.
               </h3>
               <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-6 grow">
-                Rooted in the Angel Touch approach — careful, considered therapies that respect both body and tradition.
+                Rooted in the Angel Touch approach — restorative aromatherapy, Shirodhara, and therapies that respect both body and tradition.
               </p>
               <div className="pt-3 border-t border-[#dde7dd]/50">
                 <Link 

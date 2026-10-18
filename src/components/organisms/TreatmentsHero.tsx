@@ -39,7 +39,7 @@ export function TreatmentsHero() {
 
           <FadeIn delay={0.3}>
             <p className="text-[15px] md:text-[17px] text-[#5c5a58] leading-[1.8] max-w-lg mb-10">
-              Discover personalised beauty and wellness treatments inspired by the Angel Touch approach.
+              Discover personalised beauty, restorative aroma facials, and Ayurvedic wellness treatments inspired by the Angel Touch approach.
             </p>
           </FadeIn>
 

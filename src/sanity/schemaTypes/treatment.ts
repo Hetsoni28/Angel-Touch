@@ -33,7 +33,7 @@ export const treatment = defineType({
           { title: '2. Bleach / D-Tan', value: 'bleach-dtan' },
           { title: '3. Clean Up', value: 'clean-up' },
           { title: '4. Waxing', value: 'waxing' },
-          { title: '5. Facial', value: 'facial' },
+          { title: '5. Facial & Aroma Therapy', value: 'facial' },
           { title: '6. Skin', value: 'skin' },
           { title: '7. Shirodhara', value: 'shirodhara' },
           { title: '8. Hair Cut', value: 'hair-cut' },
