@@ -4,7 +4,6 @@ import { WhyAngelTouch } from '@/components/organisms/WhyAngelTouch'
 import { InquiryCTA } from '@/components/organisms/InquiryCTA'
 import { client } from '@/sanity/lib/client'
 import { ALL_TREATMENTS_QUERY } from '@/sanity/lib/queries'
-import { OFFICIAL_MENU_TREATMENTS } from '@/data/treatmentsData'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -31,22 +30,10 @@ export const metadata: Metadata = {
   },
 }
 
-
 export const instant = false
 
 export default async function TreatmentsPage() {
-  let treatments = OFFICIAL_MENU_TREATMENTS
-
-  try {
-    const sanityTreatments = await client.fetch(ALL_TREATMENTS_QUERY)
-    if (sanityTreatments && Array.isArray(sanityTreatments) && sanityTreatments.length > 0) {
-      const sanitySlugs = new Set(sanityTreatments.map((t: any) => t.slug))
-      const nonOverridden = OFFICIAL_MENU_TREATMENTS.filter((t) => !sanitySlugs.has(t.slug))
-      treatments = [...sanityTreatments, ...nonOverridden]
-    }
-  } catch (error) {
-    console.error('Failed to fetch treatments from Sanity, using official menu:', error)
-  }
+  const treatments = (await client.fetch(ALL_TREATMENTS_QUERY).catch(() => [])) || []
 
   return (
     <>
