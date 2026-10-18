@@ -44,12 +44,20 @@ export function TreatmentsHero() {
           </FadeIn>
 
           <FadeIn delay={0.4}>
-            <Link
-              href="#catalogue"
-              className="inline-flex self-start items-center justify-center min-h-[44px] px-9 py-4 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
-            >
-              Explore Treatments
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-start">
+              <Link
+                href="#catalogue"
+                className="inline-flex items-center justify-center min-h-[44px] px-8 py-3.5 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 text-center"
+              >
+                Explore Treatments
+              </Link>
+              <Link
+                href="#academy"
+                className="inline-flex items-center justify-center min-h-[44px] px-8 py-3.5 border border-[#1e2228] bg-white/70 hover:bg-[#1e2228] text-[#1e2228] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 text-center"
+              >
+                Beauty Academy
+              </Link>
+            </div>
           </FadeIn>
         </div>
       </div>

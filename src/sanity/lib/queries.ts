@@ -27,6 +27,7 @@ export const ALL_TREATMENTS_QUERY = groq`
     name,
     "slug": slug.current,
     category,
+    duration,
     featured,
     description
   } | order(name asc)
@@ -57,4 +58,20 @@ export const MASTERCLASS_BY_SLUG_QUERY = groq`
     price,
     recordingUrl
   }
+`
+
+export const ALL_ACADEMY_COURSES_QUERY = groq`
+  *[_type == "academyCourse"] {
+    _id,
+    num,
+    name,
+    "slug": slug.current,
+    group,
+    categoryKey,
+    duration,
+    description,
+    syllabus,
+    price,
+    featured
+  } | order(num asc)
 `

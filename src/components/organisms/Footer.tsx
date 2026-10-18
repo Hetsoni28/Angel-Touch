@@ -15,6 +15,7 @@ const services = [
 const explore = [
   { label: 'Shop', href: '/shop' },
   { label: 'Treatments', href: '/treatments' },
+  { label: 'Beauty Academy', href: '/academy' },
   { label: 'Classes', href: '/classes' },
   { label: 'Recorded Classes', href: '/classes#recorded' },
   { label: 'Membership', href: '/membership' },

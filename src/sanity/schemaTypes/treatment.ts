@@ -59,6 +59,12 @@ export const treatment = defineType({
       initialValue: 'facial',
     }),
     defineField({
+      name: 'duration',
+      title: 'Duration / Time (Optional)',
+      type: 'string',
+      description: 'e.g., 45 Mins, 60 Mins, 90 Mins, or 2 Hours',
+    }),
+    defineField({
       name: 'description',
       title: 'Description (Optional)',
       type: 'text',
@@ -77,11 +83,16 @@ export const treatment = defineType({
     select: {
       title: 'name',
       category: 'category',
+      duration: 'duration',
     },
-    prepare({ title, category }) {
+    prepare({ title, category, duration }) {
+      const parts = [
+        category ? category.replace('-', ' ') : null,
+        duration || null,
+      ].filter(Boolean).join(' • ')
       return {
         title: title || 'Untitled Treatment',
-        subtitle: category ? category.replace('-', ' ') : 'Service',
+        subtitle: parts || 'Service',
       }
     },
   },

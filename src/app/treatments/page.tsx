@@ -1,5 +1,6 @@
 import { TreatmentsHero } from '@/components/organisms/TreatmentsHero'
 import { TreatmentsCatalogue } from '@/components/organisms/TreatmentsCatalogue'
+import { TreatmentsAcademySection } from '@/components/organisms/TreatmentsAcademySection'
 import { WhyAngelTouch } from '@/components/organisms/WhyAngelTouch'
 import { InquiryCTA } from '@/components/organisms/InquiryCTA'
 import { client } from '@/sanity/lib/client'
@@ -41,6 +42,7 @@ export default async function TreatmentsPage() {
     <>
       <TreatmentsHero />
       <TreatmentsCatalogue treatments={treatments} />
+      <TreatmentsAcademySection />
       <WhyAngelTouch />
       <InquiryCTA />
     </>

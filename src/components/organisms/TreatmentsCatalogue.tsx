@@ -65,6 +65,7 @@ type Treatment = {
   name: string
   slug: string
   category?: string
+  duration?: string
   description?: string
   featured?: boolean
 }
@@ -444,9 +445,19 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                           <span className="text-[10px] font-semibold tracking-[0.18em] text-[#1e5f2e] uppercase truncate pr-2">
                             {catLabel}
                           </span>
-                          <span className="text-[11px] font-mono text-[#8a8d87]/60 shrink-0">
-                            #{String(globalIndex).padStart(2, '0')}
-                          </span>
+                          <div className="flex items-center gap-2 shrink-0">
+                            {treatment.duration && (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#1e5f2e] bg-[#e9f3e9] px-2 py-0.5 rounded-sm">
+                                <svg className="w-3 h-3 text-[#1e5f2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {treatment.duration}
+                              </span>
+                            )}
+                            <span className="text-[11px] font-mono text-[#8a8d87]/60">
+                              #{String(globalIndex).padStart(2, '0')}
+                            </span>
+                          </div>
                         </div>
 
                         {/* Service Name */}

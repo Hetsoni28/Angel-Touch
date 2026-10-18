@@ -2,6 +2,7 @@ import { seo } from './seo'
 import { productCategory } from './productCategory'
 import { product } from './product'
 import { treatment } from './treatment'
+import { academyCourse } from './academyCourse'
 import { masterclassType } from './masterclass'
 import { membershipPlan } from './membershipPlan'
 import { siteSettings } from './siteSettings'
@@ -14,6 +15,7 @@ export const schemaTypes = [
   productCategory,
   product,
   treatment,
+  academyCourse,
   masterclassType,
   membershipPlan,
   siteSettings,

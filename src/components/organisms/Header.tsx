@@ -10,6 +10,7 @@ import { generateWhatsAppLink } from '@/utils/whatsapp'
 const navLinks = [
   { label: 'Shop', href: '/shop', subtitle: 'Handcrafted Ayurvedic Skincare' },
   { label: 'Treatments', href: '/treatments', subtitle: 'Aroma Facials, Shirodhara & Hair Spa' },
+  { label: 'Academy', href: '/academy', subtitle: 'Certified Cosmetology & Skincare' },
   { label: 'Classes', href: '/classes', subtitle: 'Live Formulation Academy' },
   { label: 'Recordings', href: '/recordings', subtitle: 'On-Demand Masterclass Vault' },
   { label: 'Membership', href: '/membership', subtitle: 'Unlimited Vault Access' },
