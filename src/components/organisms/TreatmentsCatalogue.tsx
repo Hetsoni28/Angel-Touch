@@ -65,12 +65,33 @@ type Treatment = {
   name: string
   slug: string
   category?: string
+  subcategory?: string
   duration?: string
   description?: string
   featured?: boolean
 }
 
 const ITEMS_PER_PAGE = 6
+
+// Inner subcategory tabs for specific parent categories
+const SUBCATEGORY_TABS: Record<string, { key: string; label: string }[]> = {
+  'scalp-analysis-hair-regrowth': [
+    { key: 'advanced-hair-treatments', label: 'Advanced Hair Treatments' },
+    { key: 'hair-treatment-services', label: 'Hair Treatment Services' },
+  ],
+  'hair-treatments': [
+    { key: 'hair-styling', label: 'Hair Styling' },
+  ],
+  'body-spa': [
+    { key: 'additional-offerings', label: 'Additional Offerings' },
+  ],
+  'family-makeup': [
+    { key: 'additional-offerings', label: 'Additional Offerings' },
+  ],
+  'occasion-makeup': [
+    { key: 'bridal-packages-sub', label: 'Bridal Packages' },
+  ],
+}
 
 function shuffleTreatments(items: Treatment[]): Treatment[] {
   const arr = [...items]
@@ -115,11 +136,15 @@ function interleaveTreatments(items: Treatment[]): Treatment[] {
 export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
   const displayTreatments = treatments || []
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState(false)
   const [shuffledAll, setShuffledAll] = useState<Treatment[]>(() => interleaveTreatments(displayTreatments))
   const dropdownRef = useRef<HTMLDivElement>(null)
   const catalogueTopRef = useRef<HTMLDivElement>(null)
+
+  // Active subcategory tabs for the current category (if any)
+  const activeSubcategoryTabs = SUBCATEGORY_TABS[selectedCategory] || []
 
   // Shuffle randomly on client mount
   useEffect(() => {
@@ -163,6 +188,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
       setShuffledAll(shuffleTreatments(displayTreatments))
     }
     setSelectedCategory(catKey)
+    setSelectedSubcategory('all')
     setCurrentPage(1)
     setIsOpen(false)
     if (typeof window !== 'undefined') {
@@ -173,6 +199,14 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
         url.searchParams.set('category', catKey)
       }
       window.history.replaceState({}, '', url.toString())
+    }
+  }
+
+  const handleSelectSubcategory = (subKey: string) => {
+    setSelectedSubcategory(subKey)
+    setCurrentPage(1)
+    if (catalogueTopRef.current) {
+      catalogueTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
@@ -195,8 +229,13 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
     if (selectedCategory === 'all') {
       return shuffledAll.length > 0 ? shuffledAll : displayTreatments
     }
-    return displayTreatments.filter((t) => t.category === selectedCategory)
-  }, [displayTreatments, selectedCategory, shuffledAll])
+    const byCat = displayTreatments.filter((t) => t.category === selectedCategory)
+    // If a subcategory tab is selected, further filter by it
+    if (selectedSubcategory !== 'all') {
+      return byCat.filter((t) => t.subcategory === selectedSubcategory)
+    }
+    return byCat
+  }, [displayTreatments, selectedCategory, selectedSubcategory, shuffledAll])
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredTreatments.length / ITEMS_PER_PAGE)
@@ -371,6 +410,49 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
           </div>
         </div>
 
+        {/* Subcategory Tabs — only shown for categories 9, 10, 20, 21, 22 */}
+        {activeSubcategoryTabs.length > 0 && (
+          <div className="mb-8 flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#8a8d87] mr-1">Section:</span>
+            <button
+              type="button"
+              onClick={() => handleSelectSubcategory('all')}
+              className={`px-4 py-1.5 text-[11px] font-semibold tracking-[0.1em] uppercase transition-all rounded-full border ${
+                selectedSubcategory === 'all'
+                  ? 'bg-[#1e5f2e] text-white border-[#1e5f2e]'
+                  : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
+              }`}
+            >
+              All
+            </button>
+            {activeSubcategoryTabs.map((sub) => {
+              const isSubSelected = selectedSubcategory === sub.key
+              const subCount = displayTreatments.filter(
+                (t) => t.category === selectedCategory && t.subcategory === sub.key
+              ).length
+              return (
+                <button
+                  key={sub.key}
+                  type="button"
+                  onClick={() => handleSelectSubcategory(sub.key)}
+                  className={`px-4 py-1.5 text-[11px] font-semibold tracking-[0.1em] uppercase transition-all rounded-full border flex items-center gap-1.5 ${
+                    isSubSelected
+                      ? 'bg-[#1e5f2e] text-white border-[#1e5f2e]'
+                      : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
+                  }`}
+                >
+                  <span>{sub.label}</span>
+                  {subCount > 0 && (
+                    <span className={`text-[10px] ${isSubSelected ? 'text-white/80' : 'text-[#8a8d87]'}`}>
+                      ({subCount})
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
         {/* Services List WITHOUT ANY IMAGES */}
         {filteredTreatments.length === 0 ? (
           <FadeIn>
@@ -413,7 +495,7 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
           <div>
             {/* Active Sub-heading with page indicator */}
             <div className="flex items-center justify-between pb-4 mb-8 border-b border-[#dde7dd]">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <span className="w-6 h-px bg-[#1e5f2e]" aria-hidden="true" />
                 <h3 
                   className="text-[1.3rem] sm:text-[1.6rem] font-medium text-[#1e2228]"
@@ -421,6 +503,20 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
                 >
                   {selectedCategoryLabel}
                 </h3>
+                {selectedSubcategory !== 'all' && (() => {
+                  const subLabel = activeSubcategoryTabs.find(s => s.key === selectedSubcategory)?.label
+                  return subLabel ? (
+                    <>
+                      <span className="text-[#8a8d87] text-[1.1rem]">›</span>
+                      <span
+                        className="text-[1.1rem] sm:text-[1.3rem] font-medium text-[#1e5f2e]"
+                        style={{ fontFamily: 'var(--font-heading)' }}
+                      >
+                        {subLabel}
+                      </span>
+                    </>
+                  ) : null
+                })()}
               </div>
               <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8a8d87]">
                 Page {currentPage} of {Math.max(1, totalPages)} &middot; {filteredTreatments.length} Services

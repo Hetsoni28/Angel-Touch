@@ -59,6 +59,25 @@ export const treatment = defineType({
       initialValue: 'facial',
     }),
     defineField({
+      name: 'subcategory',
+      title: 'Sub-Category / Section (Optional)',
+      type: 'string',
+      description: 'Only needed for categories 9, 10, 20, 21, and 22 — tag the inner section this service belongs to.',
+      options: {
+        list: [
+          { title: '── Cat 9 ──', value: '' },
+          { title: 'Advanced Hair Treatments (Cat 9)', value: 'advanced-hair-treatments' },
+          { title: 'Hair Treatment Services (Cat 9)', value: 'hair-treatment-services' },
+          { title: '── Cat 10 ──', value: '' },
+          { title: 'Hair Styling (Cat 10)', value: 'hair-styling' },
+          { title: '── Cat 20 / 21 ──', value: '' },
+          { title: 'Additional Offerings (Cat 20 / 21)', value: 'additional-offerings' },
+          { title: '── Cat 22 ──', value: '' },
+          { title: 'Bridal Packages (Cat 22)', value: 'bridal-packages-sub' },
+        ],
+      },
+    }),
+    defineField({
       name: 'duration',
       title: 'Duration / Time (Optional)',
       type: 'string',

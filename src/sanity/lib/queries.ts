@@ -27,6 +27,7 @@ export const ALL_TREATMENTS_QUERY = groq`
     name,
     "slug": slug.current,
     category,
+    subcategory,
     duration,
     featured,
     description
