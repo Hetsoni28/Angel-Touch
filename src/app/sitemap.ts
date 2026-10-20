@@ -67,6 +67,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/faq`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    ...['privacy', 'terms', 'refund'].map((page) => ({
+      url: `${SITE_URL}/${page}`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    })),
   ]
 
   // Dynamic routes from Sanity

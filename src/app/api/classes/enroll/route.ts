@@ -14,12 +14,16 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
+import { ok, fail, unauthorized, serverError, paymentsDisabled } from '@/lib/api/response'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 import { enrollClassSchema } from '@/lib/security/validation'
 import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
 import { client } from '@/sanity/lib/client'
 
 export async function POST(req: NextRequest) {
+  // Inquiry mode: online payments are switched off (src/lib/features.ts)
+  if (!PAYMENTS_ENABLED) return paymentsDisabled()
+
   try {
     // 0. Rate limiting
     const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.ENROLLMENT)

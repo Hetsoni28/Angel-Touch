@@ -245,7 +245,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
                 href={generateWhatsAppLink({
                   type: 'PRODUCT',
                   itemName: product.name,
-                  itemUrl: `https://angeltouch.com/shop/${params.slug}`
+                  itemUrl: `https://angeltouch.in/shop/${params.slug}`
                 })}
                 target="_blank"
                 rel="noopener noreferrer"

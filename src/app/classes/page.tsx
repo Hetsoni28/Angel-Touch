@@ -253,7 +253,7 @@ export default async function ClassesPage() {
               Live classes are purchased individually, while membership provides access to eligible past class recordings.
             </p>
             <div className="flex gap-4">
-              <Link href="/memberships">
+              <Link href="/membership">
                 <Button variant="primary">Explore Membership</Button>
               </Link>
             </div>

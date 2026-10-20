@@ -24,7 +24,8 @@
 import { NextRequest } from 'next/server'
 import Razorpay from 'razorpay'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
-import { ok, fail, unauthorized, forbidden, serverError } from '@/lib/api/response'
+import { ok, fail, unauthorized, forbidden, serverError, paymentsDisabled } from '@/lib/api/response'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 import { verifyPaymentSchema } from '@/lib/security/validation'
 import { verifyRazorpayPaymentSignature } from '@/lib/security/crypto'
 import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
@@ -40,6 +41,9 @@ const PENDING_MESSAGE =
   'Your payment was received but is still pending confirmation. Access will activate automatically within a few minutes — please do not pay again.'
 
 export async function POST(req: NextRequest) {
+  // Inquiry mode: online payments are switched off (src/lib/features.ts)
+  if (!PAYMENTS_ENABLED) return paymentsDisabled()
+
   try {
     // 1. Rate limiting
     const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.PAYMENTS)

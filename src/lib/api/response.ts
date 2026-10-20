@@ -37,3 +37,8 @@ export function forbidden() {
 export function serverError(message = 'An internal server error occurred.') {
   return fail(message, 500)
 }
+
+/** Returned by payment endpoints while PAYMENTS_ENABLED is off (see src/lib/features.ts). */
+export function paymentsDisabled() {
+  return fail('Online payments are not available yet. Please contact us on WhatsApp.', 503)
+}

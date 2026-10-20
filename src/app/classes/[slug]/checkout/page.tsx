@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { CheckoutButton } from '@/components/organisms/CheckoutButton'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { ClassStatusAlert } from '@/components/molecules/ClassStatusAlert'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false
 
@@ -16,6 +17,11 @@ interface Props {
 export default async function CheckoutPage({ params }: Props) {
   const resolvedParams = await params
   const { slug } = resolvedParams
+
+  // Inquiry mode: no online checkout — send them back to the class page (WhatsApp registration)
+  if (!PAYMENTS_ENABLED) {
+    redirect(`/classes/${slug}`)
+  }
 
   // 1. Authenticate user
   const supabase = await createClient()

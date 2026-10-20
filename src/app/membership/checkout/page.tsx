@@ -6,11 +6,17 @@ import { MembershipCheckoutButton } from '@/components/organisms/MembershipCheck
 import { Check, ShieldCheck } from 'lucide-react'
 import Script from 'next/script'
 import Link from 'next/link'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false
 
 export default async function MembershipCheckoutPage({ searchParams }: { searchParams: Promise<{ plan?: string }> }) {
   await connection()
+
+  // Inquiry mode: membership is "coming soon" — no checkout yet
+  if (!PAYMENTS_ENABLED) {
+    redirect('/membership')
+  }
 
   const resolvedSearchParams = await searchParams
   const planId = resolvedSearchParams.plan

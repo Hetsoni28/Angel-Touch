@@ -6,6 +6,8 @@ import { ProductGrid } from '@/components/organisms/ProductGrid'
 import { FeaturedProduct } from '@/components/organisms/FeaturedProduct'
 import { BrandPhilosophy } from '@/components/organisms/BrandPhilosophy'
 import { ShopCTA } from '@/components/organisms/ShopCTA'
+import { ComingSoonBanner } from '@/components/organisms/ComingSoonBanner'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 import type { Metadata } from 'next'
 
 export const instant = false
@@ -30,6 +32,26 @@ export default async function ShopPage() {
     client.fetch(ALL_PRODUCTS_QUERY).catch(() => []),
     client.fetch(ALL_CATEGORIES_QUERY).catch(() => [])
   ])
+
+  // Until the first product is published in Sanity, the shop is a full-page "opening soon" banner.
+  // It switches to the catalogue automatically once products exist.
+  if (!products || products.length === 0) {
+    return (
+      <ComingSoonBanner
+        title="The shop is almost ready."
+        description="Heena Thaker's handmade oils, elixirs and herbal clays are being readied for online browsing. Until the shop opens, tell us what you need on WhatsApp and we'll arrange it for you."
+        imageSrc="/images/featured_lifestyle.jpg"
+        imageAlt="Handmade Ayurvedic oils and balms with saffron, turmeric and fresh leaves"
+        primary={{
+          label: 'Order on WhatsApp',
+          href: generateWhatsAppLink({ type: 'GENERAL', message: 'I would like to order an Angel Touch product.' }),
+          ariaLabel: 'Order a product on WhatsApp (opens in a new window)',
+        }}
+        secondary={{ label: 'Explore treatments', href: '/treatments' }}
+        note="Every product is made in small batches. Ask us about ingredients, sizes and availability before you order."
+      />
+    )
+  }
 
   const featuredProduct = products?.find((p: { featured?: boolean }) => p.featured)
 

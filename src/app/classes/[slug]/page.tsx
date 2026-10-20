@@ -8,6 +8,7 @@ import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false // Replaces revalidate in Next.js 16
 
@@ -310,7 +311,7 @@ export default async function MasterclassDetailPage({ params }: Props) {
                       This live class has ended. You can access the recording instantly by subscribing to our Membership.
                     </p>
                   </div>
-                  <Link href="/memberships">
+                  <Link href="/membership">
                     <Button variant="primary" size="lg" className="w-full">
                       View Membership Plans
                     </Button>
@@ -332,7 +333,7 @@ export default async function MasterclassDetailPage({ params }: Props) {
                     </Button>
                   </Link>
                 </div>
-              ) : masterclass.price ? (
+              ) : PAYMENTS_ENABLED && masterclass.price ? (
                 <Link href={`/classes/${masterclass.slug}/checkout`}>
                   <Button variant="primary" size="lg" className="w-full">
                     Join This Class

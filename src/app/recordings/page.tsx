@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { RecordingCard } from '@/components/organisms/RecordingCard'
 import type { Metadata } from 'next'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false
 
@@ -95,8 +96,9 @@ export default async function RecordingsPage() {
               Recorded Library
             </h1>
             <p className="text-[#3c3a38] text-base sm:text-lg md:text-xl leading-relaxed font-medium">
-              Missed a live session? Unlock unlimited wisdom from our past masterclasses. 
-              Enjoy complimentary access with an active membership, or purchase recordings individually for lifetime access.
+              {PAYMENTS_ENABLED
+                ? 'Missed a live session? Unlock unlimited wisdom from our past masterclasses. Enjoy complimentary access with an active membership, or purchase recordings individually for lifetime access.'
+                : 'Missed a live session? Browse our past masterclasses and message us on WhatsApp to get the recording of any class.'}
             </p>
           </div>
         </div>
@@ -112,12 +114,15 @@ export default async function RecordingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {recordings.map((recording: any) => {
               // Determine status
-              let status: 'watch' | 'buy' | 'upgrade' = 'buy'
+              let status: 'watch' | 'buy' | 'upgrade' | 'inquire' = 'buy'
 
               if (isMember) {
                 status = 'watch'
               } else if (purchasedClassIds.includes(recording._id)) {
                 status = 'watch'
+              } else if (!PAYMENTS_ENABLED) {
+                // Inquiry mode: access is arranged over WhatsApp
+                status = 'inquire'
               } else {
                 // Not a member, hasn't purchased
                 // We'll prompt them to buy individually or upgrade. The prompt asks for 'upgrade' or 'buy'.

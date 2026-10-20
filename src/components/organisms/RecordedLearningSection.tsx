@@ -52,7 +52,7 @@ export function RecordedLearningSection() {
             <FadeIn delay={0.5}>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <Link 
-                  href="/classes/recorded" 
+                  href="/recordings" 
                   className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
                 >
                   Explore Recorded Classes →

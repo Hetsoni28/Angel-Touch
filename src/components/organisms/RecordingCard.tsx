@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { PlayCircle, Crown, ShoppingBag } from 'lucide-react'
+import { PlayCircle, Crown, ShoppingBag, MessageCircle } from 'lucide-react'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 interface RecordingCardProps {
   slug: string
@@ -9,7 +10,8 @@ interface RecordingCardProps {
   description: string
   date: string
   price: number
-  status: 'watch' | 'buy' | 'upgrade'
+  /** 'inquire' = inquiry mode (online payments off): ask for access on WhatsApp */
+  status: 'watch' | 'buy' | 'upgrade' | 'inquire'
 }
 
 export function RecordingCard({ slug, title, imageUrl, description, date, price, status }: RecordingCardProps) {
@@ -68,6 +70,27 @@ export function RecordingCard({ slug, title, imageUrl, description, date, price,
               >
                 <Crown className="w-4 h-4 mr-2" aria-hidden="true" /> View Membership
               </Link>
+            </div>
+          )}
+
+          {status === 'inquire' && (
+            <div className="flex gap-2">
+              <Link 
+                href={`/classes/${slug}`} 
+                aria-label={`View details for ${title}`}
+                className="flex-1 flex items-center justify-center min-h-[44px] px-4 py-3 bg-transparent border border-[#2e7a3a] text-[#2e7a3a] hover:bg-[#2e7a3a] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] transition-colors rounded-sm"
+              >
+                Details
+              </Link>
+              <a 
+                href={generateWhatsAppLink({ type: 'RECORDING', itemName: title })}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ask about the recording of ${title} on WhatsApp (opens in a new window)`}
+                className="flex-1 flex items-center justify-center min-h-[44px] px-4 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-[0.18em] uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors rounded-sm"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> Enquire
+              </a>
             </div>
           )}
 

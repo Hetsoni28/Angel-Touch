@@ -12,13 +12,17 @@
 
 import { NextRequest } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
-import { ok, fail, unauthorized, serverError } from '@/lib/api/response'
+import { ok, fail, unauthorized, serverError, paymentsDisabled } from '@/lib/api/response'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 import Razorpay from 'razorpay'
 import { client } from '@/sanity/lib/client'
 import { createOrderSchema } from '@/lib/security/validation'
 import { checkRateLimit, rateLimitExceededResponse, RATE_LIMIT_PRESETS } from '@/lib/security/rateLimit'
 
 export async function POST(req: NextRequest) {
+  // Inquiry mode: online payments are switched off (src/lib/features.ts)
+  if (!PAYMENTS_ENABLED) return paymentsDisabled()
+
   try {
     // 1. Rate limiting
     const rateLimit = checkRateLimit(req, RATE_LIMIT_PRESETS.PAYMENTS)

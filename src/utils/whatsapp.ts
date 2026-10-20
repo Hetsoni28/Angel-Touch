@@ -9,7 +9,7 @@
 // Format: Use country code without + or 00
 const WHATSAPP_NUMBER = '919723179638' // Heena Thaker's business number
 
-type InquiryType = 'TREATMENT' | 'PRODUCT' | 'GENERAL' | 'CLASS'
+type InquiryType = 'TREATMENT' | 'PRODUCT' | 'GENERAL' | 'CLASS' | 'MEMBERSHIP' | 'RECORDING'
 
 interface InquiryParams {
   type: InquiryType
@@ -32,6 +32,13 @@ export function generateWhatsAppLink({ type, itemName, itemUrl, message }: Inqui
       break
     case 'CLASS':
       text = `Hello Angel Touch, I would like to inquire about the upcoming *${itemName}* masterclass.`
+      if (itemUrl) text += `\nReference: ${itemUrl}`
+      break
+    case 'MEMBERSHIP':
+      text = `Hello Angel Touch, I'm interested in the recorded class membership${itemName ? ` (*${itemName}*)` : ''}. Please let me know when it opens.`
+      break
+    case 'RECORDING':
+      text = `Hello Angel Touch, I would like access to the recording of the *${itemName}* masterclass.`
       if (itemUrl) text += `\nReference: ${itemUrl}`
       break
     case 'GENERAL':
