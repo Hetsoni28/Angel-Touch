@@ -56,10 +56,11 @@ export const MASTERCLASS_BY_SLUG_QUERY = groq`
     shortDescription,
     date,
     duration,
-    price,
-    recordingUrl
+    price
   }
 `
+// NOTE: recordingUrl is deliberately NOT selected here. It is only read
+// server-side after an access check (customer/library/[slug], api/recordings/access).
 
 export const ALL_ACADEMY_COURSES_QUERY = groq`
   *[_type == "academyCourse"] {

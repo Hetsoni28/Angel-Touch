@@ -42,12 +42,13 @@ export async function POST(req: NextRequest) {
 
     const serviceSupabase = await createServiceClient()
     
-    // Find the enrollment
+    // Find the enrollment — must belong to the logged-in user
     const { data: enrollment } = await serviceSupabase
       .from('class_enrollments')
       .select('class_id, status')
       .eq('id', referenceId)
-      .single()
+      .eq('user_id', user.id)
+      .maybeSingle()
       
     if (!enrollment) return fail('Enrollment not found.', 404)
     if (enrollment.status === 'confirmed') {

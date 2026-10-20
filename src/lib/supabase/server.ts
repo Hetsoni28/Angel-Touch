@@ -10,6 +10,7 @@
  * Use the middleware client for session refresh.
  */
 import { createServerClient } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import type { Database } from './types'
 
@@ -49,30 +50,24 @@ export async function createClient() {
  * NEVER expose the service role key to the browser.
  * NEVER use this in Client Components.
  */
+//
+// IMPORTANT: this must NOT read the request cookies. If it did, supabase-js
+// would send the logged-in user's access token instead of the service-role
+// key, and every "service" query would silently run under that user's RLS.
 export async function createServiceClient() {
-  const cookieStore = await cookies()
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!serviceKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set.')
+  }
 
-  return createServerClient<Database>(
+  return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    serviceKey,
     {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
-            })
-          } catch {
-            // ignore
-          }
-        },
-      },
       auth: {
         autoRefreshToken: false,
         persistSession: false,
+        detectSessionInUrl: false,
       },
     }
   )

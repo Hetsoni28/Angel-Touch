@@ -24,6 +24,12 @@ import { ok, fail, serverError } from '@/lib/api/response'
 import { sendEmail } from '@/lib/email/service'
 import { verifyRazorpayWebhookSignature } from '@/lib/security/crypto'
 import { checkRateLimit, rateLimitExceededResponse } from '@/lib/security/rateLimit'
+import {
+  claimPayment,
+  confirmEnrollment,
+  getOwnedEnrollment,
+  grantMembership,
+} from '@/lib/payments/entitlements'
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,77 +58,94 @@ export async function POST(req: NextRequest) {
     // 2. Handle payment.captured (successful payment)
     if (event.event === 'payment.captured') {
       const payment = event.payload.payment.entity
-      const { userId, type, referenceId } = payment.notes
+      // Notes were written by our own server when the order was created
+      // (create-order / create-subscription) and the webhook body is signed.
+      const notes = payment.notes ?? {}
+      const userId: string = notes.userId
+      const type: string = notes.type
+      const referenceId: string = notes.referenceId
 
-      // Record the payment in our ledger (upsert to update the pending record created in create-order)
-      await serviceSupabase.from('payments').upsert({
-        razorpay_order_id: payment.order_id,
-        user_id: userId,
-        razorpay_payment_id: payment.id,
-        amount: payment.amount / 100, // Razorpay amount is in paise, DB expects INR
+      if (!userId || (type !== 'class_enrollment' && type !== 'membership') || !referenceId) {
+        console.error('[Webhook] payment.captured without usable notes', { orderId: payment.order_id })
+        return ok({ received: true, ignored: true })
+      }
+
+      let classId: string | null = null
+      if (type === 'class_enrollment') {
+        const enrollment = await getOwnedEnrollment(serviceSupabase, referenceId, userId)
+        if (!enrollment) {
+          console.error('[Webhook] Enrollment not found for paid order', { orderId: payment.order_id, referenceId })
+          return serverError('Enrollment not found.') // non-2xx → Razorpay retries
+        }
+        classId = enrollment.classId
+      }
+
+      // Claim the order exactly once (verify route may already have done it)
+      const claim = await claimPayment(serviceSupabase, {
+        orderId: payment.order_id,
+        paymentId: payment.id,
+        userId,
+        type,
+        referenceId: type === 'class_enrollment' ? classId : referenceId,
+        amountPaise: Number(payment.amount),
         currency: payment.currency,
-        status: 'succeeded',
-        payment_type: type,
-      }, { onConflict: 'razorpay_order_id' })
+      })
 
-      // Fetch user email for notifications
+      if (claim === 'error') return serverError('Ledger update failed.') // Razorpay retries
+      if (claim === 'already_processed') return ok({ received: true, alreadyProcessed: true })
+
+      // Email + name for notifications
+      const { data: authUser } = await serviceSupabase.auth.admin.getUserById(userId)
       const { data: profile } = await serviceSupabase
         .from('profiles')
-        .select('email, full_name')
+        .select('full_name')
         .eq('id', userId)
-        .single()
-
-      const userEmail = profile?.email ?? ''
+        .maybeSingle()
+      const userEmail = authUser?.user?.email ?? ''
       const userName = profile?.full_name ?? 'Valued Customer'
 
-      // Grant access based on payment type
       if (type === 'class_enrollment') {
-        // Confirm enrollment
-        await serviceSupabase
-          .from('class_enrollments')
-          .update({ status: 'confirmed' })
-          .eq('id', referenceId)
-          .eq('user_id', userId)
+        const confirmed = await confirmEnrollment(serviceSupabase, referenceId, userId)
+        if (!confirmed) {
+          console.error(`[Webhook] PAID BUT NOT CONFIRMED — order=${payment.order_id} enrollment=${referenceId}`)
+          return serverError('Enrollment confirm failed.')
+        }
 
-        // Send payment confirmation email
-        await sendEmail({
-          type: 'PAYMENT_CONFIRMATION',
-          to: userEmail,
-          name: userName,
-          amount: payment.amount,
-          orderId: payment.order_id,
-          paymentId: payment.id,
-          description: 'Ayurvedic Masterclass Enrollment',
-        }).catch(console.error) // Non-blocking — don't fail the webhook if email fails
+        if (userEmail) {
+          await sendEmail({
+            type: 'PAYMENT_CONFIRMATION',
+            to: userEmail,
+            name: userName,
+            amount: payment.amount,
+            orderId: payment.order_id,
+            paymentId: payment.id,
+            description: 'Ayurvedic Masterclass Enrollment',
+          }).catch(console.error) // Non-blocking — don't fail the webhook if email fails
+        }
       }
 
       if (type === 'membership') {
-        // Activate membership for 30 days
-        const expiresAt = new Date()
-        expiresAt.setDate(expiresAt.getDate() + 30)
+        const { ok: granted, expiresAt } = await grantMembership(serviceSupabase, {
+          userId,
+          orderId: payment.order_id,
+          planName: notes.planName ?? null,
+          billingPeriod: notes.billingPeriod ?? null,
+        })
+        if (!granted) {
+          console.error(`[Webhook] PAID BUT MEMBERSHIP NOT GRANTED — order=${payment.order_id}`)
+          return serverError('Membership grant failed.')
+        }
 
-        await serviceSupabase
-          .from('memberships')
-          .upsert({
-            user_id: userId,
-            plan_name: payment.notes.planName || 'Premium',
-            tier: 'premium',
-            status: 'active',
-            expires_at: expiresAt.toISOString(),
-            started_at: new Date().toISOString(),
-            gateway: 'razorpay',
-            gateway_subscription_id: payment.order_id, // we used order_id since we created a one-time order as fallback
-          }, { onConflict: 'user_id' })
-
-        // Send membership activation email
-        await sendEmail({
-          type: 'MEMBERSHIP_ACTIVATION',
-          to: userEmail,
-          name: userName,
-          planName: 'Angel Touch Premium Membership',
-          expiresAt: expiresAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-          libraryUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/library`,
-        }).catch(console.error)
+        if (userEmail) {
+          await sendEmail({
+            type: 'MEMBERSHIP_ACTIVATION',
+            to: userEmail,
+            name: userName,
+            planName: notes.planName || 'Angel Touch Premium Membership',
+            expiresAt: expiresAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+            libraryUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/customer/library`,
+          }).catch(console.error)
+        }
       }
     }
 
@@ -177,7 +200,7 @@ export async function POST(req: NextRequest) {
       // Find the payment to see what it was for
       const { data: paymentRecord } = await serviceSupabase
         .from('payments')
-        .select('user_id, payment_type, razorpay_order_id')
+        .select('user_id, payment_type, razorpay_order_id, reference_id')
         .eq('razorpay_payment_id', paymentId)
         .single()
 
@@ -189,13 +212,17 @@ export async function POST(req: NextRequest) {
           .eq('razorpay_payment_id', paymentId)
 
         if (paymentRecord.payment_type === 'class_enrollment') {
-          // Revoke access
-          await serviceSupabase
-            .from('class_enrollments')
-            .update({ status: 'cancelled' })
-            .eq('user_id', paymentRecord.user_id)
-            // Ideally we'd have referenceId, but we can revoke based on order relation if we tracked it, 
-            // or just status.
+          // Revoke access to THIS class only (reference_id = Sanity class _id).
+          // Never cancel by user_id alone — that would wipe every class they own.
+          if (paymentRecord.reference_id) {
+            await serviceSupabase
+              .from('class_enrollments')
+              .update({ status: 'cancelled' })
+              .eq('user_id', paymentRecord.user_id)
+              .eq('class_id', paymentRecord.reference_id)
+          } else {
+            console.error('[Webhook] Refund without reference_id — revoke manually', { paymentId })
+          }
         } else if (paymentRecord.payment_type === 'membership') {
           // Revoke membership access immediately
           await serviceSupabase
