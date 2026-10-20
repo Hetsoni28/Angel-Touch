@@ -142,8 +142,8 @@ input:-webkit-autofill:active{
 
 /* Coming-soon banner: the arched photo opens upward on load */
 @keyframes archReveal {
-  from { clip-path: inset(100% 0 0 0); transform: scale(1.04); }
-  to   { clip-path: inset(0 0 0 0); transform: scale(1); }
+  from { clip-path: inset(100% 0 0 0 round 9999px 9999px 0 0); transform: scale(1.04); }
+  to   { clip-path: inset(0 0 0 0 round 9999px 9999px 0 0); transform: scale(1); }
 }
 .coming-soon-arch {
   animation: archReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;

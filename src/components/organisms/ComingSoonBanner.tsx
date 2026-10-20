@@ -80,10 +80,10 @@ export function ComingSoonBanner({
         <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center lg:justify-end">
           <div className="relative w-[min(62vw,260px)] sm:w-[340px] lg:w-[min(100%,440px)]">
             <div
-              className="absolute inset-0 translate-x-3 translate-y-3 sm:translate-x-5 sm:translate-y-5 rounded-t-full border border-[#edc179]"
+              className="absolute inset-0 translate-x-3 translate-y-3 sm:translate-x-5 sm:translate-y-5 rounded-t-[9999px] border border-[#edc179]"
               aria-hidden="true"
             />
-            <div className="coming-soon-arch relative aspect-[4/5] max-h-[32svh] sm:max-h-[42svh] lg:max-h-[72svh] w-full rounded-t-full overflow-hidden bg-[#e9f3e9] mx-auto">
+            <div className="coming-soon-arch relative aspect-[4/5] max-h-[32svh] sm:max-h-[42svh] lg:max-h-[72svh] w-full rounded-t-[9999px] overflow-hidden bg-[#e9f3e9] mx-auto">
               <Image
                 src={imageSrc}
                 alt={imageAlt}
