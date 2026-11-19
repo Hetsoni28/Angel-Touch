@@ -2,9 +2,13 @@ import type { ReactNode } from 'react'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { SITE_INFO } from '@/lib/siteInfo'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
 interface LegalPageProps {
   title: string
+  /** Route path, e.g. "/privacy" — used for the breadcrumb structured data */
+  path: string
   /** Shown under the title, e.g. "20 October 2026" */
   lastUpdated: string
   intro: ReactNode
@@ -15,9 +19,10 @@ interface LegalPageProps {
  * Shared layout for the policy pages (privacy, terms, refund).
  * A single readable column; sections are LegalSection children.
  */
-export function LegalPage({ title, lastUpdated, intro, children }: LegalPageProps) {
+export function LegalPage({ title, path, lastUpdated, intro, children }: LegalPageProps) {
   return (
     <div className="bg-[#faf8f2] min-h-screen">
+      <JsonLd data={breadcrumbJsonLd([{ name: title, path }])} />
       <article className="max-w-3xl mx-auto px-6 md:px-10 py-12 md:py-20">
         <div className="mb-10">
           <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: title }]} />

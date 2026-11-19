@@ -2,8 +2,16 @@ import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/atoms/Button'
 
+export interface MembershipPlan {
+  _id: string
+  name: string
+  price: number | string
+  billingPeriod?: string
+  features?: string[]
+}
+
 interface MembershipPlansProps {
-  plans: any[]
+  plans: MembershipPlan[]
 }
 
 export function MembershipPlans({ plans }: MembershipPlansProps) {
@@ -16,7 +24,7 @@ export function MembershipPlans({ plans }: MembershipPlansProps) {
 
       {plans && plans.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {plans.map((plan: any) => (
+          {plans.map((plan) => (
             <div key={plan._id} className="bg-white border border-[#dde7dd] p-8 md:p-10 flex flex-col hover:border-[#2e7a3a]/30 hover:shadow-xl transition-all duration-300">
               <h3 className="font-playfair text-2xl text-[#1e2228] mb-2">{plan.name}</h3>
               <div className="flex items-baseline gap-1 mb-6">

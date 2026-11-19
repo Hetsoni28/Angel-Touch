@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { slugOptions } from './fields'
 
 export const treatment = defineType({
   name: 'treatment',
@@ -16,10 +17,7 @@ export const treatment = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
+      options: slugOptions('name'),
       description: 'Click Generate to auto-create from name',
       validation: (Rule) => Rule.required(),
     }),

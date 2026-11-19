@@ -9,22 +9,22 @@ import { ShopCTA } from '@/components/organisms/ShopCTA'
 import { ComingSoonBanner } from '@/components/organisms/ComingSoonBanner'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd, absoluteUrl } from '@/lib/seo'
 
 export const instant = false
 
-export const metadata: Metadata = {
-  title: 'Shop Ayurvedic Beauty Products',
+export const metadata: Metadata = pageMetadata({
+  title: 'Ayurvedic Skincare & Hair Care Products',
   description:
-    'Browse Angel Touch\'s handcrafted Ayurvedic skincare, hair care, and wellness products. Formulated by Heena Thaker using traditional cold-infusion methods and wildcrafted botanicals.',
-  alternates: { canonical: 'https://angeltouch.in/shop' },
-  openGraph: {
-    title: 'Shop Ayurvedic Beauty Products | Angel Touch',
-    description:
-      'Handcrafted Ayurvedic skincare, hair care, and wellness products. Saffron facial oils, herbal elixirs, cleansing clays, and more.',
-    url: 'https://angeltouch.in/shop',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Ayurvedic Products' }],
+    'Handcrafted Ayurvedic skincare, hair oils and wellness products by Heena Thaker, made with saffron, herbs and botanicals. Enquire on WhatsApp to order.',
+  path: '/shop',
+  image: {
+    url: '/images/shop_hero.jpg',
+    alt: 'Handcrafted Angel Touch Ayurvedic oils, balms and herbal skincare products',
   },
-}
+})
 
 
 export default async function ShopPage() {
@@ -37,6 +37,8 @@ export default async function ShopPage() {
   // It switches to the catalogue automatically once products exist.
   if (!products || products.length === 0) {
     return (
+      <>
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Shop', path: '/shop' }])} />
       <ComingSoonBanner
         title="The shop is almost ready."
         description="Heena Thaker's handmade oils, elixirs and herbal clays are being readied for online browsing. Until the shop opens, tell us what you need on WhatsApp and we'll arrange it for you."
@@ -50,6 +52,7 @@ export default async function ShopPage() {
         secondary={{ label: 'Explore treatments', href: '/treatments' }}
         note="Every product is made in small batches. Ask us about ingredients, sizes and availability before you order."
       />
+      </>
     )
   }
 
@@ -57,6 +60,22 @@ export default async function ShopPage() {
 
   return (
     <div className="bg-[#faf8f2] min-h-screen">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: 'Shop', path: '/shop' }]),
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Angel Touch Ayurvedic products',
+            itemListElement: (products as { name: string; slug: string }[]).map((p, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              url: absoluteUrl(`/shop/${p.slug}`),
+              name: p.name,
+            })),
+          },
+        ]}
+      />
       <ShopHero />
       <CategoryNavigation categories={categories} />
       

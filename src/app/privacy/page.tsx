@@ -1,19 +1,21 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { LegalPage, LegalSection } from '@/components/organisms/LegalPage'
 import { SITE_INFO } from '@/lib/siteInfo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Privacy Policy',
   description:
     'How Angel Touch by Heena Thaker collects, uses and protects your personal information when you use our website, book treatments or join our classes.',
-  alternates: { canonical: 'https://angeltouch.in/privacy' },
-}
+  path: '/privacy',
+})
 
 export default function PrivacyPolicyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
+      path="/privacy"
       lastUpdated="20 October 2026"
       intro={
         <p>

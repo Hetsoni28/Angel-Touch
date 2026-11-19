@@ -18,6 +18,7 @@ interface ComingSoonBannerProps {
  * in Sanity) and /membership (until online payments are switched on).
  * The arched photo echoes a jharokha window; it is the one moving element.
  */
+/** Rendered as the entire page (shop / membership while closed), so its title is the page <h1>. */
 export function ComingSoonBanner({
   title,
   description,

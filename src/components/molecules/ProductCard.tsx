@@ -26,7 +26,7 @@ export function ProductCard({ product, index }: { product: ProductCardProps, ind
         >
           <Image
             src={product.imageUrl || '/images/skincare_oil.jpg'}
-            alt={productName}
+            alt={`${productName} – handcrafted Ayurvedic product by Angel Touch`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover object-center group-hover:scale-105 transition-transform duration-700"

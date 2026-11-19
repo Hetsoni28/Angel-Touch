@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
+import { slugOf, type MasterclassListItem } from '@/sanity/lib/types'
 import { Video } from 'lucide-react'
 import { connection } from 'next/server'
 import Link from 'next/link'
@@ -23,7 +24,9 @@ export default async function VideoLibraryPage() {
     .select('status, expires_at')
     .eq('user_id', user.id)
     .eq('status', 'active')
-    .single()
+    .order('expires_at', { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle()
 
   const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
@@ -42,7 +45,7 @@ export default async function VideoLibraryPage() {
     ? `*[_type == "masterclass" && date < now()] | order(date desc) { _id, title, slug, "imageUrl": mainImage.asset->url, date }`
     : `*[_type == "masterclass" && _id in $ids && date < now()] | order(date desc) { _id, title, slug, "imageUrl": mainImage.asset->url, date }`
 
-  const videos = await client.fetch(query, { ids: confirmedClassIds })
+  const videos = await client.fetch<MasterclassListItem[]>(query, { ids: confirmedClassIds })
 
   return (
     <div className="w-full">
@@ -67,8 +70,8 @@ export default async function VideoLibraryPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video: any) => (
-            <Link key={video._id} href={`/customer/library/${video.slug.current || video.slug}`} className="group block bg-white border border-[#dde7dd] overflow-hidden hover:border-[#2e7a3a]/30 hover:shadow-lg transition-all duration-300">
+          {videos.map((video) => (
+            <Link key={video._id} href={`/customer/library/${slugOf(video.slug)}`} className="group block bg-white border border-[#dde7dd] overflow-hidden hover:border-[#2e7a3a]/30 hover:shadow-lg transition-all duration-300">
               <div className="aspect-video bg-[#faf8f2] relative overflow-hidden">
                 {video.imageUrl ? (
                   <Image

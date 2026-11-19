@@ -124,7 +124,7 @@ export async function loginAction(
   const { email, password } = parsed.data
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
     // Supabase returns "Email not confirmed" if user hasn't verified
@@ -143,11 +143,14 @@ export async function loginAction(
 
   const redirectUrl = formData.get('redirect') as string | null
 
-  // Read role from DB — never from client
+  // Read role from DB — never from client.
+  // Filter by id: admins can read every profile via RLS, so an unfiltered
+  // .single() returns multiple rows, errors, and the admin redirect is skipped.
   const { data: profile } = await supabase
     .from('profiles')
     .select('is_admin')
-    .single()
+    .eq('id', signInData.user.id)
+    .maybeSingle()
 
   if (profile?.is_admin) {
     redirect('/admin')
@@ -193,7 +196,10 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient()
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${siteUrl}/reset-password`,
+    // Go through /auth/callback so the one-time ?code= is exchanged for a
+    // session first — otherwise updateUser() on /reset-password fails with
+    // "Auth session missing".
+    redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
   })
 
   if (error) {

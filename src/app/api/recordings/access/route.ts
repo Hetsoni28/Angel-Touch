@@ -59,7 +59,9 @@ export async function GET(req: NextRequest) {
       .select('id, expires_at')
       .eq('user_id', user.id)
       .eq('status', 'active')
-      .single()
+      .order('expires_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle()
 
     const hasEnrollment = !!enrollment
     const hasMembership = !!membership?.expires_at && new Date(membership.expires_at) > new Date()

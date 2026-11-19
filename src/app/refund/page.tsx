@@ -1,19 +1,21 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { LegalPage, LegalSection } from '@/components/organisms/LegalPage'
 import { SITE_INFO } from '@/lib/siteInfo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Refund & Cancellation Policy',
   description:
     'How cancellations, rescheduling and refunds work for Angel Touch treatments, live classes, recordings, academy courses and products.',
-  alternates: { canonical: 'https://angeltouch.in/refund' },
-}
+  path: '/refund',
+})
 
 export default function RefundPolicyPage() {
   return (
     <LegalPage
       title="Refund & Cancellation Policy"
+      path="/refund"
       lastUpdated="20 October 2026"
       intro={
         <p>

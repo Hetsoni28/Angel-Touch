@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 
@@ -48,18 +47,19 @@ export function SocialSection() {
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         {}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 md:mb-14">
-          <FadeIn delay={0.1}>
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-end gap-6 mb-10 md:mb-12">
+          <FadeIn>
             <div>
+              <p className="eyebrow mb-4">@angeltouch_by_heena_thaker</p>
               <h2
-                className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
-                style={{ fontFamily: 'var(--font-heading)' }}
+                className="text-[1.9rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.12]"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                Follow the Angel Touch journey.
+                From the studio, <span className="accent-italic">day to day</span>.
               </h2>
             </div>
           </FadeIn>
-          <FadeIn delay={0.2} direction="none">
+          <FadeIn delay={0.1} direction="none">
             <a
               href="https://www.instagram.com/angeltouch_by_heena_thaker/"
               target="_blank"
@@ -67,32 +67,32 @@ export function SocialSection() {
               aria-label="Follow Angel Touch on Instagram (opens in a new tab)"
               className="at-link self-start sm:self-end shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
             >
-              Follow on Instagram →
+              Follow on Instagram <span className="arrow" aria-hidden="true">→</span>
             </a>
           </FadeIn>
         </div>
 
         {/* Instagram Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2.5 md:gap-4">
           {gridImages.map((img, i) => (
-            <FadeIn key={i} delay={0.1 * (i + 1)}>
+            // 5th photo only on desktop, so no row is ever left with a single orphan
+            <FadeIn key={i} delay={0.05 * i} className={i === 4 ? 'hidden lg:block' : ''}>
               <a
                 href="https://www.instagram.com/angeltouch_by_heena_thaker/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`View on Instagram: ${img.alt} (opens in a new tab)`}
-                className="group relative aspect-square overflow-hidden bg-[#e9f3e9] border border-[#dde7dd]/60 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                className="img-zoom group relative aspect-square overflow-hidden bg-[#e9f3e9] block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
               >
                 <Image
                   src={img.src}
-                  alt=""
-                  aria-hidden="true"
+                  alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#1e2228]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                   <InstagramIcon className="w-6 h-6 text-white" />
                 </div>
               </a>

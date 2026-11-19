@@ -37,11 +37,15 @@ export async function assertOwnership(resourceUserId: string): Promise<void> {
  * RLS ensures only the user's own row is returned.
  */
 export async function getMyProfile() {
+  const user = await getCurrentUser()
+  if (!user) return null
   const supabase = await createClient()
+  // Filter by id: admins can read all profiles, so an unfiltered .single() fails for them.
   const { data } = await supabase
     .from('profiles')
     .select('*')
-    .single()
+    .eq('id', user.id)
+    .maybeSingle()
   return data
 }
 

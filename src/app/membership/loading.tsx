@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/atoms/Skeleton'
 export default function MembershipLoading() {
   return (
     <div className="min-h-screen bg-[#faf8f2]">
-      <MembershipHero />
+      <MembershipHero placeholder />
 
       {/* Plans Skeleton */}
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-20">

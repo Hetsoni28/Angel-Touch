@@ -11,7 +11,7 @@ export function ShopCTA() {
             className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2] mb-4"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Found something you'd like to know more about?
+            Found something you&apos;d like to know more about?
           </h2>
         </FadeIn>
         

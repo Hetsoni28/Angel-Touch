@@ -16,7 +16,7 @@ interface CheckoutButtonProps {
   userName: string
 }
 
-export function CheckoutButton({ classId, classTitle, amount, userId, userEmail, userName }: CheckoutButtonProps) {
+export function CheckoutButton({ classId, classTitle, amount, userEmail, userName }: CheckoutButtonProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -66,7 +66,7 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
         name: 'Angel Touch',
         description: `Enrollment: ${classTitle}`,
         order_id: orderId,
-        handler: async function (response: any) {
+        handler: async function (response: RazorpaySuccessResponse) {
           try {
             // Server-side payment verification
             const verifyRes = await fetch('/api/payments/verify', {
@@ -89,8 +89,8 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
             setTimeout(() => {
               router.push('/customer/dashboard')
             }, 2000)
-          } catch (err: any) {
-            setError(err.message || 'Payment verification failed.')
+          } catch (err) {
+            setError((err instanceof Error && err.message) || 'Payment verification failed.')
           }
         },
         modal: {
@@ -108,17 +108,16 @@ export function CheckoutButton({ classId, classTitle, amount, userId, userEmail,
         }
       }
 
-      // @ts-ignore
       const rzp = new window.Razorpay(options)
-      rzp.on('payment.failed', function (response: any) {
+      rzp.on('payment.failed', function (response: RazorpayFailureResponse) {
         setLoading(false)
         const reason = response.error?.description || 'Your transaction was declined by the bank.'
         setError(`Payment Failed: ${reason} Your card was not charged. Please try again or use another payment method.`)
       })
       rzp.open()
 
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong during checkout.')
+    } catch (err) {
+      setError((err instanceof Error && err.message) || 'Something went wrong during checkout.')
     } finally {
       setLoading(false)
     }

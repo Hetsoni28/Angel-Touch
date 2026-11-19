@@ -71,6 +71,10 @@ export default async function VideoPlayerPage({ params }: PageProps) {
     .from('memberships')
     .select('status, expires_at')
     .eq('user_id', user.id)
+    // A user can have several membership rows (expired + renewed) — take the latest,
+    // otherwise maybeSingle() errors on >1 row and the member is locked out.
+    .order('expires_at', { ascending: false, nullsFirst: false })
+    .limit(1)
     .maybeSingle()
 
   const isMember = membership?.status === 'active' && !!membership?.expires_at && new Date(membership.expires_at) > new Date()

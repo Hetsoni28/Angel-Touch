@@ -9,6 +9,8 @@ const playfairDisplay = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  // Real italic glyphs for the one-word heading accents (no browser-faked slant).
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -21,6 +23,7 @@ const dmSans = DM_Sans({
 
 import { Suspense } from "react";
 import { Toaster } from '@/components/atoms/Toaster'
+import { SITE_INFO } from '@/lib/siteInfo'
 
 const SITE_URL = 'https://angeltouch.in'
 
@@ -32,7 +35,7 @@ export const metadata: Metadata = {
     template: '%s | Angel Touch',
   },
   description:
-    'Angel Touch by Heena Thaker — India\'s premium women-only Ayurvedic salon, wellness centre, and certified beauty school. Authentic skin treatments, Shirodhara, Abhyanga, handcrafted Ayurvedic products, and live masterclasses.',
+    'Women-only Ayurvedic salon, wellness centre and beauty academy in Satellite, Ahmedabad. Shirodhara, aroma facials, bridal makeup and certified courses.',
 
   keywords: [
     'Angel Touch Ahmedabad',
@@ -54,8 +57,20 @@ export const metadata: Metadata = {
   creator: 'Heena Thaker',
   publisher: 'Angel Touch',
 
-  alternates: {
-    canonical: SITE_URL,
+  // NOTE: no `alternates.canonical` here on purpose. Metadata is inherited, so
+  // a canonical set in the root layout would make every page that forgets its
+  // own canonical point at the homepage — and Google would drop that page.
+  // Each page sets its own canonical through pageMetadata() (src/lib/seo.ts).
+
+  // Google Search Console / Bing ownership verification. Set the codes in
+  // .env.local and on Vercel; nothing is emitted while they are empty.
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
   },
 
   openGraph: {
@@ -82,7 +97,6 @@ export const metadata: Metadata = {
     description:
       'Premium women-only Ayurvedic salon, wellness centre, and beauty school. Authentic treatments, handcrafted products, and certified masterclasses.',
     images: ['/images/og-default.jpg'],
-    creator: '@angeltouch',
   },
 
   robots: {
@@ -99,8 +113,8 @@ export const metadata: Metadata = {
   other: {
     'geo.region': 'IN-GJ',
     'geo.placename': 'Ahmedabad, Satellite, Gujarat',
-    'geo.position': '23.02937;72.504909',
-    'ICBM': '23.02937, 72.504909',
+    'geo.position': `${SITE_INFO.google.lat};${SITE_INFO.google.lng}`,
+    'ICBM': `${SITE_INFO.google.lat}, ${SITE_INFO.google.lng}`,
     'format-detection': 'telephone=yes',
   },
 };

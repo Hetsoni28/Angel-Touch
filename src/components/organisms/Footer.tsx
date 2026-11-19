@@ -3,237 +3,206 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { SITE_INFO } from '@/lib/siteInfo'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 
-const services = [
-  { label: 'Aroma & Facial', href: '/treatments?category=facial' },
+// Evaluated when the page loads, so the copyright year never goes stale.
+const YEAR = new Date().getFullYear()
+
+const INSTAGRAM_URL = 'https://www.instagram.com/angeltouch_by_heena_thaker/'
+
+const treatments = [
+  { label: 'Aroma facials & skin', href: '/treatments?category=facial' },
+  { label: 'Clean-up & D-tan', href: '/treatments?category=clean-up' },
   { label: 'Shirodhara', href: '/treatments?category=shirodhara' },
-  { label: 'Hair Care & Spa', href: '/treatments?category=hair-spa' },
-  { label: 'Bridal Makeup', href: '/treatments?category=bridal-makeup' },
-  { label: 'Clean Up & D-Tan', href: '/treatments?category=clean-up' },
+  { label: 'Hair spa', href: '/treatments?category=hair-spa' },
+  { label: 'Body spa', href: '/treatments?category=body-spa' },
+  { label: 'Bridal makeup', href: '/treatments?category=bridal-makeup' },
+  { label: 'Nail art', href: '/treatments?category=nail-art' },
 ]
 
-const explore = [
-  { label: 'Shop', href: '/shop' },
-  { label: 'Treatments', href: '/treatments' },
-  { label: 'Beauty Academy', href: '/academy' },
-  { label: 'Classes', href: '/classes' },
-  { label: 'Recorded Classes', href: '/classes#recorded' },
+const learn = [
+  { label: 'Beauty academy', href: '/academy' },
+  { label: 'Live classes', href: '/classes' },
+  { label: 'Recorded classes', href: '/recordings' },
   { label: 'Membership', href: '/membership' },
-  { label: 'About', href: '/about' },
+]
+
+const studio = [
+  { label: 'About Heena Thaker', href: '/about' },
+  { label: 'Shop', href: '/shop' },
   { label: 'Contact', href: '/contact' },
+  { label: 'FAQ', href: '/faq' },
 ]
 
 const legal = [
-  { label: 'FAQ', href: '/faq' },
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms & Conditions', href: '/terms' },
-  { label: 'Refund & Cancellation', href: '/refund' },
+  { label: 'Privacy', href: '/privacy' },
+  { label: 'Terms', href: '/terms' },
+  { label: 'Refunds & cancellations', href: '/refund' },
 ]
 
-const hours = [
-  { day: 'Mon – Sat', time: '10:00 AM – 8:00 PM' },
-  { day: 'Sunday', time: '10:00 AM – 4:30 PM' },
-]
+const linkClass =
+  'text-[14px] text-[#4a4846] hover:text-[#1e5f2e] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors'
+
+function Column({ title, items }: { title: string; items: { label: string; href: string }[] }) {
+  return (
+    <div>
+      <p className="eyebrow !text-[#1e2228] mb-5">{title}</p>
+      <ul className="flex flex-col gap-3">
+        {items.map((item) => (
+          <li key={item.href}>
+            <Link href={item.href} className={linkClass}>{item.label}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 export function Footer() {
   const pathname = usePathname()
   if (pathname.startsWith('/studio')) return null
 
+  const bookingLink = generateWhatsAppLink({ type: 'GENERAL', message: 'I would like to book an appointment.' })
+
   return (
     <footer className="bg-[#faf8f2] border-t border-[#dde7dd]">
 
-      {/* Top CTA Strip */}
-      <div className="bg-[#2e7a3a] py-10 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* ── Booking strip ── */}
+      <div className="bg-[#2e7a3a] px-6 md:px-10 py-10 md:py-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-6 md:gap-10">
           <div>
             <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/75 mb-2">
-              Women-Only · Satellite, Ahmedabad
+              Women-only studio · Satellite, Ahmedabad
             </p>
             <h2
-              className="text-[1.4rem] md:text-[1.75rem] font-medium text-white leading-snug"
-              style={{ fontFamily: 'var(--font-heading)' }}
+              className="text-[1.5rem] md:text-[2rem] font-medium text-white leading-snug"
+              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
             >
-              Ready to experience Angel Touch?
+              Ready to book your <span className="italic font-normal text-[#f6e7c8]">appointment</span>?
             </h2>
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
             <a
-              href="tel:+919723179638"
-              aria-label="Call Angel Touch at +91 97231 79638"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 min-h-[44px] bg-white text-[#2e7a3a] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-[#f0f7f0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors duration-200"
+              href={bookingLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Book an appointment on WhatsApp (opens in a new tab)"
+              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-7 bg-white text-[#1e5f2e] text-[11px] font-bold tracking-[0.18em] uppercase hover:bg-[#f6e7c8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              +91 97231 79638
+              Book on WhatsApp
             </a>
-            <Link
-              href="/contact"
-              className="inline-flex items-center px-7 py-3.5 min-h-[44px] border-2 border-white text-white text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-white hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors duration-200"
+            <a
+              href={SITE_INFO.phoneHref}
+              aria-label={`Call Angel Touch at ${SITE_INFO.phoneDisplay}`}
+              className="inline-flex items-center justify-center min-h-[48px] px-7 border border-white/70 text-white text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-white hover:text-[#1e5f2e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2e7a3a] transition-colors tabular"
             >
-              Book Appointment
-            </Link>
+              Call {SITE_INFO.phoneDisplay}
+            </a>
           </div>
         </div>
       </div>
 
-      {/* Main Footer Grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-16 md:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+      {/* ── Main grid ── */}
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 md:pt-20 pb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12 mb-16">
 
-          {/* Brand + Hours + Social */}
-          <div className="lg:col-span-4">
-            <Link href="/" className="inline-block mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded" aria-label="Angel Touch Home">
-              <Image src="/logo.svg" alt="Angel Touch" width={220} height={64} className="h-16 w-auto" loading="lazy" />
+          {/* Brand */}
+          <div className="col-span-2 lg:col-span-4 lg:pr-8">
+            <Link href="/" className="inline-block mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded" aria-label="Angel Touch by Heena Thaker – home">
+              <Image src="/logo.svg" alt="Angel Touch by Heena Thaker" width={220} height={64} className="h-14 w-auto" loading="lazy" />
             </Link>
-            <p className="text-[13px] text-[#5c5a58] leading-relaxed max-w-sm mb-8">
-              A premium women-only salon and wellness centre founded by Heena Thaaker — offering advanced skin treatments, restorative aromatherapy, Ayurvedic therapies, professional hair services, bridal styling and a certified beauty school.
+            <p className="text-[14px] text-[#4a4846] leading-[1.75] max-w-sm mb-8">
+              A women-only Ayurvedic salon and beauty academy founded by Heena Thaker: skin and
+              aroma treatments, Shirodhara, hair care, bridal makeup, and courses that teach how
+              it&apos;s all done.
             </p>
 
-            {/* Hours */}
-            <div className="mb-8">
-              <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-3">Opening Hours</p>
-              <ul className="flex flex-col gap-2">
-                {hours.map(h => (
-                  <li key={h.day} className="flex items-center justify-between gap-4 text-[13px] border-b border-[#dde7dd]/60 pb-2 last:border-0">
-                    <span className="text-[#5c5a58]">{h.day}</span>
-                    <span className="text-[#1e5f2e] font-semibold">{h.time}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p className="eyebrow !text-[#1e2228] mb-3">Opening hours</p>
+            <dl className="max-w-xs mb-8 border-t border-[#dde7dd]">
+              {SITE_INFO.hours.map((h) => (
+                <div key={h.days} className="flex justify-between gap-4 py-2.5 border-b border-[#dde7dd] text-[13.5px] tabular">
+                  <dt className="text-[#4a4846]">{h.days.replace('Monday to Saturday', 'Mon – Sat')}</dt>
+                  <dd className="text-[#1e2228] font-medium">{h.time.replace(' to ', ' – ')}</dd>
+                </div>
+              ))}
+            </dl>
 
-            {/* Social */}
-            <div>
-              <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-3">Follow</p>
-              <a
-                href="https://www.instagram.com/angeltouch_by_heena_thaker/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Angel Touch by Heena Thaker on Instagram (opens in a new tab)"
-                className="inline-flex items-center gap-2 text-[12px] font-medium text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Angel Touch by Heena Thaker on Instagram (opens in a new tab)"
+              className="inline-flex items-center gap-2.5 text-[13px] text-[#4a4846] hover:text-[#1e5f2e] transition-colors"
+            >
+              <span className="w-9 h-9 rounded-full border border-[#dde7dd] flex items-center justify-center">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
-                @angeltouch_by_heena_thaker
+              </span>
+              @angeltouch_by_heena_thaker
+            </a>
+          </div>
+
+          <div className="lg:col-span-2"><Column title="Treatments" items={treatments} /></div>
+          <div className="lg:col-span-2 flex flex-col gap-10">
+            <Column title="Learn" items={learn} />
+            <Column title="Studio" items={studio} />
+          </div>
+
+          {/* Visit */}
+          <div className="col-span-2 lg:col-span-4">
+            <p className="eyebrow !text-[#1e2228] mb-5">Visit the studio</p>
+            <address className="not-italic text-[14px] text-[#1e2228] leading-[1.75] mb-4">
+              UGF-6, Policlinic Chamber,<br />
+              Opp. Judges Bungalow Road,<br />
+              Satellite, Ahmedabad, Gujarat 380015
+            </address>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6">
+              <a href={SITE_INFO.google.directionsUrl} target="_blank" rel="noopener noreferrer" className="at-link at-link-green min-h-[36px]" aria-label="Get directions on Google Maps (opens in a new tab)">
+                Get directions <span className="arrow" aria-hidden="true">↗</span>
+              </a>
+              <a href={SITE_INFO.phoneHref} className="at-link min-h-[36px] tabular">
+                {SITE_INFO.phoneDisplay}
               </a>
             </div>
-          </div>
-
-          {/* Services */}
-          <div className="lg:col-span-3">
-            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-5">Our Services</p>
-            <ul className="flex flex-col gap-2.5">
-              {services.map(s => (
-                <li key={s.label}>
-                  <Link
-                    href={s.href}
-                    className="flex items-center gap-2 text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors group"
-                  >
-                    <span className="w-3 h-px bg-[#dde7dd] group-hover:bg-[#2e7a3a] transition-colors shrink-0" aria-hidden="true" />
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Explore + Legal */}
-          <div className="lg:col-span-2">
-            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-5">Explore</p>
-            <ul className="flex flex-col gap-2.5 mb-8">
-              {explore.map(item => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-[13px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-4">Policies</p>
-            <ul className="flex flex-col gap-2">
-              {legal.map(item => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-[12px] text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Address + Map */}
-          <div className="lg:col-span-3">
-            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#1e2228] mb-5">Visit Us</p>
-
-            <div className="flex items-start gap-3 mb-5 pb-5 border-b border-[#dde7dd]">
-              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              <div>
-                <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-2">
-                  UGF-6, Policlinic Chamber,<br />
-                  Opp. Judges Bunglow Road,<br />
-                  Satellite, Ahmedabad – 380015
-                </p>
-                <a
-                  href="https://www.google.com/maps/search/Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad/@23.02937,72.504909,15z/data=!3m1!1e3"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-semibold tracking-widest uppercase text-[#2e7a3a] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                >
-                  Get Directions ↗
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 mb-5 pb-5 border-b border-[#dde7dd]">
-              <svg className="w-4 h-4 text-[#2e7a3a] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-              </svg>
-              <a href="tel:+919723179638" className="text-[13px] font-semibold text-[#1e2228] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors">
-                +91 97231 79638
-              </a>
-            </div>
-
-            {/* Embedded real map */}
-            <div className="w-full h-32 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="relative w-full h-40 bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden grayscale-[60%] hover:grayscale-0 transition-[filter] duration-500">
               <iframe
-                title="Angel Touch Salon Location Map in Satellite, Ahmedabad"
-                src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad&t=k&z=16&ie=UTF8&iwloc=B&output=embed"
+                title={`Map: ${SITE_INFO.google.name}, Satellite, Ahmedabad`}
+                src={SITE_INFO.google.embedUrl}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="absolute inset-0"
               />
             </div>
           </div>
-
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-[#dde7dd] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left pr-0 sm:pr-20 md:pr-24">
-          <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
-            © 2025 Angel Touch by Heena Thaaker · All rights reserved
-          </p>
-          <p className="text-[11px] text-[#5c5a58] tracking-widest uppercase">
-            Designed & Developed by{' '}
+        {/* ── Bottom bar ── */}
+        <div className="border-t border-[#dde7dd] pt-7 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[12px] text-[#6b6e68] pr-0 sm:pr-20">
+          <p className="tabular">© {YEAR} {SITE_INFO.businessName}. All rights reserved.</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-1">
+            {legal.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="hover:text-[#1e5f2e] transition-colors">{l.label}</Link>
+              </li>
+            ))}
+          </ul>
+          <p>
+            Designed &amp; developed by{' '}
             <a
               href="https://www.hntech.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-[#1e5f2e] hover:text-[#2e7a3a] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
+              className="font-semibold text-[#1e5f2e] hover:text-[#2e7a3a] transition-colors"
             >
               HNTech
             </a>
           </p>
         </div>
-
       </div>
     </footer>
   )

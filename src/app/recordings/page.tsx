@@ -1,28 +1,28 @@
 import { createClient } from '@/lib/supabase/server'
 import { client } from '@/sanity/lib/client'
+import { slugOf, type MasterclassListItem } from '@/sanity/lib/types'
 import { connection } from 'next/server'
 import Image from 'next/image'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { RecordingCard } from '@/components/organisms/RecordingCard'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false
 
-export const metadata: Metadata = {
-  title: 'Recorded Ayurvedic Masterclass Vault',
+export const metadata: Metadata = pageMetadata({
+  title: 'Recorded Masterclass Library',
   description:
-    'Access past Angel Touch masterclass recordings. A curated library of Ayurvedic formulation sessions led by Heena Thaker — available on demand for members and individual purchasers.',
-  alternates: { canonical: 'https://angeltouch.in/recordings' },
-  openGraph: {
-    title: 'Recorded Ayurvedic Masterclass Vault | Angel Touch',
-    description:
-      'On-demand access to exclusive Ayurvedic formulation masterclass recordings by Heena Thaker. Learn to craft skincare, hair care, and wellness products at your own pace.',
-    url: 'https://angeltouch.in/recordings',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Recorded Masterclass Vault' }],
+    'Watch past Angel Touch masterclasses on demand. Ayurvedic skincare and hair care formulation sessions led by Heena Thaker, for members and buyers.',
+  path: '/recordings',
+  // Paywalled library — keep it out of search results but let crawlers follow links
+  noindex: true,
+  image: {
+    url: '/images/recordings-hero-bg.png',
+    alt: 'Study desk with Ayurvedic herbs for the Angel Touch recorded masterclass library',
   },
-  robots: { index: false, follow: false }, // Paywall content — exclude from index
-}
+})
 
 
 export default async function RecordingsPage() {
@@ -41,7 +41,9 @@ export default async function RecordingsPage() {
       .select('status, expires_at')
       .eq('user_id', user.id)
       .eq('status', 'active')
-      .single()
+      .order('expires_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle()
 
     isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
@@ -69,7 +71,7 @@ export default async function RecordingsPage() {
       "imageUrl": mainImage.asset->url
     }
   `
-  const recordings = await client.fetch(query)
+  const recordings = await client.fetch<MasterclassListItem[]>(query)
 
   return (
     <div className="min-h-screen bg-[#faf8f2]">
@@ -78,7 +80,7 @@ export default async function RecordingsPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/recordings-hero-bg.png"
-            alt="Study desk with ayurvedic herbs"
+            alt="Study desk with Ayurvedic herbs and notes for Angel Touch recorded masterclasses"
             fill
             className="object-cover object-center"
             priority
@@ -112,7 +114,7 @@ export default async function RecordingsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recordings.map((recording: any) => {
+            {recordings.map((recording) => {
               // Determine status
               let status: 'watch' | 'buy' | 'upgrade' | 'inquire' = 'buy'
 
@@ -139,12 +141,12 @@ export default async function RecordingsPage() {
               return (
                 <RecordingCard
                   key={recording._id}
-                  slug={recording.slug.current || recording.slug}
+                  slug={slugOf(recording.slug)}
                   title={recording.title}
                   description={recording.shortDescription || ''}
                   date={recording.date}
                   imageUrl={recording.imageUrl}
-                  price={recording.price}
+                  price={recording.price ?? 0}
                   status={status}
                 />
               )

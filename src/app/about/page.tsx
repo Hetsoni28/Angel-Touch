@@ -1,20 +1,21 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'About Heena Thaker | Angel Touch Founder & Ayurvedic Expert',
+export const metadata: Metadata = pageMetadata({
+  title: 'About Heena Thaker, Founder',
   description:
-    'Meet Heena Thaker — founder of Angel Touch, certified Ayurvedic expert, and beauty school principal. Learn the philosophy behind our women-only sanctuary of authentic Ayurvedic healing.',
-  alternates: { canonical: 'https://angeltouch.in/about' },
-  openGraph: {
-    title: 'About Heena Thaker | Angel Touch Founder & Ayurvedic Expert',
-    description:
-      'The story behind Angel Touch. Heena Thaker\'s philosophy of authentic Ayurvedic healing, handcrafted products, and certified formulation education.',
-    url: 'https://angeltouch.in/about',
-    images: [{ url: '/images/heena_thaaker.jpg', width: 800, height: 1067, alt: 'Heena Thaker — Founder, Angel Touch' }],
+    'Meet Heena Thaker, founder of Angel Touch: Ayurvedic beauty expert, cosmetologist and educator behind our women-only salon and academy in Ahmedabad.',
+  path: '/about',
+  type: 'profile',
+  image: {
+    url: '/images/heena_thaaker.jpg',
+    alt: 'Heena Thaker, founder of Angel Touch Ayurvedic salon and beauty academy',
   },
-}
+})
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -45,16 +46,13 @@ const personSchema = {
 export default function AboutPage() {
   return (
     <article className="min-h-screen bg-[#faf8f2]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={[personSchema, breadcrumbJsonLd([{ name: 'About', path: '/about' }])]} />
       
       {/* Editorial Hero with Cinematic Background */}
       <header className="relative w-full h-[55vh] sm:h-[65vh] md:h-[70vh] min-h-[420px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden">
         <Image
           src="/images/ayurvedic_editorial_bg.jpg"
-          alt="Ayurvedic Botanicals"
+          alt="Ayurvedic herbs and botanicals used in Angel Touch skincare and treatments"
           fill
           className="object-cover object-center absolute inset-0 z-0"
           priority
@@ -63,15 +61,15 @@ export default function AboutPage() {
         
         <div className="relative z-20 max-w-4xl mx-auto px-6 text-center mt-12 sm:mt-20">
           <FadeIn>
-            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-4 sm:mb-8 block">
-              Our Story
-            </span>
-            <h1
+            <h1 className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5c8f60] mb-4 sm:mb-8 block">
+              Our Story: Heena Thaker &amp; Angel Touch
+            </h1>
+            <p
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
               Rooted in ancient wisdom,<br />crafted for modern wellness.
-            </h1>
+            </p>
             <p className="text-[16px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl mx-auto">
               Angel Touch is a sanctuary of authentic Ayurvedic healing, dedicated to reviving the pure, unadulterated practices of natural wellness. We believe that true beauty and health begin with a profound connection to nature.
             </p>
@@ -80,8 +78,8 @@ export default function AboutPage() {
       </header>
 
       {/* The Founder Section (Pro Editorial Layout) */}
-      <section className="max-w-7xl mx-auto px-6 md:px-10 py-24 md:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+      <section className="max-w-7xl mx-auto px-6 md:px-10 py-24 md:py-40 overflow-x-clip">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-12 xl:gap-x-16 items-center">
           
           <div className="lg:col-span-5 relative">
             <FadeIn delay={0.2}>
@@ -124,7 +122,7 @@ export default function AboutPage() {
               <div className="mt-12 flex items-center gap-6">
                 <Image
                   src="/logo.svg"
-                  alt="Angel Touch Signature"
+                  alt="Angel Touch by Heena Thaker signature logo"
                   width={140}
                   height={40}
                   className="opacity-40"

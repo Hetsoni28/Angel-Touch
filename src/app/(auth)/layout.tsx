@@ -25,7 +25,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Subtle decorative text over image */}
         <div className="absolute bottom-16 left-16 right-16">
           <p className="text-[#faf8f2] font-playfair text-4xl mb-4 leading-snug tracking-wide">
-            "Nature's purest ingredients, crafted into exquisite formulas for your holistic wellbeing."
+            &ldquo;Nature&apos;s purest ingredients, crafted into exquisite formulas for your holistic wellbeing.&rdquo;
           </p>
           <div className="flex items-center gap-3">
             <span className="w-8 h-px bg-[#faf8f2]/60"></span>
@@ -51,7 +51,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </Link>
           <Link
             href="/"
-            className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8a8d87] hover:text-[#2e7a3a] transition-colors flex items-center gap-2"
+            className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8a8d87] hover:text-[#2e7a3a] transition-colors flex items-center gap-2 min-h-[32px]"
           >
             ← Back to site
           </Link>
@@ -66,7 +66,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
             {/* Footer note */}
             <p className="mt-12 text-center text-[12px] text-[#8a8d87] leading-relaxed">
-              By proceeding, you agree to Angel Touch's <br className="hidden sm:block"/>
+              By proceeding, you agree to Angel Touch&apos;s <br className="hidden sm:block"/>
               <Link href="/privacy" className="underline hover:text-[#2e7a3a] transition-colors">Privacy Policy</Link> and{' '}
               <Link href="/terms" className="underline hover:text-[#2e7a3a] transition-colors">Terms of Service</Link>.
             </p>

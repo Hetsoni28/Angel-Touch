@@ -1,10 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
-import Link from 'next/link'
-import { ArrowRight, Calendar, Star, History } from 'lucide-react'
+import type { MasterclassListItem } from '@/sanity/lib/types'
 import { connection } from 'next/server'
-import { Button } from '@/components/atoms/Button'
 
 import { DashboardMembershipCard } from '@/components/organisms/DashboardMembershipCard'
 import { DashboardUpcomingClass } from '@/components/organisms/DashboardUpcomingClass'
@@ -24,7 +22,7 @@ export default async function DashboardPage() {
   // 1. Fetch Profile
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, email, created_at')
+    .select('full_name, created_at')
     .eq('id', user.id)
     .single()
 
@@ -36,7 +34,9 @@ export default async function DashboardPage() {
     .select('status, expires_at')
     .eq('user_id', user.id)
     .eq('status', 'active')
-    .single()
+    .order('expires_at', { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle()
 
   const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
 
@@ -51,10 +51,10 @@ export default async function DashboardPage() {
     .filter(e => e.status === 'confirmed')
     .map(e => e.class_id)
 
-  let enrolledClasses: any[] = []
+  let enrolledClasses: MasterclassListItem[] = []
   if (confirmedClassIds.length > 0) {
     // Fetch details from Sanity
-    enrolledClasses = await client.fetch(`
+    enrolledClasses = await client.fetch<MasterclassListItem[]>(`
       *[_type == "masterclass" && _id in $ids] | order(date asc) {
         _id,
         title,

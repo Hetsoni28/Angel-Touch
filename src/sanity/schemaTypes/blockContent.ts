@@ -1,4 +1,5 @@
 import { defineType, defineArrayMember } from 'sanity'
+import { altField } from './fields'
 
 /**
  * This is the schema definition for the rich text fields used for
@@ -62,6 +63,7 @@ export const blockContent = defineType({
     defineArrayMember({
       type: 'image',
       options: { hotspot: true },
+      fields: [altField],
     }),
   ],
 })

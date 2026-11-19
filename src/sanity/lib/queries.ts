@@ -1,4 +1,5 @@
 import { groq } from 'next-sanity'
+import { SEO_PROJECTION } from '@/lib/seo'
 
 export const ALL_PRODUCTS_QUERY = groq`
   *[_type == "product"] {
@@ -39,11 +40,16 @@ export const ALL_MASTERCLASSES_QUERY = groq`
     _id,
     title,
     "slug": slug.current,
-    "imageUrl": coalesce(image.asset->url, null),
+    "imageUrl": coalesce(image.asset->url, mainImage.asset->url),
+    "imageAlt": coalesce(image.alt, mainImage.alt),
     shortDescription,
     date,
+    time,
+    type,
     duration,
-    price
+    price,
+    capacity,
+    isCancelled
   } | order(date asc)
 `
 
@@ -52,11 +58,19 @@ export const MASTERCLASS_BY_SLUG_QUERY = groq`
     _id,
     title,
     "slug": slug.current,
-    "imageUrl": coalesce(image.asset->url, null),
+    "imageUrl": coalesce(image.asset->url, mainImage.asset->url),
+    "imageAlt": coalesce(image.alt, mainImage.alt),
     shortDescription,
+    description,
+    whatYouWillLearn,
+    whatIsIncluded,
     date,
+    time,
     duration,
-    price
+    price,
+    capacity,
+    isCancelled,
+    seo { ${SEO_PROJECTION} }
   }
 `
 // NOTE: recordingUrl is deliberately NOT selected here. It is only read

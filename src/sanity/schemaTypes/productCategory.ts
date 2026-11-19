@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { slugOptions } from './fields'
 
 export const productCategory = defineType({
   name: 'productCategory',
@@ -6,7 +7,7 @@ export const productCategory = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'name' } }),
+    defineField({ name: 'slug', title: 'Slug', type: 'slug', options: slugOptions('name') }),
     defineField({ name: 'description', title: 'Description', type: 'text' })
   ]
 })

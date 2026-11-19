@@ -1,19 +1,21 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { LegalPage, LegalSection } from '@/components/organisms/LegalPage'
 import { SITE_INFO } from '@/lib/siteInfo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Terms & Conditions',
   description:
     'The terms that apply when you use the Angel Touch website, book treatments, buy products or join our classes and academy courses.',
-  alternates: { canonical: 'https://angeltouch.in/terms' },
-}
+  path: '/terms',
+})
 
 export default function TermsPage() {
   return (
     <LegalPage
       title="Terms & Conditions"
+      path="/terms"
       lastUpdated="20 October 2026"
       intro={
         <p>

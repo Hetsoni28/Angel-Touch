@@ -97,7 +97,7 @@ export function LoginForm() {
             </label>
             <Link 
               href="/forgot-password" 
-              className="text-[11px] font-semibold text-[#6b6e68] hover:text-[#2e7a3a] uppercase tracking-widest transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm py-0.5 px-1"
+              className="inline-flex items-center min-h-[32px] text-[11px] font-semibold text-[#6b6e68] hover:text-[#2e7a3a] uppercase tracking-widest transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm py-0.5 px-1"
             >
               Forgot?
             </Link>

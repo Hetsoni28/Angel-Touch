@@ -9,11 +9,10 @@
  *   - RLS on profiles/memberships/enrollments ensures users only see their own data.
  */
 
-import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { ok, unauthorized, serverError } from '@/lib/api/response'
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -22,7 +21,7 @@ export async function GET(_req: NextRequest) {
     // Fetch profile
     const { data: profile } = await supabase
       .from('profiles')
-      .select('id, full_name, email, is_admin, created_at')
+      .select('id, full_name, is_admin, created_at')
       .eq('id', user.id)
       .single()
 
@@ -32,7 +31,9 @@ export async function GET(_req: NextRequest) {
       .select('id, status, expires_at')
       .eq('user_id', user.id)
       .eq('status', 'active')
-      .single()
+      .order('expires_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle()
 
     // Fetch class enrollments
     const { data: enrollments } = await supabase

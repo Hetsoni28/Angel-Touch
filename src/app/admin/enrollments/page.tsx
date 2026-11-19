@@ -2,16 +2,23 @@ import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
 import { Eye } from 'lucide-react'
-import Link from 'next/link'
 
 export const instant = false
+
+type EnrollmentRow = {
+  id: string
+  class_id: string
+  status: string
+  created_at: string
+  profiles: { full_name: string | null; email?: string | null } | null
+}
 
 export default async function AdminEnrollmentsPage() {
   await connection()
   const supabase = await createClient()
 
   // Fetch enrollments with profile data
-  const { data: enrollments } = await supabase
+  const { data } = await supabase
     .from('class_enrollments')
     .select(`
       id,
@@ -21,10 +28,11 @@ export default async function AdminEnrollmentsPage() {
       profiles:user_id(full_name, email)
     `)
     .order('created_at', { ascending: false })
+  const enrollments = data as unknown as EnrollmentRow[] | null
 
   // Fetch all masterclasses from Sanity to map names and prices
-  const masterclasses = await client.fetch(`*[_type == "masterclass"] { _id, title, price }`)
-  const classMap = masterclasses.reduce((acc: any, curr: any) => {
+  const masterclasses = await client.fetch<{ _id: string; title: string; price?: number }[]>(`*[_type == "masterclass"] { _id, title, price }`)
+  const classMap = masterclasses.reduce<Record<string, { title: string; price?: number }>>((acc, curr) => {
     acc[curr._id] = { title: curr.title, price: curr.price }
     return acc
   }, {})
@@ -49,7 +57,7 @@ export default async function AdminEnrollmentsPage() {
             </tr>
           </thead>
           <tbody>
-            {enrollments?.map((enrollment: any) => {
+            {enrollments?.map((enrollment) => {
               const sanityData = classMap[enrollment.class_id]
               const title = sanityData?.title || 'Unknown Class'
               const price = sanityData?.price || 0

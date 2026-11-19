@@ -13,7 +13,12 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/account'
+  // Only allow same-site relative paths — "//evil.com" or "@evil.com" would
+  // otherwise turn `${origin}${next}` into an open redirect.
+  const rawNext = searchParams.get('next') ?? '/account'
+  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') && !rawNext.startsWith('/\\')
+    ? rawNext
+    : '/account'
 
   if (code) {
     const supabase = await createClient()

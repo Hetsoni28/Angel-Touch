@@ -1,76 +1,103 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { CinematicImage } from '@/components/atoms/CinematicImage'
+import { PAYMENTS_ENABLED } from '@/lib/features'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
+
+// What we say must match how access actually works right now.
+const POINTS = PAYMENTS_ENABLED
+  ? [
+      'Join a live class and keep its recording for good.',
+      'Buy individual recordings of past classes at any time.',
+      'Or take a membership for the full recorded library.',
+    ]
+  : [
+      'Every live class is recorded.',
+      'Ask us on WhatsApp for access to a past class.',
+      'A membership for the full library is coming soon.',
+    ]
 
 export function RecordedLearningSection() {
   return (
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
-        
-        {}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24 items-center">
 
-          {}
-          <FadeIn delay={0.1}>
-            <div className="overflow-hidden bg-[#e9f3e9] border border-[#dde7dd] shadow-sm img-zoom aspect-[4/3] max-h-[340px] relative">
-              <Image
+          <FadeIn direction="none">
+            <div className="offset-frame mr-3.5 sm:mr-4">
+              <CinematicImage
                 src="/images/ayurvedic_editorial_desk_1791405721218.jpg"
                 alt="Ayurvedic formulation notes and botanical ingredients"
-                fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                loading="lazy"
+                parallax={6}
+                reveal
+                className="w-full aspect-[4/3] bg-[#e9f3e9]"
               />
             </div>
           </FadeIn>
 
-          {}
-          <div className="flex flex-col pt-1">
-            <FadeIn delay={0.2}>
+          <div className="flex flex-col">
+            <FadeIn>
+              <p className="eyebrow mb-4">Recorded classes</p>
               <h2
-                className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2] mb-5"
-                style={{ fontFamily: 'var(--font-heading)' }}
+                className="text-[1.9rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.12] mb-6"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                Keep learning,<br />beyond the classroom.
+                Keep learning, <span className="accent-italic">after</span> the class.
               </h2>
-              <span className="gold-rule mb-7" />
+              <span className="gold-rule mb-8" />
             </FadeIn>
-            <div className="flex flex-col gap-4 mb-8">
-              {[
-                'Purchase a live class and receive permanent access to its recording.',
-                'Eligible recordings can also be purchased individually, anytime.',
-                'An active Membership provides access to the full eligible recorded library.',
-              ].map((point, i) => (
-                <FadeIn key={i} delay={0.2 + (0.1 * i)}>
-                  <div className="flex items-start gap-3">
-                    <span className="w-px h-5 bg-[#edc179] shrink-0 mt-1" />
-                    <p className="text-[14px] text-[#5c5a58] leading-relaxed">{point}</p>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-            <FadeIn delay={0.5}>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-                <Link 
-                  href="/recordings" 
-                  className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                >
-                  Explore Recorded Classes →
-                </Link>
-                <Link 
-                  href="/membership" 
-                  className="inline-flex items-center min-h-[44px] text-[11px] font-semibold tracking-[0.18em] uppercase text-[#5c5a58] hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
-                >
-                  View Membership
-                </Link>
+
+            <FadeIn delay={0.1}>
+              <ol className="mb-10 border-t border-[#dde7dd]">
+                {POINTS.map((point, i) => (
+                  <li key={point} className="flex items-baseline gap-5 py-4 border-b border-[#dde7dd]">
+                    <span
+                      className="text-[1.05rem] italic text-[#b38538] tabular w-6 shrink-0"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                      aria-hidden="true"
+                    >
+                      {i + 1}.
+                    </span>
+                    <p className="text-[15px] text-[#4a4846] leading-[1.7]">{point}</p>
+                  </li>
+                ))}
+              </ol>
+            </FadeIn>
+
+            <FadeIn delay={0.18}>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-x-8 gap-y-4">
+                {PAYMENTS_ENABLED ? (
+                  <>
+                    <Link href="/recordings" className="at-link min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm">
+                      Browse recordings <span className="arrow" aria-hidden="true">→</span>
+                    </Link>
+                    <Link href="/membership" className="text-[11px] font-semibold tracking-[0.18em] uppercase text-[#4a4846] hover:text-[#2e7a3a] min-h-[44px] inline-flex items-center transition-colors">
+                      View membership
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href={generateWhatsAppLink({ type: 'GENERAL', message: 'I would like access to a recorded class.' })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="at-link min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                      aria-label="Ask about recorded classes on WhatsApp (opens in a new tab)"
+                    >
+                      Ask about recordings <span className="arrow" aria-hidden="true">→</span>
+                    </a>
+                    <Link href="/recordings" className="text-[11px] font-semibold tracking-[0.18em] uppercase text-[#4a4846] hover:text-[#2e7a3a] min-h-[44px] inline-flex items-center transition-colors">
+                      See past classes
+                    </Link>
+                  </>
+                )}
               </div>
             </FadeIn>
           </div>
 
         </div>
-
       </div>
     </section>
   )
 }
-

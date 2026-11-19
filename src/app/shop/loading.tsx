@@ -5,7 +5,7 @@ import { CardSkeleton } from '@/components/molecules/CardSkeleton'
 export default function ShopLoading() {
   return (
     <div className="bg-[#faf8f2] min-h-screen">
-      <ShopHero />
+      <ShopHero placeholder />
 
       {/* Category Pills Skeleton */}
       <div className="border-b border-[#dde7dd]/70 bg-white py-4 px-6 md:px-10">

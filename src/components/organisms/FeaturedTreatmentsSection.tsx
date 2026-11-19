@@ -3,12 +3,24 @@ import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { client } from '@/sanity/lib/client'
 import { ALL_TREATMENTS_QUERY } from '@/sanity/lib/queries'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
+
+type FeaturedTreatment = {
+  _id?: string
+  slug?: { current: string } | string
+  name: string
+  price?: string | number
+  imageUrl?: string
+  shortDescription?: string
+  description?: string
+  featured?: boolean
+}
 
 export async function FeaturedTreatmentsSection() {
-  let treatments = []
+  let treatments: FeaturedTreatment[] = []
   try {
-    const data = await client.fetch(ALL_TREATMENTS_QUERY)
-    treatments = data.filter((t: any) => t.featured).slice(0, 2)
+    const data = await client.fetch<FeaturedTreatment[]>(ALL_TREATMENTS_QUERY)
+    treatments = data.filter((t) => t.featured).slice(0, 2)
     if (treatments.length === 0 && data.length > 0) {
       treatments = data.slice(0, 2)
     }
@@ -38,32 +50,34 @@ export async function FeaturedTreatmentsSection() {
     <section className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
-          <FadeIn delay={0.1}>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] md:items-end gap-6 mb-12 md:mb-16">
+          <FadeIn>
             <div className="max-w-xl">
+              <p className="eyebrow mb-4">Book a treatment</p>
               <h2
-                className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
-                style={{ fontFamily: 'var(--font-heading)' }}
+                className="text-[1.9rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.12]"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                Personal care, thoughtfully approached.
+                Personal care, one guest <span className="accent-italic">at a time</span>.
               </h2>
-              <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-                Each treatment at Angel Touch is a considered, personalised experience drawing on restorative aromatherapy and authentic Ayurvedic practice, applied with dedicated care.
+              <p className="mt-4 text-[15.5px] text-[#4a4846] leading-[1.75]">
+                Aromatherapy and Ayurvedic practice, adapted to your skin and hair on the day. Message
+                us on WhatsApp with the treatment you&apos;d like and we&apos;ll suggest a time.
               </p>
             </div>
           </FadeIn>
-          <FadeIn delay={0.2} direction="none">
-            <Link 
-              href="/treatments" 
-              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+          <FadeIn delay={0.1} direction="none">
+            <Link
+              href="/treatments"
+              className="at-link shrink-0 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
             >
-              View all treatments &rarr;
+              All treatments <span className="arrow" aria-hidden="true">→</span>
             </Link>
           </FadeIn>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {treatments.map((t: any, index: number) => {
+          {treatments.map((t, index) => {
             const fallbackImage = (t.name || '').toLowerCase().includes('shirodhara')
               ? '/images/treatment_shirodhara.jpg'
               : (t.name || '').toLowerCase().includes('hair')
@@ -77,15 +91,14 @@ export async function FeaturedTreatmentsSection() {
 
             return (
               <FadeIn key={t._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-                <article className="group flex flex-col h-full bg-white border border-[#dde7dd]/80 p-6 sm:p-8">
-                  
-                  <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] relative">
+                <article className="at-card group flex flex-col h-full bg-white p-5 sm:p-7">
+                  <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-7 aspect-[16/10] relative">
                     <Image
                       src={imgSrc}
-                      alt={t.name}
+                      alt={`${t.name} treatment at Angel Touch Ayurvedic salon, Satellite, Ahmedabad`}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-cover object-[center_35%]"
                       loading="lazy"
                     />
                   </div>
@@ -106,19 +119,19 @@ export async function FeaturedTreatmentsSection() {
                     )}
                   </div>
 
-                  <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow line-clamp-3">
+                  <p className="text-[14.5px] text-[#4a4846] leading-[1.7] mb-6 grow line-clamp-3">
                     {t.shortDescription || t.description || ''}
                   </p>
 
-                  <div className="pt-2 border-t border-[#dde7dd]/60">
+                  <div className="pt-4 border-t border-[#dde7dd]/70">
                     <a
-                      href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to book an appointment for: ${t.name}`)}`}
+                      href={generateWhatsAppLink({ type: 'TREATMENT', itemName: t.name })}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                      aria-label={`Enquire or book treatment on WhatsApp: ${t.name}`}
+                      className="at-link at-link-green min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                      aria-label={`Book ${t.name} on WhatsApp (opens in a new tab)`}
                     >
-                      Enquire / Book on WhatsApp &rarr;
+                      Book on WhatsApp <span className="arrow" aria-hidden="true">→</span>
                     </a>
                   </div>
                 </article>

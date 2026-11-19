@@ -53,7 +53,7 @@ export function DynamicBreadcrumbs({ items, className = "mb-8 md:mb-12" }: Dynam
               ) : (
                 <Link 
                   href={item.href} 
-                  className="hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors py-0.5 px-0.5"
+                  className="hover:text-[#2e7a3a] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors inline-flex items-center min-h-[28px] px-0.5"
                 >
                   {item.label}
                 </Link>

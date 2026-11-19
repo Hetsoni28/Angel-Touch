@@ -3,7 +3,6 @@
 import { toast } from 'sonner'
 import { Badge } from '@/components/atoms/Badge'
 import { Button } from '@/components/atoms/Button'
-import { Skeleton } from '@/components/atoms/Skeleton'
 import { Card } from '@/components/molecules/Card'
 import { CardSkeleton } from '@/components/molecules/CardSkeleton'
 import { EmptyState } from '@/components/molecules/EmptyState'

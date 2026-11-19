@@ -8,7 +8,7 @@ export type UpdateProfileResult = {
   error?: string
 }
 
-export async function updateProfileAction(prevState: any, formData: FormData): Promise<UpdateProfileResult> {
+export async function updateProfileAction(_prevState: UpdateProfileResult, formData: FormData): Promise<UpdateProfileResult> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   

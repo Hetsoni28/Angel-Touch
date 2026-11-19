@@ -4,11 +4,21 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@/components/atoms/Button'
 import { Badge } from '@/components/atoms/Badge'
-import { PortableText } from '@portabletext/react'
+import { PortableText, type PortableTextComponents } from '@portabletext/react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { PAYMENTS_ENABLED } from '@/lib/features'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import {
+  sanityPageMetadata,
+  breadcrumbJsonLd,
+  absoluteUrl,
+  clampText,
+  MAX_ALT,
+  ORGANIZATION_REF,
+  type SanitySeo,
+} from '@/lib/seo'
 
 export const instant = false // Replaces revalidate in Next.js 16
 
@@ -16,35 +26,52 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+type MasterclassDoc = {
+  _id: string
+  title: string
+  slug?: string
+  imageUrl?: string | null
+  imageAlt?: string | null
+  shortDescription?: string
+  /** Rich-text body (Portable Text) */
+  description?: Parameters<typeof PortableText>[0]['value']
+  whatYouWillLearn?: string[]
+  whatIsIncluded?: string[]
+  date: string
+  duration?: string
+  price?: number
+  capacity?: number
+  isCancelled?: boolean
+  seo?: SanitySeo
+}
+
+/** Alt text: the editor's text from Sanity when set, otherwise a descriptive default. */
+function heroAlt(masterclass: MasterclassDoc): string {
+  return clampText(
+    masterclass.imageAlt || `${masterclass.title} – Ayurvedic formulation masterclass with Heena Thaker`,
+    MAX_ALT
+  )
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await params
-  const masterclass = await client.fetch(MASTERCLASS_BY_SLUG_QUERY, { slug: resolvedParams.slug })
-  
+  const { slug } = await params
+  const masterclass = await client.fetch<MasterclassDoc | null>(MASTERCLASS_BY_SLUG_QUERY, { slug })
+
   if (!masterclass) {
-    return { title: 'Class Not Found | Angel Touch' }
+    return { title: 'Class not found', robots: { index: false } }
   }
 
-  const title = `${masterclass.title} | Ayurvedic Masterclass`
-  const description = masterclass.shortDescription || 'Learn authentic Ayurvedic product formulation with Heena Thaker at Angel Touch.'
-  const image = masterclass.imageUrl || '/images/og-default.jpg'
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `https://angeltouch.in/classes/${resolvedParams.slug}` },
-    openGraph: {
-      title: `${masterclass.title} | Angel Touch Masterclasses`,
-      description,
-      url: `https://angeltouch.in/classes/${resolvedParams.slug}`,
-      images: [{ url: image, alt: masterclass.title }],
+  return sanityPageMetadata(masterclass.seo, {
+    title: `${masterclass.title} – Ayurvedic Masterclass`,
+    description:
+      masterclass.shortDescription ||
+      `Join "${masterclass.title}", a hands-on Ayurvedic formulation masterclass with Heena Thaker at Angel Touch, Ahmedabad.`,
+    path: `/classes/${slug}`,
+    image: {
+      url: masterclass.imageUrl || '/images/learning_hero.jpg',
+      alt: heroAlt(masterclass),
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${masterclass.title} | Angel Touch Masterclasses`,
-      description,
-      images: [image],
-    },
-  }
+  })
 }
 
 
@@ -52,7 +79,7 @@ export default async function MasterclassDetailPage({ params }: Props) {
   // Await params as required by Next.js 16 / Turbopack
   const resolvedParams = await params
   
-  const masterclass = await client.fetch(MASTERCLASS_BY_SLUG_QUERY, {
+  const masterclass = await client.fetch<MasterclassDoc | null>(MASTERCLASS_BY_SLUG_QUERY, {
     slug: resolvedParams.slug,
   })
 
@@ -96,13 +123,13 @@ export default async function MasterclassDetailPage({ params }: Props) {
   }
 
   // Custom styling for Sanity block content
-  const portableTextComponents = {
+  const portableTextComponents: PortableTextComponents = {
     block: {
-      normal: ({ children }: any) => <p className="text-[15px] text-[#5c5a58] leading-[1.8] mb-6">{children}</p>,
-      h3: ({ children }: any) => <h3 className="text-[1.5rem] font-medium text-[#1e2228] mt-10 mb-4" style={{ fontFamily: 'var(--font-heading)' }}>{children}</h3>,
+      normal: ({ children }) => <p className="text-[15px] text-[#5c5a58] leading-[1.8] mb-6">{children}</p>,
+      h3: ({ children }) => <h3 className="text-[1.5rem] font-medium text-[#1e2228] mt-10 mb-4" style={{ fontFamily: 'var(--font-heading)' }}>{children}</h3>,
     },
     list: {
-      bullet: ({ children }: any) => <ul className="list-disc pl-5 mb-8 text-[#5c5a58] space-y-2">{children}</ul>,
+      bullet: ({ children }) => <ul className="list-disc pl-5 mb-8 text-[#5c5a58] space-y-2">{children}</ul>,
     },
   }
 
@@ -116,19 +143,25 @@ export default async function MasterclassDetailPage({ params }: Props) {
     eventStatus: isCancelled
       ? 'https://schema.org/EventCancelled'
       : (isPast ? 'https://schema.org/EventCompleted' : 'https://schema.org/EventScheduled'),
-    image: masterclass.imageUrl?.startsWith('http') ? masterclass.imageUrl : `https://angeltouch.in${masterclass.imageUrl}`,
-    offers: {
-      '@type': 'Offer',
-      price: masterclass.price,
-      priceCurrency: 'INR',
-      availability: isFull ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
-      url: `https://angeltouch.in/classes/${resolvedParams.slug}`,
+    image: absoluteUrl(masterclass.imageUrl || '/images/learning_hero.jpg'),
+    // Google requires a location for events; these classes are held online.
+    location: {
+      '@type': 'VirtualLocation',
+      url: absoluteUrl(`/classes/${resolvedParams.slug}`),
     },
-    organizer: {
-      '@type': 'Organization',
-      name: 'Angel Touch',
-      url: 'https://angeltouch.in',
-    },
+    // An Offer without a price is a Search Console error, so only add it when priced.
+    ...(masterclass.price
+      ? {
+          offers: {
+            '@type': 'Offer',
+            price: masterclass.price,
+            priceCurrency: 'INR',
+            availability: isFull ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+            url: absoluteUrl(`/classes/${resolvedParams.slug}`),
+          },
+        }
+      : {}),
+    organizer: ORGANIZATION_REF,
     performer: {
       '@type': 'Person',
       name: 'Heena Thaker',
@@ -138,16 +171,21 @@ export default async function MasterclassDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#faf8f2]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(educationEventSchema) }}
+      <JsonLd
+        data={[
+          educationEventSchema,
+          breadcrumbJsonLd([
+            { name: 'Classes', path: '/classes' },
+            { name: masterclass.title, path: `/classes/${resolvedParams.slug}` },
+          ]),
+        ]}
       />
       
       {/* ── 1. Class Hero ── */}
       <section className="relative w-full h-[50vh] min-h-[350px] sm:min-h-[400px] md:h-[60vh] bg-[#1e2228]">
         <Image
           src={masterclass.imageUrl || '/images/learning_hero.jpg'}
-          alt={masterclass.title}
+          alt={heroAlt(masterclass)}
           fill
           className="object-cover object-center opacity-60 mix-blend-overlay"
           priority
@@ -180,18 +218,18 @@ export default async function MasterclassDetailPage({ params }: Props) {
               {masterclass.description ? (
                 <PortableText value={masterclass.description} components={portableTextComponents} />
               ) : (
-                <p className="text-[15px] text-[#5c5a58] leading-[1.8]">No description available.</p>
+                <p className="text-[15px] text-[#5c5a58] leading-[1.8]">{masterclass.shortDescription || 'Details for this masterclass will be shared soon.'}</p>
               )}
             </div>
 
-            {/* What You'll Learn */}
+            {/* What You&apos;ll Learn */}
             {masterclass.whatYouWillLearn && masterclass.whatYouWillLearn.length > 0 && (
               <div className="mt-16 pt-16 border-t border-[#dde7dd]">
                 <h3 
                   className="text-[2rem] font-medium text-[#1e2228] mb-8"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  What You'll Learn
+                  What You&apos;ll Learn
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {masterclass.whatYouWillLearn.map((item: string, idx: number) => (

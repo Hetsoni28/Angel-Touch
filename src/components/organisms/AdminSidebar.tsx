@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, GraduationCap, Video, Crown, CreditCard, LayoutDashboard, Database } from 'lucide-react'
+import { Users, GraduationCap, Crown, CreditCard, LayoutDashboard, Database } from 'lucide-react'
 
 const navItems = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },

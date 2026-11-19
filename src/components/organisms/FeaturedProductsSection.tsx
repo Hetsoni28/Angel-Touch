@@ -1,94 +1,92 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
+import { CinematicImage } from '@/components/atoms/CinematicImage'
 
-export async function FeaturedProductsSection() {
-  const rituals = [
-    {
-      name: 'Botanical Hair Spa & Scalp Therapy',
-      slug: 'treatments?category=hair-spa',
-      category: 'Hair Care & Rituals',
-      imageUrl: '/images/treatment_hair_spa.jpg',
-      description: 'A deeply nourishing Ayurvedic hair ritual with warm botanical oil massage and gentle scalp revival for silky, lustrous locks.',
-    },
-    {
-      name: 'Bridal & Ceremony Artistry',
-      slug: 'treatments?category=bridal-makeup',
-      category: 'Bridal & Styling',
-      imageUrl: '/images/treatment_bridal_styling.jpg',
-      description: 'Exquisite traditional Gujarati and contemporary bridal makeup with authentic draping, fresh floral styling, and timeless royal elegance.',
-    },
-    {
-      name: 'Purifying Clean-Up & D-Tan Ritual',
-      slug: 'treatments?category=clean-up',
-      category: 'Skin & Aesthetics',
-      imageUrl: '/images/treatment_clean_up.jpg',
-      description: 'Refreshing botanical fruit enzyme cleanse and herbal tan removal designed to clarify congested pores and restore luminous skin tone.',
-    }
-  ]
+const rituals = [
+  {
+    name: 'Botanical Hair Spa & Scalp Therapy',
+    href: '/treatments?category=hair-spa',
+    category: 'Hair care',
+    imageUrl: '/images/treatment_hair_spa.jpg',
+    description: 'Warm botanical oil worked into the scalp, followed by a deep-conditioning spa for soft, glossy hair.',
+  },
+  {
+    name: 'Bridal & Ceremony Artistry',
+    href: '/treatments?category=bridal-makeup',
+    category: 'Bridal & styling',
+    imageUrl: '/images/treatment_bridal_styling.jpg',
+    description: 'Traditional Gujarati and contemporary bridal looks, with saree draping and fresh-flower hair styling.',
+  },
+  {
+    name: 'Clean-Up & D-Tan Ritual',
+    href: '/treatments?category=clean-up',
+    category: 'Skin',
+    imageUrl: '/images/treatment_clean_up.jpg',
+    description: 'A fruit-enzyme cleanse and herbal de-tan that clears congested pores and brings back an even tone.',
+  },
+]
 
+export function FeaturedProductsSection() {
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
-        
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-14">
-          <FadeIn delay={0.1}>
+
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] md:items-end gap-6 mb-12 md:mb-14">
+          <FadeIn>
+            <p className="eyebrow mb-4">Most requested</p>
             <h2
-              className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-[1.2]"
-              style={{ fontFamily: 'var(--font-heading)' }}
+              className="text-[1.9rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.12]"
+              style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
-              Signature Sanctuary Rituals.
+              Signature <span className="accent-italic">rituals</span>.
             </h2>
-            <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed max-w-md">
-              Formulated from botanical ingredients drawn from Ayurvedic tradition. Crafted with dedicated care for hair, bridal, and glowing skin.
+            <p className="mt-4 text-[15.5px] text-[#4a4846] leading-[1.75] max-w-md">
+              Three treatments that show the Angel Touch approach: botanical ingredients and
+              unhurried, hands-on care.
             </p>
           </FadeIn>
-          <FadeIn delay={0.2} direction="none">
-            <Link 
-              href="/treatments" 
-              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-            >
-              View all services &rarr;
+          <FadeIn delay={0.1} direction="none">
+            <Link href="/treatments" className="at-link shrink-0 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm">
+              All treatments <span className="arrow" aria-hidden="true">→</span>
             </Link>
           </FadeIn>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
-          {rituals.map((ritual: any, index: number) => (
-            <FadeIn key={index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-              <article className="group flex flex-col h-full">
-                <div className="overflow-hidden bg-[#faf8f2] border border-[#dde7dd]/60 img-zoom mb-5 aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] relative">
-                  <Image
-                    src={ritual.imageUrl}
-                    alt={ritual.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
-                <p className="text-[10px] tracking-[0.22em] text-[#5c5a58] uppercase mb-1.5">{ritual.category}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6 lg:gap-10">
+          {rituals.map((ritual, index) => (
+            <FadeIn key={ritual.name} delay={0.08 * index} className="flex flex-col h-full">
+              <article className="group relative flex flex-col h-full">
+                <CinematicImage
+                  src={ritual.imageUrl}
+                  alt={`${ritual.name} – ${ritual.category} at Angel Touch, Ahmedabad`}
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                  parallax={4}
+                  reveal
+                  className="img-zoom bg-[#faf8f2] mb-6 aspect-[4/5] md:aspect-[3/4]"
+                  imageClassName="object-cover object-center"
+                >
+                  <span className="absolute top-0 left-0 bg-[#faf8f2] px-3 py-2 text-[10px] tracking-[0.2em] uppercase text-[#1e5f2e] font-semibold">
+                    {ritual.category}
+                  </span>
+                </CinematicImage>
                 <h3
-                  className="text-[1.1rem] font-medium text-[#1e2228] mb-2 leading-snug"
+                  className="text-[1.25rem] font-medium text-[#1e2228] mb-2.5 leading-snug"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   {ritual.name}
                 </h3>
-                <p className="text-[13px] text-[#5c5a58] leading-relaxed mb-4 grow line-clamp-3">
-                  {ritual.description}
-                </p>
-                <Link 
-                  href={`/${ritual.slug}`} 
-                  className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
-                  aria-label={`View ritual details: ${ritual.name}`}
+                <p className="text-[14px] text-[#4a4846] leading-[1.7] mb-5 grow">{ritual.description}</p>
+                <Link
+                  href={ritual.href}
+                  className="at-link at-link-green min-h-[44px] after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                  aria-label={`See treatment details: ${ritual.name}`}
                 >
-                  Explore Service &rarr;
+                  See details <span className="arrow" aria-hidden="true">→</span>
                 </Link>
               </article>
             </FadeIn>
           ))}
         </div>
-
       </div>
     </section>
   )

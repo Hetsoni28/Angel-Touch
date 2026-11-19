@@ -3,7 +3,9 @@ import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import Link from 'next/link'
 
-export function TreatmentsHero() {
+/** `placeholder`: used by loading.tsx — renders no <h1> so the page keeps exactly one. */
+export function TreatmentsHero({ placeholder = false }: { placeholder?: boolean } = {}) {
+  const Heading = placeholder ? 'p' : 'h1'
   return (
     <section className="relative w-full min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] flex flex-col justify-center overflow-hidden">
       
@@ -11,7 +13,7 @@ export function TreatmentsHero() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/ayurvedic_shirodhara.jpg"
-          alt="Angel Touch Treatments"
+          alt="Shirodhara warm oil therapy at Angel Touch Ayurvedic salon in Satellite, Ahmedabad"
           fill
           sizes="100vw"
           className="object-cover object-[center_35%] sm:object-center"
@@ -25,12 +27,15 @@ export function TreatmentsHero() {
           <FadeIn delay={0.1}>
             <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Treatments' }]} />
 
-            <h1
+            <Heading className="text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4 mt-2">
+              Ayurvedic Salon Treatments in Satellite, Ahmedabad
+            </Heading>
+            <p
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-[#1e2228] leading-[1.05] mb-6 md:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
               Care,<br />thoughtfully<br />approached.
-            </h1>
+            </p>
           </FadeIn>
 
           <FadeIn delay={0.2}>

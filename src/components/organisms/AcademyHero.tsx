@@ -18,7 +18,8 @@ export function AcademyHero() {
           alt="Angel Touch Beauty & Skincare Academy Workshop"
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          // On phones only a narrow slice shows: keep the teacher and student (right of centre) in frame
+          className="object-cover object-[72%_center] lg:object-center"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2]/95 via-[#faf8f2]/85 to-[#faf8f2]/50 sm:from-[#faf8f2]/90" />
@@ -29,17 +30,17 @@ export function AcademyHero() {
           <FadeIn delay={0.1}>
             <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Academy' }]} />
 
-            <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4 mt-2">
-              Certified Beauty, Cosmetology & Skincare School
-            </p>
+            <h1 className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4 mt-2">
+              Certified Beauty, Cosmetology &amp; Skincare Courses in Ahmedabad
+            </h1>
 
-            <h1
+            <p
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.4rem] font-medium text-[#1e2228] leading-[1.08] mb-6 md:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
               Learn the craft.<br />
               Master the science of beauty.
-            </h1>
+            </p>
           </FadeIn>
 
           <FadeIn delay={0.2}>

@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
       currency: order.currency,
     })
     
-  } catch (err: any) {
+  } catch (err) {
     console.error('Subscription Creation Error:', err)
     return serverError('Failed to create subscription.')
   }

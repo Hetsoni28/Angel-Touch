@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { altField } from './fields'
 
 export const siteSettings = defineType({
   name: 'siteSettings',
@@ -6,7 +7,7 @@ export const siteSettings = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Site Title', type: 'string' }),
-    defineField({ name: 'logo', title: 'Logo', type: 'image' }),
+    defineField({ name: 'logo', title: 'Logo', type: 'image', fields: [altField] }),
     defineField({ name: 'contactEmail', title: 'Contact Email', type: 'string' }),
     defineField({ name: 'instagramUrl', title: 'Instagram URL', type: 'url' }),
     defineField({ name: 'seo', title: 'Global SEO', type: 'seo' })

@@ -4,17 +4,29 @@ import { Eye } from 'lucide-react'
 
 export const instant = false
 
+type MembershipRow = {
+  id: string
+  user_id: string
+  plan_name: string
+  status: string
+  started_at: string | null
+  expires_at: string | null
+  profiles: { full_name: string | null; email?: string | null } | null
+}
+
 export default async function AdminMembershipsPage() {
   await connection()
   const supabase = await createClient()
 
-  const { data: memberships } = await supabase
+  const { data: membershipData } = await supabase
     .from('memberships')
     .select(`
       *,
       profiles:user_id(full_name, email)
     `)
     .order('created_at', { ascending: false })
+
+  const memberships = membershipData as unknown as MembershipRow[] | null
 
   // Fetch all membership payments to cross-reference payment status
   const { data: payments } = await supabase
@@ -54,8 +66,9 @@ export default async function AdminMembershipsPage() {
             </tr>
           </thead>
           <tbody>
-            {(memberships as any[])?.map((membership: any) => {
-              const isExpired = new Date(membership.expires_at) < new Date()
+            {memberships?.map((membership) => {
+              // No expiry date counts as expired (matches the access checks elsewhere)
+              const isExpired = membership.expires_at ? new Date(membership.expires_at) < new Date() : true
               const displayStatus = isExpired && membership.status === 'active' ? 'expired' : membership.status
               
               const paymentStatus = latestPaymentStatusByUser[membership.user_id] || 'unknown'

@@ -1,66 +1,73 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Link from 'next/link'
-import Image from 'next/image'
+import { CinematicImage } from '@/components/atoms/CinematicImage'
 
 export function BrandIntroductionSection() {
   return (
-    <section className="relative py-28 md:py-36 overflow-hidden border-b border-[#dde7dd]/70 bg-[#FAF8F2]">
+    <section className="relative py-24 md:py-32 lg:py-36 overflow-hidden border-b border-[#dde7dd]/70 bg-[#FAF8F2]">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          
-          {/* Founder Image */}
-          <div className="order-2 lg:order-1 relative">
-            <FadeIn delay={0.2} direction="right">
-              <div className="relative w-full aspect-[4/5] max-w-md mx-auto lg:max-w-none lg:mx-0 overflow-hidden shadow-sm">
-                <Image
-                  src="/images/heena_thaaker.jpg"
-                  alt="Heena Thaker - Founder"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            </FadeIn>
-            
-            {/* Decorative organic shadow/leaf element floating over the image */}
-            <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-[#E9F3E9] rounded-full mix-blend-multiply opacity-50 blur-3xl pointer-events-none" />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 lg:gap-24 items-center">
 
-          {/* Founder Message */}
+          {/* Founder portrait */}
+          <FadeIn direction="none" className="order-2 lg:order-1">
+            <figure className="offset-frame max-w-md mx-auto lg:max-w-none lg:mx-0 mr-3.5 sm:mr-4 lg:mr-4">
+              <CinematicImage
+                src="/images/heena_thaaker.jpg"
+                alt="Heena Thaker, founder of Angel Touch Ayurvedic salon and beauty academy"
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                parallax={5}
+                reveal
+                className="w-full aspect-[4/5] bg-[#e9f3e9]"
+                imageClassName="object-cover object-top"
+              />
+              <figcaption className="mt-5 text-[11px] tracking-[0.16em] uppercase text-[#6b6e68]">
+                Heena Thaker <span className="text-[#c9cfc4] mx-1.5" aria-hidden="true">/</span> Founder
+              </figcaption>
+            </figure>
+          </FadeIn>
+
+          {/* Founder message */}
           <div className="order-1 lg:order-2 flex flex-col justify-center text-center lg:text-left">
-            <FadeIn delay={0.1}>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4">
-                A Message from the Founder
-              </p>
-              
+            <FadeIn>
+              <p className="eyebrow mb-6">A note from the founder</p>
+
               <h2
-                className="text-[2.2rem] sm:text-[2.8rem] md:text-[3.2rem] font-medium text-[#1e2228] leading-[1.15] mb-8"
-                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
+                className="text-[2rem] sm:text-[2.6rem] md:text-[3rem] font-medium text-[#1e2228] leading-[1.14] mb-9"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                &ldquo;Where traditional Ayurvedic knowledge meets thoughtful, modern beauty.&rdquo;
+                &ldquo;Traditional Ayurvedic knowledge, practised with{' '}
+                <span className="accent-italic">modern</span> care.&rdquo;
               </h2>
             </FadeIn>
 
-            <FadeIn delay={0.2}>
-              <p className="text-[15px] sm:text-[16px] text-[#5c5a58] leading-[1.85] mb-6">
-                Hello, I am Heena Thaker. Welcome to Angel Touch. 
-              </p>
-              <p className="text-[15px] sm:text-[16px] text-[#5c5a58] leading-[1.85] mb-10">
-                I believe that true beauty is cultivated through intention—drawing from centuries of Ayurvedic wisdom, selecting only what nature provides, and sharing that knowledge openly. My life&apos;s work is empowering women through pure botanicals, therapeutic aromatherapy, advanced aesthetic treatments, and the open sharing of formulation secrets through our academy.
-              </p>
+            <FadeIn delay={0.1}>
+              <div className="space-y-5 text-[15.5px] sm:text-[16.5px] text-[#4a4846] leading-[1.85] max-w-[36rem] mx-auto lg:mx-0 mb-10">
+                <p>I&apos;m Heena Thaker, and Angel Touch is my studio.</p>
+                <p>
+                  I believe good skin and hair care starts with intention: centuries of Ayurvedic
+                  practice, ingredients chosen from nature, and knowledge that is shared rather than
+                  kept secret. That is why the same studio offers botanical and aromatherapy
+                  treatments, advanced aesthetic care, and an academy where I teach how it is done.
+                </p>
+              </div>
             </FadeIn>
 
-            <FadeIn delay={0.3}>
+            <FadeIn delay={0.18}>
               <div className="flex flex-col items-center lg:items-start">
-                <p className="font-playfair text-2xl text-[#1E5F2E] mb-2 italic">Heena Thaker</p>
-                <p className="text-[11px] font-bold tracking-widest text-[#5c5a58] uppercase mb-10">
-                  Founder & Master Formulator
-                </p>
-                <Link 
-                  href="/about" 
-                  className="at-link inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                <p
+                  className="text-[1.75rem] text-[#1E5F2E] leading-none mb-2 italic"
+                  style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  Read My Full Story &rarr;
+                  Heena Thaker
+                </p>
+                <p className="text-[10px] font-semibold tracking-[0.22em] text-[#6b6e68] uppercase mb-9">
+                  Founder &amp; Master Formulator
+                </p>
+                <Link
+                  href="/about"
+                  className="at-link min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                >
+                  Read my full story <span className="arrow" aria-hidden="true">→</span>
                 </Link>
               </div>
             </FadeIn>

@@ -133,9 +133,26 @@ function interleaveTreatments(items: Treatment[]): Treatment[] {
   return result.length > 0 ? result : items
 }
 
-export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] | null }) {
-  const displayTreatments = treatments || []
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+/** Valid category key from a ?category= value, or 'all'. */
+function toCategoryKey(value: string | undefined | null): string {
+  return value && OFFICIAL_CATEGORIES.some((c) => c.key === value) ? value : 'all'
+}
+
+/**
+ * `initialCategory` comes from the page's ?category= URL parameter (read on the
+ * server). The page re-mounts this component with a new `key` whenever the
+ * category changes, so links like /treatments?category=facial work even when
+ * you are already on /treatments.
+ */
+export function TreatmentsCatalogue({
+  treatments,
+  initialCategory = 'all',
+}: {
+  treatments?: Treatment[] | null
+  initialCategory?: string
+}) {
+  const displayTreatments = useMemo(() => treatments || [], [treatments])
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => toCategoryKey(initialCategory))
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState(false)
@@ -147,23 +164,12 @@ export function TreatmentsCatalogue({ treatments }: { treatments?: Treatment[] |
   const activeSubcategoryTabs = SUBCATEGORY_TABS[selectedCategory] || []
 
   // Shuffle randomly on client mount
+  // (random order must be client-only, otherwise server and client HTML differ)
   useEffect(() => {
-    if (displayTreatments.length > 0) {
-      setShuffledAll(shuffleTreatments(displayTreatments))
-    }
+    if (displayTreatments.length === 0) return
+    const frame = requestAnimationFrame(() => setShuffledAll(shuffleTreatments(displayTreatments)))
+    return () => cancelAnimationFrame(frame)
   }, [displayTreatments])
-
-  // Listen to URL query parameter e.g. /treatments?category=facial
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      const catParam = params.get('category')
-      if (catParam && (catParam === 'all' || OFFICIAL_CATEGORIES.some(c => c.key === catParam))) {
-        setSelectedCategory(catParam)
-        setCurrentPage(1)
-      }
-    }
-  }, [])
 
   // Close dropdown on click outside or escape key
   useEffect(() => {

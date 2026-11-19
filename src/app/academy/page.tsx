@@ -5,12 +5,20 @@ import { AcademyHallmarks } from '@/components/organisms/AcademyHallmarks'
 import { AcademyCatalogue } from '@/components/organisms/AcademyCatalogue'
 import { AcademyWorkshopBanner } from '@/components/organisms/AcademyWorkshopBanner'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd, absoluteUrl, ORGANIZATION_REF } from '@/lib/seo'
+import { OFFICIAL_ACADEMY_COURSES } from '@/lib/academyCourses'
 
-export const metadata: Metadata = {
-  title: 'Skincare & Beauty Academy | Angel Touch Ahmedabad',
+export const metadata: Metadata = pageMetadata({
+  title: 'Beauty & Cosmetology Courses in Ahmedabad',
   description:
-    'Certified diploma and individual course categories in Advanced Cosmetology, Trichology, Clinical Aesthetics, Machinery, Chemical Peels, and Aromatherapy by Heena Thaker in Satellite, Ahmedabad.',
-  alternates: { canonical: 'https://angeltouch.in/academy' },
+    'Certified cosmetology, skin, hair, aromatherapy and Ayurveda courses taught by Heena Thaker at Angel Touch Academy in Satellite, Ahmedabad. Enquire today.',
+  path: '/academy',
+  image: {
+    url: '/images/ayurvedic_academy_workshop.jpg',
+    alt: 'Students in a hands-on cosmetology workshop at Angel Touch Beauty Academy, Ahmedabad',
+  },
   keywords: [
     'Beauty academy Ahmedabad',
     'Skincare academy Satellite Ahmedabad',
@@ -23,26 +31,45 @@ export const metadata: Metadata = {
     'Aesthetic machinery training Ahmedabad',
     'Women beauty school Ahmedabad',
   ],
-  openGraph: {
-    title: 'Skincare & Beauty Academy | Angel Touch Ahmedabad',
-    description:
-      'Certified Cosmetology, Trichology, Clinical Machinery, and Aromatherapy Diploma courses taught personally by Heena Thaker.',
-    url: 'https://angeltouch.in/academy',
-    images: [{ url: '/images/ayurvedic_academy_workshop.jpg', width: 1200, height: 630, alt: 'Angel Touch Skincare & Beauty Academy' }],
-  },
-}
+})
 
 export const instant = false
 
 export default async function AcademyPage() {
   const sanityCourses = (await client.fetch(ALL_ACADEMY_COURSES_QUERY).catch(() => [])) || []
 
+  const courses: { name: string; description?: string }[] =
+    sanityCourses.length > 0 ? sanityCourses : OFFICIAL_ACADEMY_COURSES
+
+  // Course rich results need name, description and provider for every course.
+  const coursesSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Beauty, cosmetology and Ayurveda courses at Angel Touch Academy',
+    url: absoluteUrl('/academy'),
+    itemListElement: courses
+      .filter((c) => c.name && c.description)
+      .map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Course',
+          name: c.name,
+          description: c.description,
+          provider: ORGANIZATION_REF,
+          url: absoluteUrl('/academy'),
+        },
+      })),
+  }
+
   return (
-    <main className="bg-[#faf8f2] min-h-screen">
+    // <div>, not <main>: the root layout already renders the page's <main>.
+    <div className="bg-[#faf8f2] min-h-screen">
+      <JsonLd data={[breadcrumbJsonLd([{ name: 'Academy', path: '/academy' }]), coursesSchema]} />
       <AcademyHero />
       <AcademyHallmarks />
       <AcademyCatalogue initialCourses={sanityCourses.length > 0 ? sanityCourses : undefined} />
       <AcademyWorkshopBanner />
-    </main>
+    </div>
   )
 }

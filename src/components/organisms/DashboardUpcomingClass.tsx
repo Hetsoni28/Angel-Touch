@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { Calendar } from 'lucide-react'
 import { Button } from '@/components/atoms/Button'
+import { slugOf, type SanitySlug } from '@/sanity/lib/types'
 
 interface NextClass {
   title: string
   date: string
-  time: string
-  slug: any
+  time?: string
+  slug?: SanitySlug | string | null
 }
 
 interface DashboardUpcomingClassProps {
@@ -24,11 +25,11 @@ export function DashboardUpcomingClass({ nextClass }: DashboardUpcomingClassProp
             <h3 className="font-playfair text-xl text-[#1e2228] mb-1">{nextClass.title}</h3>
             <p className="text-[#5c5a58] text-[14px] flex items-center gap-2">
               <Calendar className="w-4 h-4 text-[#1e5f2e]" aria-hidden="true" /> 
-              {new Date(nextClass.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} • {nextClass.time} IST
+              {new Date(nextClass.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} {nextClass.time ? ` • ${nextClass.time} IST` : ''}
             </p>
           </div>
           <Link 
-            href={`/classes/${nextClass.slug.current || nextClass.slug}`}
+            href={`/classes/${slugOf(nextClass.slug)}`}
             aria-label={`View details for upcoming class: ${nextClass.title}`}
             className="self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded"
           >

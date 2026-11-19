@@ -4,7 +4,9 @@ import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 
-export function ShopHero() {
+/** `placeholder`: used by loading.tsx — renders no <h1> so the page keeps exactly one. */
+export function ShopHero({ placeholder = false }: { placeholder?: boolean } = {}) {
+  const Heading = placeholder ? 'p' : 'h1'
   return (
     <section className="relative w-full h-[50vh] sm:h-[60vh] md:h-[65vh] min-h-[380px] sm:min-h-[460px] md:min-h-[500px] flex items-center justify-center border-b border-[#dde7dd]/60 overflow-hidden">
       
@@ -30,12 +32,15 @@ export function ShopHero() {
         <div className="flex flex-col items-center text-center mt-auto mb-auto">
 
           <FadeIn delay={0.2}>
-            <h1 
+            <Heading className="text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-4">
+              Handcrafted Ayurvedic Skincare &amp; Hair Care
+            </Heading>
+            <p 
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.4rem] md:text-[4rem] lg:text-[4.5rem] font-medium text-[#1e2228] leading-[1.1] mb-4 sm:mb-6 drop-shadow-md bg-white/20 sm:bg-transparent px-4 py-2 sm:px-0 sm:py-0 rounded-lg sm:rounded-none"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(255,255,255,0.7)' }}
             >
               Shop the collection.
-            </h1>
+            </p>
           </FadeIn>
           
           <FadeIn delay={0.3}>

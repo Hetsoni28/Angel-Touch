@@ -44,7 +44,7 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
         name: 'Angel Touch',
         description: 'Premium Membership',
         order_id: result.data.id,
-        handler: async function (response: any) {
+        handler: async function (response: RazorpaySuccessResponse) {
           try {
             // Server-side payment verification
             const verifyRes = await fetch('/api/payments/verify', {
@@ -63,8 +63,8 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
               throw new Error(verifyData.error || 'Payment verification failed.')
             }
             router.push('/customer/dashboard?success=membership')
-          } catch (err: any) {
-            setError(err.message || 'Payment verification failed.')
+          } catch (err) {
+            setError((err instanceof Error && err.message) || 'Payment verification failed.')
           } finally {
             setIsLoading(false)
           }
@@ -81,9 +81,9 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
         },
       }
 
-      const rzp = new (window as any).Razorpay(options)
+      const rzp = new window.Razorpay(options)
       
-      rzp.on('payment.failed', function (response: any) {
+      rzp.on('payment.failed', function (response: RazorpayFailureResponse) {
         setIsLoading(false)
         const reason = response.error?.description || 'Your transaction was declined by the bank.'
         setError(`Payment Failed: ${reason} Your card was not charged. Please try again or use another payment method.`)
@@ -91,8 +91,8 @@ export function MembershipCheckoutButton({ planId, amount, disabled }: Membershi
 
       rzp.open()
       
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during checkout.')
+    } catch (err) {
+      setError((err instanceof Error && err.message) || 'An error occurred during checkout.')
     } finally {
       setIsLoading(false)
     }

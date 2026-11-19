@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState } from 'react'
 import { updateProfileAction } from '@/app/actions/profile'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 

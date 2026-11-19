@@ -1,17 +1,20 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import { FAQ_GROUPS } from '@/lib/faq'
 import { SITE_INFO } from '@/lib/siteInfo'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Frequently Asked Questions',
   description:
-    'Answers about booking treatments, our women-only studio in Satellite, Ahmedabad, products, live classes, recordings, membership and academy courses at Angel Touch.',
-  alternates: { canonical: 'https://angeltouch.in/faq' },
-}
+    'Answers about booking treatments at our women-only studio in Satellite, Ahmedabad, plus products, live classes, membership and academy courses.',
+  path: '/faq',
+})
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -30,10 +33,7 @@ const slugId = (title: string) => 'faq-' + title.toLowerCase().replace(/[^a-z0-9
 export default function FaqPage() {
   return (
     <div className="bg-[#faf8f2] min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd data={[faqSchema, breadcrumbJsonLd([{ name: 'FAQ', path: '/faq' }])]} />
 
       <div className="max-w-3xl mx-auto px-6 md:px-10 py-12 md:py-20">
         <div className="mb-10">

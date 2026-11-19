@@ -9,20 +9,20 @@ import Link from 'next/link'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Ayurvedic Formulation Masterclasses',
   description:
-    'Enrol in Angel Touch live and recorded masterclasses. Learn to formulate authentic Ayurvedic skincare, hair care, and wellness products from scratch under the guidance of Heena Thaker.',
-  alternates: { canonical: 'https://angeltouch.in/classes' },
-  openGraph: {
-    title: 'Ayurvedic Formulation Masterclasses | Angel Touch',
-    description:
-      'Live and recorded Ayurvedic product-making masterclasses. Learn to craft saffron facial oils, herbal elixirs, and wellness formulations.',
-    url: 'https://angeltouch.in/classes',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Angel Touch Ayurvedic Masterclasses' }],
+    'Live hands-on masterclasses with Heena Thaker: learn to make Ayurvedic face oils, hair elixirs and natural skincare from scratch. See upcoming dates.',
+  path: '/classes',
+  image: {
+    url: '/images/learning_hero.jpg',
+    alt: 'Ayurvedic skincare formulation masterclass with herbs, oils and glass jars',
   },
-}
+})
 
 
 export const instant = false // Replaces revalidate in Next.js 16
@@ -49,6 +49,7 @@ export default async function ClassesPage() {
 
   return (
     <div className="min-h-screen bg-[#faf8f2]">
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Classes', path: '/classes' }])} />
       
       {/* ── 2. Brand-Aligned Hero (Matches TreatmentsHero) ── */}
       <section className="relative w-full min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] flex flex-col justify-center overflow-hidden border-b border-[#dde7dd]/60">
@@ -57,7 +58,7 @@ export default async function ClassesPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/learning_hero.jpg"
-            alt="Ayurvedic Masterclass"
+            alt="Ayurvedic skincare formulation masterclass with herbs, oils and glass jars"
             fill
             sizes="100vw"
             className="object-cover object-[center_30%] sm:object-center"
@@ -73,12 +74,15 @@ export default async function ClassesPage() {
                 <DynamicBreadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Classes' }]} />
               </div>
 
-              <h1
+              <h1 className="text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] text-white/85 uppercase mb-4 mt-2">
+                Ayurvedic Formulation Masterclasses with Heena Thaker
+              </h1>
+              <p
                 className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-white leading-[1.05] mb-6 md:mb-8 drop-shadow-md"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
                 Learn the craft<br />behind the ritual.
-              </h1>
+              </p>
             </FadeIn>
 
             <FadeIn delay={0.2}>

@@ -5,7 +5,7 @@ import { CardSkeleton } from '@/components/molecules/CardSkeleton'
 export default function TreatmentsLoading() {
   return (
     <>
-      <TreatmentsHero />
+      <TreatmentsHero placeholder />
       <section className="py-24 bg-[#faf8f2]">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Filters skeleton */}

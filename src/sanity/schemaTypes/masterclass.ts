@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { slugOptions } from './fields'
 
 export const masterclassType = defineType({
   name: 'masterclass',
@@ -16,10 +17,7 @@ export const masterclassType = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      options: slugOptions('title'),
       description: 'Click Generate to auto-create from title',
       validation: (Rule) => Rule.required(),
     }),
@@ -60,6 +58,78 @@ export const masterclassType = defineType({
       description: 'Optional short summary of what will be taught in this masterclass.',
     }),
     defineField({
+      name: 'image',
+      title: 'Main Image',
+      type: 'image',
+      description: 'Shown at the top of the class page and when the page is shared. Landscape works best.',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt text (for Google & screen readers)',
+          type: 'string',
+          description:
+            'Describe what is in the photo, naturally including the topic — e.g. "Saffron face oil being blended in an Ayurvedic formulation class". Max 125 characters.',
+          validation: (Rule) => Rule.max(125).warning('Keep alt text under 125 characters.'),
+        }),
+      ],
+    }),
+    defineField({
+      name: 'description',
+      title: 'Full Description (Optional)',
+      type: 'blockContent',
+      description: 'Longer write-up shown on the class page. Use "H3" for sub-headings.',
+    }),
+    defineField({
+      name: 'whatYouWillLearn',
+      title: 'What You Will Learn (Optional)',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'whatIsIncluded',
+      title: 'What Is Included (Optional)',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'type',
+      title: 'Class Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Live class', value: 'live' },
+          { title: 'Recording only', value: 'recording' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'live',
+    }),
+    defineField({
+      name: 'price',
+      title: 'Price in ₹ (Optional)',
+      type: 'number',
+      validation: (Rule) => Rule.min(0),
+    }),
+    defineField({
+      name: 'time',
+      title: 'Display Time (Optional)',
+      type: 'string',
+      description: 'e.g., 11:00 AM',
+    }),
+    defineField({
+      name: 'capacity',
+      title: 'Seats Available (Optional)',
+      type: 'number',
+      validation: (Rule) => Rule.min(1).integer(),
+    }),
+    defineField({
+      name: 'isCancelled',
+      title: 'Cancelled',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'duration',
       title: 'Duration / Time (Optional)',
       type: 'string',
@@ -71,6 +141,7 @@ export const masterclassType = defineType({
       type: 'url',
       description: 'Paste the YouTube Unlisted link here AFTER the live class is finished to provide recording access.',
     }),
+    defineField({ name: 'seo', title: 'SEO', type: 'seo' }),
   ],
   preview: {
     select: {

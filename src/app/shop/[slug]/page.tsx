@@ -7,6 +7,17 @@ import { ProductCard } from '@/components/molecules/ProductCard'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 import { DynamicBreadcrumbs } from '@/components/molecules/DynamicBreadcrumbs'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import {
+  sanityPageMetadata,
+  breadcrumbJsonLd,
+  absoluteUrl,
+  clampText,
+  SEO_PROJECTION,
+  MAX_ALT,
+  type SanitySeo,
+} from '@/lib/seo'
 
 const PRODUCT_QUERY = groq`
   *[_type == "product" && slug.current == $slug][0] {
@@ -15,9 +26,11 @@ const PRODUCT_QUERY = groq`
     "slug": slug.current,
     "category": category->name,
     "images": images[].asset->url,
+    "imageAlts": images[].alt,
     "description": description[0].children[0].text,
     "ingredients": ingredients[0].children[0].text,
-    "usage": usageDetails[0].children[0].text
+    "usage": usageDetails[0].children[0].text,
+    seo { ${SEO_PROJECTION} }
   }
 `
 
@@ -34,8 +47,19 @@ const RELATED_QUERY = groq`
 
 export const instant = false
 
+type ProductDoc = {
+  name: string
+  category?: string
+  images?: string[]
+  imageAlts?: (string | null)[]
+  description?: string
+  ingredients?: string
+  usage?: string
+  seo?: SanitySeo
+}
+
 // Fallback data if Sanity is empty
-const fallbackProducts = {
+const fallbackProducts: Record<string, ProductDoc> = {
   'kesar-radiance-oil': {
     name: 'Kesar Radiance Oil',
     category: 'Skin Care',
@@ -70,76 +94,60 @@ const fallbackProducts = {
   }
 }
 
+async function getProduct(slug: string): Promise<ProductDoc | null> {
+  const product = await client.fetch<ProductDoc | null>(PRODUCT_QUERY, { slug }).catch(() => null)
+  return product ?? fallbackProducts[slug] ?? null
+}
+
+/** Alt text: the editor's text from Sanity when set, otherwise a descriptive default. */
+function productAlt(product: ProductDoc, index: number, fallback: string): string {
+  return clampText(product.imageAlts?.[index] || fallback, MAX_ALT)
+}
+
+function mainAlt(product: ProductDoc): string {
+  return productAlt(
+    product,
+    0,
+    `${product.name}, handcrafted Ayurvedic ${(product.category || 'skincare').toLowerCase()} by Angel Touch`
+  )
+}
+
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const params = await props.params
-  let product = await client.fetch(PRODUCT_QUERY, { slug: params.slug }).catch(() => null)
-  if (!product) {
-    product = (fallbackProducts as Record<string, { name: string; category: string; images: string[]; description: string; ingredients: string; usage: string }>)[params.slug]
-  }
+  const { slug } = await props.params
+  const product = await getProduct(slug)
+  if (!product) return { title: 'Product not found', robots: { index: false } }
 
-  if (!product) {
-    return {
-      title: 'Product | Angel Touch',
-      description: 'Explore handcrafted Ayurvedic products at Angel Touch.',
-    }
-  }
-
-  const title = `${product.name} | Ayurvedic Beauty`
-  const description = product.description || 'Handcrafted Ayurvedic beauty formulation by Angel Touch.'
-  const image = product.images?.[0] || '/images/featured_lifestyle.jpg'
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `https://angeltouch.in/shop/${params.slug}` },
-    openGraph: {
-      title: `${product.name} | Angel Touch`,
-      description,
-      url: `https://angeltouch.in/shop/${params.slug}`,
-      images: [{ url: image, alt: product.name }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${product.name} | Angel Touch`,
-      description,
-      images: [image],
-    },
-  }
+  return sanityPageMetadata(product.seo, {
+    title: `${product.name} – Ayurvedic ${product.category || 'Skincare'}`,
+    description:
+      product.description ||
+      `${product.name}: handcrafted Ayurvedic ${(product.category || 'skincare').toLowerCase()} by Heena Thaker at Angel Touch, Ahmedabad.`,
+    path: `/shop/${slug}`,
+    image: { url: product.images?.[0] || '/images/featured_lifestyle.jpg', alt: mainAlt(product) },
+  })
 }
 
 export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  let product = await client.fetch(PRODUCT_QUERY, { slug: params.slug }).catch(() => null)
+  const product = await getProduct(params.slug)
+  // A real 404 (not a 200 "not found" page) so search engines drop dead URLs.
+  if (!product) notFound()
+
   let relatedProducts = await client.fetch(RELATED_QUERY, { slug: params.slug }).catch(() => [])
 
-  // TODO: Remove fallback once CMS is populated
-  if (!product) {
-    product = (fallbackProducts as Record<string, { name: string; category: string; images: string[]; description: string; ingredients: string; usage: string }>)[params.slug]
-  }
-  
   if (relatedProducts.length === 0) {
-    relatedProducts = Object.values(fallbackProducts).filter(p => p.name !== product?.name).map(p => ({
-      _id: p.name,
+    // Use the real keys as slugs — deriving them from the name produced broken
+    // links such as "Neem & Tulsi" → /shop/neem-and-tulsi-… (404).
+    relatedProducts = Object.entries(fallbackProducts).filter(([key]) => key !== params.slug).map(([key, p]) => ({
+      _id: key,
       name: p.name,
-      slug: p.name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and'),
+      slug: key,
       category: p.category,
-      imageUrl: p.images[0],
+      imageUrl: p.images?.[0],
       description: p.description
     }))
   }
 
-  if (!product) {
-    return (
-      <div className="min-h-[70vh] bg-[#faf8f2] flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-medium text-[#1e2228] mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
-            Product not found
-          </h2>
-          <Link href="/shop" className="at-link">Return to Shop &rarr;</Link>
-        </div>
-      </div>
-    )
-  }
 
   const mainImage = product.images?.[0] || '/images/featured_lifestyle.jpg'
   const galleryImages = product.images?.slice(1) || []
@@ -149,29 +157,27 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: mainImage.startsWith('http') ? mainImage : `https://angeltouch.in${mainImage}`,
+    image: absoluteUrl(mainImage),
     category: product.category,
     brand: {
       '@type': 'Brand',
       name: 'Angel Touch',
     },
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'INR',
-      availability: 'https://schema.org/InStock',
-      url: `https://angeltouch.in/shop/${params.slug}`,
-      seller: {
-        '@type': 'Organization',
-        name: 'Angel Touch',
-      },
-    },
+    // No 'offers' while online sales are off: an Offer without a price is
+    // reported as an error in Google Search Console.
+    url: absoluteUrl(`/shop/${params.slug}`),
   }
 
   return (
     <div className="bg-[#faf8f2] min-h-screen pt-8 pb-20 md:pt-12 md:pb-32">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      <JsonLd
+        data={[
+          productSchema,
+          breadcrumbJsonLd([
+            { name: 'Shop', path: '/shop' },
+            { name: product.name, path: `/shop/${params.slug}` },
+          ]),
+        ]}
       />
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         
@@ -194,7 +200,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               <div className="relative w-full aspect-[4/5] bg-[#faf8f2] overflow-hidden border border-[#dde7dd]/60 mb-4">
                 <Image 
                   src={mainImage} 
-                  alt={product.name}
+                  alt={mainAlt(product)}
                   fill
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover object-center"
@@ -205,11 +211,11 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               {galleryImages.length > 0 && (
                 <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
                   <div className="relative w-16 h-20 sm:w-20 sm:h-24 shrink-0 bg-[#faf8f2] border border-[#2e7a3a] cursor-pointer opacity-100 overflow-hidden">
-                    <Image src={mainImage} alt="thumbnail" fill sizes="80px" className="object-cover" />
+                    <Image src={mainImage} alt={`${product.name} – main view`} fill sizes="80px" className="object-cover" />
                   </div>
-                  {galleryImages.map((img: string, i: number) => (
+                  {galleryImages.map((img, i) => (
                     <div key={i} className="relative w-16 h-20 sm:w-20 sm:h-24 shrink-0 bg-[#faf8f2] border border-[#dde7dd]/60 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden">
-                       <Image src={img} alt={`${product.name} detail`} fill sizes="80px" className="object-cover" loading="lazy" />
+                       <Image src={img} alt={productAlt(product, i + 1, `${product.name} – detail view ${i + 1}`)} fill sizes="80px" className="object-cover" loading="lazy" />
                     </div>
                   ))}
                 </div>
@@ -262,7 +268,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
                 <p className="text-[13px] text-[#8a8d87] mb-3">
                   Ask us before you decide.
                 </p>
-                <Link href="/contact" className="text-[12px] tracking-widest text-[#1e2228] uppercase font-semibold hover:text-[#2e7a3a] border-b border-[#1e2228] hover:border-[#2e7a3a] pb-0.5 transition-colors">
+                <Link href="/contact" className="inline-flex items-center min-h-[32px] text-[12px] tracking-widest text-[#1e2228] uppercase font-semibold hover:text-[#2e7a3a] border-b border-[#1e2228] hover:border-[#2e7a3a] pb-0.5 transition-colors">
                   Make an Inquiry
                 </Link>
               </div>
@@ -286,7 +292,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               <div className="relative w-full aspect-[4/3] bg-[#faf8f2] overflow-hidden border border-[#dde7dd]/50">
                 <Image 
                   src={mainImage} 
-                  alt="Product Lifestyle"
+                  alt={`${product.name} with Ayurvedic botanical ingredients`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="w-full h-full object-cover object-center"
@@ -363,7 +369,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
               </Link>
               <Link
                 href="/shop"
-                className="text-[12px] tracking-[0.15em] font-semibold text-[#1e2228] uppercase hover:text-[#2e7a3a] border-b border-[#1e2228] hover:border-[#2e7a3a] pb-1 transition-colors"
+                className="inline-flex items-center min-h-[32px] text-[12px] tracking-[0.15em] font-semibold text-[#1e2228] uppercase hover:text-[#2e7a3a] border-b border-[#1e2228] hover:border-[#2e7a3a] pb-1 transition-colors"
               >
                 Explore All Products
               </Link>

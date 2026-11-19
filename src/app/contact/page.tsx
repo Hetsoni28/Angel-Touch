@@ -1,6 +1,10 @@
 import { FadeIn } from '@/components/atoms/FadeIn'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { breadcrumbJsonLd } from '@/lib/seo'
+import { SITE_INFO } from '@/lib/siteInfo'
 
 function generateWhatsAppLink({ type = 'GENERAL' }: { type?: 'GENERAL' | 'MASTERCLASS' | 'TREATMENT' }) {
   const phone = '919723179638'
@@ -15,11 +19,11 @@ function generateWhatsAppLink({ type = 'GENERAL' }: { type?: 'GENERAL' | 'MASTER
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
 }
 
-export const metadata: Metadata = {
-  title: "Contact & Location | Angel Touch by Heena Thaker — Satellite, Ahmedabad",
+export const metadata: Metadata = pageMetadata({
+  title: 'Contact & Visit Us in Satellite, Ahmedabad',
   description:
-    "Visit our women-only sanctuary at UGF-6 Policlinic Chamber, Opp. Judges Bunglow Road, Satellite, Ahmedabad. Book Ayurvedic treatments, bridal styling, or masterclasses with Heena Thaker.",
-  alternates: { canonical: 'https://angeltouch.in/contact' },
+    'Visit Angel Touch at UGF-6 Policlinic Chamber, opp. Judges Bungalow Road, Satellite, Ahmedabad. Call or WhatsApp +91 97231 79638 to book.',
+  path: '/contact',
   keywords: [
     'Angel Touch address Ahmedabad',
     'Heena Thaker contact number',
@@ -28,23 +32,18 @@ export const metadata: Metadata = {
     'Women salon Satellite contact',
     'Book Ayurvedic treatment Ahmedabad',
   ],
-  openGraph: {
-    title: "Contact & Location | Angel Touch by Heena Thaker — Satellite, Ahmedabad",
-    description:
-      'Visit our sanctuary in Satellite, Ahmedabad. Book Ayurvedic treatments, bridal styling, or masterclasses with Heena Thaker.',
-    url: 'https://angeltouch.in/contact',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Contact Angel Touch in Satellite Ahmedabad' }],
-  },
-}
+})
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': ['BeautySalon', 'DaySpa', 'HealthAndBeautyBusiness'],
   name: 'Angel Touch by Heena Thaker',
+  // Name on the Google Business Profile — helps Google match the site to the listing
+  alternateName: SITE_INFO.google.name,
   url: 'https://angeltouch.in/contact',
   telephone: '+919723179638',
   priceRange: '₹₹ - ₹₹₹',
-  hasMap: 'https://maps.google.com/maps?q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad',
+  hasMap: SITE_INFO.google.placeUrl,
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road',
@@ -55,8 +54,8 @@ const localBusinessSchema = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 23.02937,
-    longitude: 72.504909,
+    latitude: SITE_INFO.google.lat,
+    longitude: SITE_INFO.google.lng,
   },
   openingHoursSpecification: [
     {
@@ -72,14 +71,8 @@ const localBusinessSchema = {
       closes: '16:30',
     },
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '184',
-    bestRating: '5',
-    worstRating: '1',
-  },
   sameAs: [
+    SITE_INFO.google.placeUrl,
     'https://www.instagram.com/angeltouch_by_heena_thaker/',
     'https://wa.me/919723179638',
   ],
@@ -88,24 +81,21 @@ const localBusinessSchema = {
 export default function ContactPage() {
   return (
     <article className="min-h-screen bg-[#faf8f2]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
+      <JsonLd data={[localBusinessSchema, breadcrumbJsonLd([{ name: 'Contact', path: '/contact' }])]} />
       
       {/* Editorial Hero */}
       <header className="relative w-full pt-24 pb-12 sm:pt-36 sm:pb-16 md:pt-44 md:pb-24 px-6 md:px-10 max-w-7xl mx-auto">
         <FadeIn>
           <div className="max-w-3xl">
-            <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#1e5f2e] mb-4 sm:mb-6 block">
-              Contact Us
-            </span>
-            <h1
+            <h1 className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#1e5f2e] mb-4 sm:mb-6 block">
+              Contact Angel Touch in Satellite, Ahmedabad
+            </h1>
+            <p
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
               Let&apos;s start your wellness journey.
-            </h1>
+            </p>
             <p className="text-[15px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl">
               Whether you are looking to book a holistic treatment, inquire about our raw Ayurvedic products, or enroll in a masterclass, we are here to assist you.
             </p>
@@ -150,11 +140,31 @@ export default function ContactPage() {
                     <span className="w-4 h-[1px] bg-[#dde7dd] group-hover:bg-[#1e5f2e] transition-colors" aria-hidden="true" />
                     Location
                   </h3>
-                  <p className="text-[16px] text-[#1e2228] leading-[1.8] pl-7">
+                  <address className="not-italic text-[16px] text-[#1e2228] leading-[1.8] pl-7">
                     UGF-6, Policlinic Chamber,<br />
-                    Opp. Judges Bunglow Road,<br />
+                    Opp. Judges Bungalow Road,<br />
                     Satellite, Ahmedabad — 380015
-                  </p>
+                  </address>
+                  <div className="pl-7 mt-3 flex flex-wrap gap-x-6 gap-y-2">
+                    <a
+                      href={SITE_INFO.google.directionsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="at-link at-link-green min-h-[44px]"
+                      aria-label="Get directions on Google Maps (opens in a new tab)"
+                    >
+                      Get directions <span className="arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a
+                      href={SITE_INFO.google.placeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="at-link min-h-[44px]"
+                      aria-label="See Angel Touch on Google Maps, with reviews and photos (opens in a new tab)"
+                    >
+                      Reviews on Google <span className="arrow" aria-hidden="true">↗</span>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="group">
@@ -232,6 +242,39 @@ export default function ContactPage() {
             </FadeIn>
           </div>
 
+        </div>
+      </section>
+
+      {/* Map — centred on the Google Business listing */}
+      <section aria-labelledby="map-heading" className="max-w-7xl mx-auto px-6 md:px-10 pb-20 sm:pb-28">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+          <div>
+            <p className="eyebrow mb-3">Find us</p>
+            <h2 id="map-heading" className="text-[1.6rem] sm:text-[2rem] text-[#1e2228] leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+              {SITE_INFO.google.name}
+            </h2>
+          </div>
+          <a
+            href={SITE_INFO.google.placeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="at-btn-ghost self-start sm:self-auto"
+            aria-label="Open Angel Touch in Google Maps (opens in a new tab)"
+          >
+            Open in Google Maps <span className="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div className="relative w-full aspect-[4/3] sm:aspect-[16/7] bg-[#e9f3e9] border border-[#dde7dd] overflow-hidden">
+          <iframe
+            title={`Map showing ${SITE_INFO.google.name}, Satellite, Ahmedabad`}
+            src={SITE_INFO.google.embedUrl}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="absolute inset-0"
+          />
         </div>
       </section>
 

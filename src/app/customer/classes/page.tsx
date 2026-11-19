@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
+import { slugOf, type MasterclassListItem } from '@/sanity/lib/types'
 import { Calendar, PlayCircle, Clock, CheckCircle2 } from 'lucide-react'
 import { connection } from 'next/server'
 import Link from 'next/link'
@@ -26,9 +27,9 @@ export default async function MyClassesPage() {
 
   const confirmedClassIds = (enrollments || []).map(e => e.class_id)
 
-  let enrolledClasses: any[] = []
+  let enrolledClasses: MasterclassListItem[] = []
   if (confirmedClassIds.length > 0) {
-    enrolledClasses = await client.fetch(`
+    enrolledClasses = await client.fetch<MasterclassListItem[]>(`
       *[_type == "masterclass" && _id in $ids] | order(date asc) {
         _id,
         title,
@@ -60,7 +61,7 @@ export default async function MyClassesPage() {
           <Calendar className="w-12 h-12 text-[#dde7dd] mx-auto mb-4" />
           <h3 className="text-[#1e2228] font-semibold text-lg mb-2">No classes yet</h3>
           <p className="text-[#5c5a58] text-[14px] mb-6">
-            You haven't enrolled in any classes yet.
+            You haven&apos;t enrolled in any classes yet.
           </p>
           <Link href="/classes" className="inline-flex items-center justify-center px-6 py-3 bg-[#1e2228] hover:bg-[#2e7a3a] text-white text-[11px] font-semibold tracking-widest uppercase transition-colors">
             Browse Classes
@@ -133,7 +134,7 @@ export default async function MyClassesPage() {
                     </div>
                     <div className="w-full md:w-auto border-t md:border-t-0 border-[#dde7dd] pt-4 md:pt-0">
                       <Link 
-                        href={`/customer/library/${cls.slug.current || cls.slug}`}
+                        href={`/customer/library/${slugOf(cls.slug)}`}
                         className="inline-flex items-center justify-center px-6 py-3 bg-transparent border border-[#2e7a3a] text-[#2e7a3a] hover:bg-[#2e7a3a] hover:text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors w-full md:w-auto"
                       >
                         <PlayCircle className="w-4 h-4 mr-2" />

@@ -1,16 +1,25 @@
 import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
 import { Eye } from 'lucide-react'
-import Link from 'next/link'
 
 export const instant = false
+
+type CustomerRow = {
+  id: string
+  full_name: string | null
+  email?: string | null
+  created_at: string
+  is_admin: boolean
+  memberships: { status: string; expires_at: string | null }[] | null
+  class_enrollments: { id: string; status: string }[] | null
+}
 
 export default async function AdminCustomersPage() {
   await connection()
   const supabase = await createClient()
 
   // Fetch profiles with memberships and enrollments
-  const { data: customers } = await supabase
+  const { data } = await supabase
     .from('profiles')
     .select(`
       id,
@@ -22,6 +31,7 @@ export default async function AdminCustomersPage() {
       class_enrollments ( id, status )
     `)
     .order('created_at', { ascending: false })
+  const customers = data as unknown as CustomerRow[] | null
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -42,13 +52,13 @@ export default async function AdminCustomersPage() {
             </tr>
           </thead>
           <tbody>
-            {customers?.map((customer: any) => {
+            {customers?.map((customer) => {
               // Calculate Membership Status
-              const activeMembership = customer.memberships?.find((m: any) => m.status === 'active' && new Date(m.expires_at) > new Date())
+              const activeMembership = customer.memberships?.find((m) => m.status === 'active' && !!m.expires_at && new Date(m.expires_at) > new Date())
               const membershipStatus = activeMembership ? 'Active' : 'Inactive'
 
               // Calculate Classes Purchased
-              const confirmedClasses = customer.class_enrollments?.filter((e: any) => e.status === 'confirmed').length || 0
+              const confirmedClasses = customer.class_enrollments?.filter((e) => e.status === 'confirmed').length || 0
 
               return (
                 <tr key={customer.id} className="border-b border-[#dde7dd] hover:bg-[#faf8f2] transition-colors">

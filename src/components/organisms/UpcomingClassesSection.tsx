@@ -3,147 +3,167 @@ import Image from 'next/image'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { client } from '@/sanity/lib/client'
 import { ALL_MASTERCLASSES_QUERY } from '@/sanity/lib/queries'
-import { format } from 'date-fns'
+import { slugOf, type MasterclassListItem, type SanitySlug } from '@/sanity/lib/types'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
+
+type UpcomingClass = Omit<MasterclassListItem, 'slug'> & {
+  slug?: SanitySlug | string | null
+  capacity?: number
+  duration?: string
+  isCancelled?: boolean
+}
+
+// Class times are entered in India time; format them in India time too,
+// whatever time zone the server happens to run in.
+const IST = 'Asia/Kolkata'
+const dateFmt = new Intl.DateTimeFormat('en-IN', { timeZone: IST, day: 'numeric', month: 'long', year: 'numeric' })
+const weekdayFmt = new Intl.DateTimeFormat('en-IN', { timeZone: IST, weekday: 'long' })
+const timeFmt = new Intl.DateTimeFormat('en-IN', { timeZone: IST, hour: 'numeric', minute: '2-digit', hour12: true })
+const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
+
+/**
+ * The next two real, future, live classes. No invented fallbacks: if Sanity has
+ * nothing scheduled (or can't be reached) this returns [] and the section says so.
+ */
+async function getUpcomingClasses(): Promise<UpcomingClass[]> {
+  try {
+    const data = await client.fetch<UpcomingClass[]>(ALL_MASTERCLASSES_QUERY)
+    const now = Date.now()
+    return (data ?? [])
+      .filter((c) => (c.type ?? 'live') === 'live' && !c.isCancelled && c.date && new Date(c.date).getTime() >= now)
+      .slice(0, 2)
+  } catch {
+    return []
+  }
+}
 
 export async function UpcomingClassesSection() {
-  let classes = []
-  try {
-    const data = await client.fetch(ALL_MASTERCLASSES_QUERY)
-    // Get live classes (not recordings) that haven't happened yet
-    classes = data
-      .filter((c: any) => c.type === 'live' && new Date(c.date) >= new Date())
-      .slice(0, 2)
-
-    // Fallback: just show any 2 classes if no upcoming live classes
-    if (classes.length === 0) {
-      classes = data.slice(0, 2)
-    }
-  } catch {
-    // Graceful fallback to signature masterclasses during offline or build prerender
-    classes = [
-      {
-        _id: 'm1',
-        title: 'Ayurvedic Facial Oil Formulation',
-        slug: 'ayurvedic-facial-oil-formulation',
-        imageUrl: '/images/ayurvedic_masterclass.jpg',
-        shortDescription: 'Learn to blend pure saffron, sandalwood, and botanical extracts to craft balancing facial oils.',
-        date: '2026-11-15T10:00:00.000Z',
-        duration: '3 Hours',
-        price: 2499,
-      },
-      {
-        _id: 'm2',
-        title: 'Herbal Hair Elixir & Scalp Care',
-        slug: 'herbal-hair-elixir-scalp-care',
-        imageUrl: '/images/ayurvedic_academy_workshop.jpg',
-        shortDescription: 'Master the traditional slow infusion of Bhringraj, Amla, and Brahmi for restorative hair care.',
-        date: '2026-11-22T10:00:00.000Z',
-        duration: '3.5 Hours',
-        price: 2999,
-      }
-    ]
-  }
-
-  if (classes.length === 0) return null
+  const classes = await getUpcomingClasses()
 
   return (
     <section className="bg-white py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
-          <FadeIn delay={0.1}>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] md:items-end gap-6 mb-12 md:mb-16">
+          <FadeIn>
             <div className="max-w-xl">
+              <p className="eyebrow mb-4">Live classes</p>
               <h2
-                className="text-[1.8rem] md:text-[2.4rem] font-medium text-[#1e2228] leading-[1.2]"
-                style={{ fontFamily: 'var(--font-heading)' }}
+                className="text-[1.9rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.12]"
+                style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                Learn the craft behind the ritual.
+                Learn how it&apos;s <span className="accent-italic">made</span>.
               </h2>
-              <p className="mt-3 text-[15px] text-[#5c5a58] leading-relaxed">
-                Focused, intimate live sessions teaching the authentic methods of formulating Ayurvedic beauty products from scratch — led by Heena Thaker.
+              <p className="mt-4 text-[15.5px] text-[#4a4846] leading-[1.75]">
+                Small live sessions where Heena Thaker shows, step by step, how Ayurvedic skincare
+                and hair care is formulated from scratch.
               </p>
             </div>
           </FadeIn>
-          <FadeIn delay={0.2} direction="none">
-            <Link 
-              href="/classes" 
-              className="at-link shrink-0 inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+          <FadeIn delay={0.1} direction="none">
+            <Link
+              href="/classes"
+              className="at-link shrink-0 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
             >
-              See full schedule &rarr;
+              Full schedule <span className="arrow" aria-hidden="true">→</span>
             </Link>
           </FadeIn>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {classes.map((cls: any, index: number) => {
-            const dateObj = cls.date ? new Date(cls.date) : new Date()
-            const dateStr = format(dateObj, 'dd MMMM yyyy')
-            const timeStr = format(dateObj, 'h:mm a')
-            
-            const capacity = cls.capacity || 20
-            const enrolled = cls.enrolled || 0
-            const spotsLeft = capacity - enrolled
-            const isFull = spotsLeft <= 0
-
-            return (
-              <FadeIn key={cls._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
-                <article className="group flex flex-col h-full bg-[#faf8f2] border border-[#dde7dd]/80 p-6 sm:p-8">
-                  
-                  <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-6 aspect-[16/10] relative">
-                    <Image
-                      src={cls.imageUrl || '/images/ayurvedic_masterclass.jpg'}
-                      alt={cls.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#dde7dd]/80">
-                    <div>
-                      <p className="text-[11px] tracking-[0.16em] text-[#1e2228] font-medium uppercase">{dateStr}</p>
-                      <p className="text-[11px] tracking-[0.14em] text-[#5c5a58] uppercase mt-0.5">{timeStr}</p>
+        {classes.length === 0 ? (
+          <FadeIn>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-center bg-[#faf8f2] border border-[#dde7dd]/80 p-7 md:p-10">
+              <div>
+                <p
+                  className="text-[1.35rem] md:text-[1.55rem] text-[#1e2228] leading-snug mb-2"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  The next class dates are being planned.
+                </p>
+                <p className="text-[14.5px] text-[#4a4846] leading-[1.7] max-w-xl">
+                  Send us a message and we&apos;ll tell you as soon as registration opens. Past classes
+                  are also available as recordings.
+                </p>
+              </div>
+              <a
+                href={generateWhatsAppLink({ type: 'GENERAL', message: 'Please let me know when the next live class is scheduled.' })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="at-btn"
+                aria-label="Ask about the next class date on WhatsApp (opens in a new tab)"
+              >
+                Notify me <span className="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </FadeIn>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+            {classes.map((cls, index) => {
+              const when = new Date(cls.date)
+              const href = `/classes/${slugOf(cls.slug)}`
+              return (
+                <FadeIn key={cls._id} delay={0.08 * index} className="flex flex-col h-full">
+                  <article className="at-card group relative flex flex-col h-full bg-[#faf8f2] p-5 sm:p-7">
+                    <div className="img-zoom relative overflow-hidden bg-[#e9f3e9] mb-7 aspect-[16/10]">
+                      <Image
+                        src={cls.imageUrl || '/images/ayurvedic_masterclass.jpg'}
+                        alt={cls.imageAlt || `${cls.title} – Ayurvedic formulation masterclass with Heena Thaker`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover object-[center_35%]"
+                        loading="lazy"
+                      />
                     </div>
-                    <div className="text-right">
-                      <p className="text-[1.2rem] font-medium text-[#1e2228]">₹{cls.price || '9,999'}</p>
-                      <p className={`text-[10px] tracking-[0.14em] font-semibold uppercase mt-0.5 ${isFull ? 'text-red-700' : 'text-[#1e5f2e]'}`}>
-                        {isFull ? 'Sold out' : `${spotsLeft} of ${capacity} seats left`}
+
+                    <div className="flex items-end justify-between gap-4 mb-5 pb-5 border-b border-[#dde7dd]/80">
+                      <div>
+                        <p className="eyebrow !text-[#6b6e68] mb-1.5">{weekdayFmt.format(when)}</p>
+                        <p className="text-[1.05rem] text-[#1e2228] tabular" style={{ fontFamily: 'var(--font-heading)' }}>
+                          <time dateTime={cls.date}>{dateFmt.format(when)}</time>
+                          <span className="text-[#6b6e68]"> · {cls.time || timeFmt.format(when)}</span>
+                        </p>
+                      </div>
+                      {(cls.price || cls.capacity || cls.duration) && (
+                        <div className="text-right shrink-0">
+                          {cls.price ? (
+                            <p className="text-[1.15rem] text-[#1e2228] tabular" style={{ fontFamily: 'var(--font-heading)' }}>
+                              {inr.format(cls.price)}
+                            </p>
+                          ) : null}
+                          <p className="text-[10px] tracking-[0.16em] font-semibold uppercase text-[#1e5f2e] mt-1">
+                            {[cls.duration, cls.capacity ? `${cls.capacity} seats` : null].filter(Boolean).join(' · ')}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <h3
+                      className="text-[1.35rem] md:text-[1.5rem] font-medium text-[#1e2228] mb-3 leading-snug"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      {cls.title}
+                    </h3>
+                    {cls.shortDescription && (
+                      <p className="text-[14.5px] text-[#4a4846] leading-[1.7] mb-6 grow line-clamp-3">
+                        {cls.shortDescription}
                       </p>
-                    </div>
-                  </div>
+                    )}
 
-                  <h3
-                    className="text-[1.3rem] md:text-[1.45rem] font-medium text-[#1e2228] mb-3 leading-snug"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {cls.title}
-                  </h3>
-
-                  <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-6 grow line-clamp-3">
-                    {cls.shortDescription || cls.description || ''}
-                  </p>
-
-                  <div className="pt-2 border-t border-[#dde7dd]/60 flex items-center justify-between">
-                    {!isFull ? (
-                      <Link 
-                        href={`/classes/${cls.slug?.current || cls.slug}`} 
-                        className="at-link at-link-green inline-flex items-center min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
+                    <div className="mt-auto pt-4 border-t border-[#dde7dd]/70">
+                      <Link
+                        href={href}
+                        className="at-link at-link-green min-h-[44px] after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm"
                         aria-label={`View class details: ${cls.title}`}
                       >
-                        View Class &rarr;
+                        View class <span className="arrow" aria-hidden="true">→</span>
                       </Link>
-                    ) : (
-                      <span className="text-[11px] tracking-[0.18em] uppercase text-[#5c5a58] min-h-[44px] flex items-center">
-                        Join waitlist &rarr;
-                      </span>
-                    )}
-                  </div>
-                </article>
-              </FadeIn>
-            )
-          })}
-        </div>
+                    </div>
+                  </article>
+                </FadeIn>
+              )
+            })}
+          </div>
+        )}
 
       </div>
     </section>

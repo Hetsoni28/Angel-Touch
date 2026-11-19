@@ -1,9 +1,20 @@
 import { client } from '@/sanity/lib/client'
+import type { MasterclassListItem } from '@/sanity/lib/types'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Search as SearchIcon } from 'lucide-react'
+import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 
 export const instant = false // Dynamic route
+
+// Internal search results are thin, near-duplicate pages — Google asks sites not to index them.
+export const metadata: Metadata = pageMetadata({
+  title: 'Search',
+  description: 'Search Angel Touch masterclasses, treatments and Ayurvedic skincare content.',
+  path: '/search',
+  noindex: true,
+})
 
 export default async function SearchPage({
   searchParams,
@@ -13,15 +24,15 @@ export default async function SearchPage({
   const resolvedParams = await searchParams
   const query = resolvedParams.q || ''
 
-  let results: any[] = []
+  let results: MasterclassListItem[] = []
 
   if (query.trim().length > 0) {
     // Search masterclasses in Sanity where title or description matches
-    results = await client.fetch(`
-      *[_type == "masterclass" && (title match $term || description match $term)] {
+    results = await client.fetch<MasterclassListItem[]>(`
+      *[_type == "masterclass" && (title match $term || shortDescription match $term || description match $term)] {
         _id,
         title,
-        description,
+        "description": coalesce(shortDescription, description),
         date,
         price,
         "imageUrl": mainImage.asset->url
@@ -50,7 +61,7 @@ export default async function SearchPage({
               placeholder="Search classes, recordings..."
               className="w-full bg-transparent border-b-2 border-[#1e2228] py-4 pr-12 text-[18px] text-[#1e2228] placeholder-[#a8a8a8] focus:outline-none transition-colors rounded-none"
             />
-            <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-[#1e2228] hover:text-[#2e7a3a] transition-colors">
+            <button type="submit" aria-label="Search" className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors">
               <SearchIcon className="w-5 h-5" />
             </button>
           </form>
@@ -65,7 +76,7 @@ export default async function SearchPage({
                   <div className="w-full sm:w-1/3 aspect-[4/3] relative overflow-hidden bg-[#faf8f2]">
                     <Image
                       src={item.imageUrl}
-                      alt={item.title}
+                      alt={`${item.title} – Ayurvedic masterclass at Angel Touch`}
                       fill
                       sizes="(max-width: 640px) 100vw, 300px"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -104,7 +115,7 @@ export default async function SearchPage({
             </div>
             <h3 className="font-playfair text-2xl text-[#1e2228] mb-3">No results found</h3>
             <p className="text-[15px] text-[#5c5a58]">
-              We couldn't find any classes matching your search. Please try a different term.
+              We couldn&apos;t find any classes matching your search. Please try a different term.
             </p>
           </div>
         )}

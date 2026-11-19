@@ -10,7 +10,7 @@ export default async function AdminRecordingsPage() {
   const supabase = await createClient()
 
   // 1. Fetch all masterclasses from Sanity (the "Recordings")
-  const masterclasses = await client.fetch(`
+  const masterclasses = await client.fetch<{ _id: string; title: string; date?: string }[]>(`
     *[_type == "masterclass"] | order(date desc) {
       _id,
       title,
@@ -51,7 +51,7 @@ export default async function AdminRecordingsPage() {
     .eq('status', 'active')
     .gt('expires_at', new Date().toISOString())
 
-  const activeMemberIds = new Set((activeMembers as any[])?.map((m: any) => m.user_id) || [])
+  const activeMemberIds = new Set((activeMembers ?? []).map((m) => m.user_id))
 
   return (
     <div className="w-full max-w-6xl mx-auto">
@@ -72,7 +72,7 @@ export default async function AdminRecordingsPage() {
             </tr>
           </thead>
           <tbody>
-            {masterclasses?.map((cls: any) => {
+            {masterclasses?.map((cls) => {
               const individualUserIds = enrollmentsByClass[cls._id] || new Set()
               const individualPurchases = individualUserIds.size
               

@@ -12,17 +12,21 @@ import { TestimonialsSection } from '@/components/organisms/TestimonialsSection'
 import { SocialSection } from '@/components/organisms/SocialSection'
 import { FinalCTASection } from '@/components/organisms/FinalCTASection'
 import { WelcomeAnimation } from '@/components/organisms/WelcomeAnimation'
+import { INTRO_GATE_SCRIPT } from '@/lib/intro'
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
+import { JsonLd } from '@/components/atoms/JsonLd'
+import { ScrollProgress } from '@/components/atoms/ScrollProgress'
+import { SITE_INFO } from '@/lib/siteInfo'
 
 export const instant = false
 
-export const metadata: Metadata = {
-  title: "Angel Touch by Heena Thaker | Women's Ayurvedic Salon & Wellness — Ahmedabad",
+export const metadata: Metadata = pageMetadata({
+  title: 'Angel Touch | Ayurvedic Salon & Academy, Ahmedabad',
+  absoluteTitle: true,
   description:
-    "Exclusive women-only Ayurvedic salon, wellness sanctuary, and beauty school in Satellite, Ahmedabad. Authentic Shirodhara, restorative aroma skin facials, bridal styling, botanical hair care, and certified formulation masterclasses by Heena Thaker.",
-  alternates: {
-    canonical: 'https://angeltouch.in',
-  },
+    'Women-only Ayurvedic salon in Satellite, Ahmedabad by Heena Thaker. Shirodhara, aroma facials, hair spa, bridal makeup, beauty courses and natural skincare.',
+  path: '/',
   keywords: [
     'Angel Touch Ahmedabad',
     'Heena Thaker salon',
@@ -38,28 +42,9 @@ export const metadata: Metadata = {
     'Ayurvedic beauty parlour Satellite',
     'Organic skincare India',
     'Skincare formulation academy Ahmedabad',
-    'Ladies wellness centre Ahmedabad',
+    'Ladies wellness centre Ahmedabad',
   ],
-  openGraph: {
-    title: "Angel Touch by Heena Thaker | Women's Ayurvedic Salon & Wellness — Ahmedabad",
-    description:
-      "Exclusive women-only Ayurvedic salon & wellness sanctuary in Satellite, Ahmedabad. Shirodhara, Abhyanga, aroma skin facials, bridal styling, and formulation masterclasses.",
-    url: 'https://angeltouch.in',
-    images: [
-      {
-        url: '/images/og-default.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Angel Touch by Heena Thaker — Women\'s Ayurvedic Salon in Satellite, Ahmedabad',
-      },
-    ],
-  },
-  twitter: {
-    title: "Angel Touch by Heena Thaker | Women's Ayurvedic Salon & Wellness — Ahmedabad",
-    description:
-      "Exclusive women-only Ayurvedic salon & wellness sanctuary in Satellite, Ahmedabad. Shirodhara, Abhyanga, aroma skin facials, and bridal styling.",
-  },
-}
+})
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -97,7 +82,8 @@ const organizationSchema = {
       '@type': ['BeautySalon', 'DaySpa', 'HealthAndBeautyBusiness'],
       '@id': 'https://angeltouch.in/#business',
       name: 'Angel Touch by Heena Thaker',
-      alternateName: 'Angel Touch Ayurvedic Salon Satellite Ahmedabad',
+      // First entry is the exact name on the Google Business Profile
+      alternateName: [SITE_INFO.google.name, 'Angel Touch Ayurvedic Salon Satellite Ahmedabad'],
       description:
         "Top-rated women-only Ayurvedic salon, wellness spa, and certified beauty academy in Satellite, Ahmedabad. Specializing in authentic Shirodhara, Abhyanga, herbal facials, hair therapies, bridal styling, and handcrafted organic products.",
       url: 'https://angeltouch.in',
@@ -106,7 +92,7 @@ const organizationSchema = {
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, Credit Card, Debit Card, UPI, Google Pay, PhonePe, Paytm, Net Banking',
       image: 'https://angeltouch.in/images/og-default.jpg',
-      hasMap: 'https://maps.google.com/maps?q=Policlinic+Chamber,+Judges+Bungalow+Road,+Satellite,+Ahmedabad',
+      hasMap: SITE_INFO.google.placeUrl,
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road',
@@ -117,8 +103,8 @@ const organizationSchema = {
       },
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: 23.02937,
-        longitude: 72.504909,
+        latitude: SITE_INFO.google.lat,
+        longitude: SITE_INFO.google.lng,
       },
       openingHoursSpecification: [
         {
@@ -134,13 +120,6 @@ const organizationSchema = {
           closes: '16:30',
         },
       ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '184',
-        bestRating: '5',
-        worstRating: '1',
-      },
       areaServed: [
         { '@type': 'AdministrativeArea', name: 'Satellite, Ahmedabad' },
         { '@type': 'AdministrativeArea', name: 'Bodakdev, Ahmedabad' },
@@ -205,10 +184,10 @@ const organizationSchema = {
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
+      <JsonLd data={organizationSchema} />
+      <ScrollProgress />
+      {/* Decides before first paint whether to show the intro (no homepage flash) */}
+      <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
       <WelcomeAnimation />
       <HeroSection />
       <BrandIntroductionSection />
