@@ -88,7 +88,7 @@ export function SocialSection() {
                   src={img.src}
                   alt={img.alt}
                   fill
-                  sizes="(max-width: 640px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 36vw" /* square cells of landscape photos: drawn ~1.8x the cell width */
                   className="object-cover"
                   loading="lazy"
                 />

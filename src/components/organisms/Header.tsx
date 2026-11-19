@@ -295,7 +295,7 @@ export function Header() {
                                 src="/images/treatment_shirodhara.jpg"
                                 alt=""
                                 fill
-                                sizes="220px"
+                                sizes="640px" /* landscape photo cover-cropped into a tall 220px panel */
                                 className="object-cover opacity-90"
                               />
                               <div className="relative bg-[#faf8f2]/95 p-4">
