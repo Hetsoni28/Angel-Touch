@@ -29,7 +29,8 @@ export function AboutSection() {
               <CinematicImage
                 src="/images/treatment_shirodhara.jpg"
                 alt="Shirodhara Ayurvedic oil therapy at Angel Touch salon in Satellite, Ahmedabad"
-                sizes="(max-width: 1024px) 100vw, 400px"
+                // landscape photo in a 4:5 frame: drawn ~2.5× the frame's width (cover crop + parallax zoom)
+                sizes="(max-width: 1024px) 250vw, 960px"
                 parallax={6}
                 reveal
                 className="w-full aspect-[4/5] bg-[#e9f3e9]"

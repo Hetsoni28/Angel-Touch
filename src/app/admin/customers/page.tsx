@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
 import { Eye } from 'lucide-react'
 
@@ -7,7 +8,6 @@ export const instant = false
 type CustomerRow = {
   id: string
   full_name: string | null
-  email?: string | null
   created_at: string
   is_admin: boolean
   memberships: { status: string; expires_at: string | null }[] | null
@@ -24,7 +24,6 @@ export default async function AdminCustomersPage() {
     .select(`
       id,
       full_name,
-      email,
       created_at,
       is_admin,
       memberships ( status, expires_at ),
@@ -32,6 +31,8 @@ export default async function AdminCustomersPage() {
     `)
     .order('created_at', { ascending: false })
   const customers = data as unknown as CustomerRow[] | null
+  // Emails live in Supabase Auth, not in profiles
+  const emails = await getEmailsByUserId((customers ?? []).map((c) => c.id))
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -67,7 +68,7 @@ export default async function AdminCustomersPage() {
                       {customer.full_name || 'N/A'}
                       {customer.is_admin && <span className="px-2 py-0.5 text-[9px] bg-purple-100 text-purple-700 rounded font-bold uppercase tracking-widest">Admin</span>}
                     </p>
-                    <p className="text-[#8a8d87] text-[11px]">{customer.email}</p>
+                    <p className="text-[#8a8d87] text-[11px]">{emails[customer.id]}</p>
                   </td>
                   <td className="px-6 py-4">{new Date(customer.created_at).toLocaleDateString()}</td>
                   <td className="px-6 py-4">

@@ -35,7 +35,7 @@ export default async function CheckoutPage({ params }: Props) {
   // 2. Fetch User Profile
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, email')
+    .select('full_name')
     .eq('id', user.id)
     .single()
 
@@ -136,7 +136,7 @@ export default async function CheckoutPage({ params }: Props) {
             classTitle={masterclass.title}
             amount={masterclass.price}
             userId={user.id}
-            userEmail={profile?.email || user.email || ''}
+            userEmail={user.email || ''}
             userName={profile?.full_name || 'Valued Customer'}
           />
 

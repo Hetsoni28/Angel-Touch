@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
 import type { Payment, Profile } from '@/lib/supabase/types'
@@ -13,9 +14,12 @@ export default async function AdminPaymentsPage() {
     .from('payments')
     .select(`
       *,
-      profiles:user_id(full_name, email)
+      profiles:user_id(full_name)
     `)
     .order('created_at', { ascending: false })
+
+  // Emails live in Supabase Auth, not in profiles
+  const emails = await getEmailsByUserId((payments ?? []).map((p) => p.user_id))
 
   // Fetch Sanity metadata to map references
   const [masterclasses, membershipPlans] = await Promise.all([
@@ -31,7 +35,7 @@ export default async function AdminPaymentsPage() {
   }, {} as Record<string, string>)
 
   type PaymentWithProfile = Payment & { 
-    profiles?: Pick<Profile, 'full_name' | 'email'> | null,
+    profiles?: Pick<Profile, 'full_name'> | null,
     razorpay_payment_id?: string, // legacy
     gateway_payment_id?: string,
     razorpay_order_id?: string,   // legacy
@@ -74,7 +78,7 @@ export default async function AdminPaymentsPage() {
                   <td className="px-6 py-4 font-mono text-[11px] text-[#8a8d87]">{displayId}</td>
                   <td className="px-6 py-4">
                     <p className="font-semibold text-[#1e2228]">{payment.profiles?.full_name || 'Unknown'}</p>
-                    <p className="text-[#8a8d87] text-[11px]">{payment.profiles?.email}</p>
+                    <p className="text-[#8a8d87] text-[11px]">{emails[payment.user_id]}</p>
                   </td>
                   <td className="px-6 py-4 font-medium text-[#1e2228] max-w-[150px] truncate" title={refName}>
                     {refName}

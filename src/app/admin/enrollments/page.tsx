@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
 import { Eye } from 'lucide-react'
@@ -7,10 +8,11 @@ export const instant = false
 
 type EnrollmentRow = {
   id: string
+  user_id: string
   class_id: string
   status: string
   created_at: string
-  profiles: { full_name: string | null; email?: string | null } | null
+  profiles: { full_name: string | null } | null
 }
 
 export default async function AdminEnrollmentsPage() {
@@ -22,13 +24,15 @@ export default async function AdminEnrollmentsPage() {
     .from('class_enrollments')
     .select(`
       id,
+      user_id,
       class_id,
       status,
       created_at,
-      profiles:user_id(full_name, email)
+      profiles:user_id(full_name)
     `)
     .order('created_at', { ascending: false })
   const enrollments = data as unknown as EnrollmentRow[] | null
+  const emails = await getEmailsByUserId((enrollments ?? []).map((e) => e.user_id))
 
   // Fetch all masterclasses from Sanity to map names and prices
   const masterclasses = await client.fetch<{ _id: string; title: string; price?: number }[]>(`*[_type == "masterclass"] { _id, title, price }`)
@@ -66,7 +70,7 @@ export default async function AdminEnrollmentsPage() {
                 <tr key={enrollment.id} className="border-b border-[#dde7dd] hover:bg-[#faf8f2] transition-colors">
                   <td className="px-6 py-4">
                     <p className="font-semibold text-[#1e2228]">{enrollment.profiles?.full_name || 'Unknown'}</p>
-                    <p className="text-[#8a8d87] text-[11px]">{enrollment.profiles?.email}</p>
+                    <p className="text-[#8a8d87] text-[11px]">{emails[enrollment.user_id]}</p>
                   </td>
                   <td className="px-6 py-4 font-medium text-[#1e2228] max-w-[200px] truncate" title={title}>
                     {title}

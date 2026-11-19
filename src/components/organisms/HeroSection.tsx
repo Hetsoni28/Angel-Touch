@@ -120,7 +120,8 @@ export function HeroSection() {
               <CinematicImage
                 src="/images/treatment_aroma_facial.jpg"
                 alt="Ayurvedic aroma facial with a gentle head massage at Angel Touch"
-                sizes="240px"
+                // landscape photo in a 4:5 frame: drawn ~630px wide (cover crop + parallax zoom)
+                sizes="640px"
                 parallax={9}
                 reveal
                 className="w-full aspect-[4/5] bg-[#e9f3e9]"

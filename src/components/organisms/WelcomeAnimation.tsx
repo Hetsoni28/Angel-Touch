@@ -73,18 +73,31 @@ function Butterfly({ size, flap }: { size: number; flap: number }) {
   const wing = (side: 'l' | 'r') => (
     <g className="at-wing" style={{ ['--flap' as string]: `${flap}s` } as CSSProperties}>
       <g transform={side === 'r' ? 'scale(-1 1)' : undefined}>
-        <path d="M-2 -3 C-10 -26 -34 -36 -46 -33 C-46 -17 -28 -3 -2 -1 Z" fill={GREEN} stroke={GOLD} strokeWidth="1" />
-        <path d="M-4 -4 C-16 -16 -28 -24 -40 -29" fill="none" stroke={GOLD} strokeWidth="0.8" opacity="0.8" />
-        <path d="M-2 1 C-16 3 -30 13 -30 25 C-18 25 -6 15 -2 3 Z" fill={GOLD} />
+        {/* forewing: a broad leaf, like the logo */}
+        <path d="M-2 -2 C-8 -22 -30 -34 -46 -28 C-52 -16 -40 -2 -2 1 Z" fill={GREEN} stroke={GOLD} strokeWidth="1.1" />
+        <path d="M-4 -2 C-16 -10 -30 -18 -42 -24" fill="none" stroke={GOLD} strokeWidth="0.9" opacity="0.75" />
+        <path d="M-14 -7 C-20 -4 -28 -4 -34 -8" fill="none" stroke={GOLD} strokeWidth="0.6" opacity="0.5" />
+        {/* hindwing: gold */}
+        <path d="M-2 2 C-14 2 -34 8 -36 22 C-34 30 -18 28 -2 6 Z" fill={GOLD} />
       </g>
     </g>
   )
   return (
-    <svg width={size} height={size * 0.8} viewBox="-50 -40 100 80" aria-hidden="true" className="overflow-visible">
+    <svg
+      viewBox="-50 -40 100 80"
+      aria-hidden="true"
+      className="overflow-visible block"
+      style={{
+        width: `clamp(${size}px, ${(size * 0.16).toFixed(2)}vw, ${size * 1.8}px)`,
+        aspectRatio: '100 / 80',
+        height: 'auto',
+      }}
+    >
       {wing('l')}
       {wing('r')}
-      <ellipse cx="0" cy="2" rx="2.4" ry="13" fill={GREEN} />
-      <circle cx="0" cy="-13" r="3" fill={GREEN} />
+      <ellipse cx="0" cy="3" rx="2.6" ry="14" fill={GREEN} />
+      <circle cx="0" cy="-12.5" r="3.2" fill={GREEN} />
+      <path d="M-1 -15 C-4 -24 -8 -28 -12 -30 M1 -15 C4 -24 8 -28 12 -30" fill="none" stroke={GREEN} strokeWidth="1" strokeLinecap="round" />
     </svg>
   )
 }
@@ -124,7 +137,7 @@ export function WelcomeAnimation() {
       return {
         x: `${Math.cos(angle) * dist}vmax`,
         y: `${Math.sin(angle) * dist * 0.85}vmax`,
-        size: 26 + rand() * 30,
+        size: 36 + rand() * 38,
         delay: BURST_AT + rand() * 0.18,
         flap: 0.12 + rand() * 0.08,
         rotate: (angle * 180) / Math.PI + 90,
@@ -197,7 +210,7 @@ export function WelcomeAnimation() {
       style={{
         display: running ? 'flex' : 'none',
         background: 'radial-gradient(70% 60% at 50% 46%, #eef5ec 0%, #f6f6ef 42%, #faf8f2 75%)',
-      }}
+      } as CSSProperties}
       role="dialog"
       aria-modal="true"
       aria-label="Welcome to Angel Touch"
@@ -245,8 +258,8 @@ export function WelcomeAnimation() {
 
               {/* The logo unfolds from its centre, like wings opening */}
               <motion.div
-                initial={{ clipPath: 'inset(0% 50% 0% 50%)', opacity: 0, scale: 0.9 }}
-                animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, scale: [0.9, 1.04, 1] }}
+                initial={{ clipPath: 'circle(0% at 50% 33%)', opacity: 0, scale: 0.9 }}
+                animate={{ clipPath: 'circle(120% at 50% 33%)', opacity: 1, scale: [0.9, 1.04, 1] }}
                 transition={{ delay: MERGE_AT, duration: 1.1, ease: EASE_SOFT }}
                 className="relative"
               >
@@ -324,8 +337,8 @@ export function WelcomeAnimation() {
                     key={`b-${i}`}
                     className="absolute -translate-x-1/2 -translate-y-1/2"
                     initial={{ x: 0, y: 0, opacity: 0, scale: 0.3, rotate: b.rotate }}
-                    animate={{ x: ['0vmax', b.x], y: ['0vmax', b.y], opacity: [0, 1, 1, 0], scale: [0.3, 1.1, 1.4] }}
-                    transition={{ delay: b.delay, duration: 1.15, ease: [0.3, 0, 0.2, 1], opacity: { delay: b.delay, duration: 1.15, times: [0, 0.12, 0.75, 1] } }}
+                    animate={{ x: ['0vmax', b.x], y: ['0vmax', b.y], opacity: [0, 1, 1, 0], scale: [0.3, 1.15, 1.5] }}
+                    transition={{ delay: b.delay, duration: 1.35, ease: [0.3, 0, 0.2, 1], opacity: { delay: b.delay, duration: 1.35, times: [0, 0.1, 0.8, 1] } }}
                   >
                     <Butterfly size={b.size} flap={b.flap} />
                   </motion.div>

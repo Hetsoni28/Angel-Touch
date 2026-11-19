@@ -72,14 +72,14 @@ export default async function DashboardPage() {
   // 4. Fetch Payments (for Recent Activity)
   const { data: rawPayments } = await supabase
     .from('payments')
-    .select('id, amount, amount_paise, status, created_at, payment_type')
+    .select('id, amount_paise, status, created_at, payment_type')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(3)
 
   const payments = (rawPayments || []).map(p => ({
     id: p.id,
-    amount: p.amount ?? (p.amount_paise ? p.amount_paise / 100 : 0),
+    amount: p.amount_paise ? p.amount_paise / 100 : 0,
     status: p.status,
     created_at: p.created_at || new Date().toISOString(),
     payment_type: p.payment_type,

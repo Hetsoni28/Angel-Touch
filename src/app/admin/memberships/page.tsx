@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
 import { Eye } from 'lucide-react'
 
@@ -11,7 +12,7 @@ type MembershipRow = {
   status: string
   started_at: string | null
   expires_at: string | null
-  profiles: { full_name: string | null; email?: string | null } | null
+  profiles: { full_name: string | null } | null
 }
 
 export default async function AdminMembershipsPage() {
@@ -22,11 +23,12 @@ export default async function AdminMembershipsPage() {
     .from('memberships')
     .select(`
       *,
-      profiles:user_id(full_name, email)
+      profiles:user_id(full_name)
     `)
     .order('created_at', { ascending: false })
 
   const memberships = membershipData as unknown as MembershipRow[] | null
+  const emails = await getEmailsByUserId((memberships ?? []).map((m) => m.user_id))
 
   // Fetch all membership payments to cross-reference payment status
   const { data: payments } = await supabase
@@ -77,7 +79,7 @@ export default async function AdminMembershipsPage() {
                 <tr key={membership.id} className="border-b border-[#dde7dd] hover:bg-[#faf8f2] transition-colors">
                   <td className="px-6 py-4">
                     <p className="font-semibold text-[#1e2228]">{membership.profiles?.full_name || 'Unknown'}</p>
-                    <p className="text-[#8a8d87] text-[11px]">{membership.profiles?.email}</p>
+                    <p className="text-[#8a8d87] text-[11px]">{emails[membership.user_id]}</p>
                   </td>
                   <td className="px-6 py-4 font-medium text-[#1e2228]">{membership.plan_name}</td>
                   <td className="px-6 py-4">

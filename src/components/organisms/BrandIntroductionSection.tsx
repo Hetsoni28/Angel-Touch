@@ -10,17 +10,21 @@ export function BrandIntroductionSection() {
 
           {/* Founder portrait */}
           <FadeIn direction="none" className="order-2 lg:order-1">
-            <figure className="offset-frame max-w-md mx-auto lg:max-w-none lg:mx-0 mr-3.5 sm:mr-4 lg:mr-4">
-              <CinematicImage
-                src="/images/heena_thaaker.jpg"
-                alt="Heena Thaker, founder of Angel Touch Ayurvedic salon and beauty academy"
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                parallax={5}
-                reveal
-                className="w-full aspect-[4/5] bg-[#e9f3e9]"
-                imageClassName="object-cover object-top"
-              />
-              <figcaption className="mt-5 text-[11px] tracking-[0.16em] uppercase text-[#6b6e68]">
+            <figure className="max-w-md mx-auto lg:max-w-none lg:mx-0 mr-3.5 sm:mr-4 lg:mr-4">
+              {/* The gold offset frame wraps the photo only — not the caption */}
+              <div className="offset-frame">
+                <CinematicImage
+                  src="/images/heena_thaaker.jpg"
+                  alt="Heena Thaker, founder of Angel Touch Ayurvedic salon and beauty academy"
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  parallax={5}
+                  reveal
+                  className="w-full aspect-[4/5] bg-[#e9f3e9]"
+                  imageClassName="object-cover object-top"
+                />
+              </div>
+              {/* mt clears the frame, which sits 14px below the photo */}
+              <figcaption className="mt-9 text-[11px] tracking-[0.16em] uppercase text-[#6b6e68]">
                 Heena Thaker <span className="text-[#c9cfc4] mx-1.5" aria-hidden="true">/</span> Founder
               </figcaption>
             </figure>
