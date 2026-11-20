@@ -69,8 +69,8 @@ export function CinematicImage({
           alt={alt}
           fill
           sizes={sizes}
-          priority={priority}
-          loading={priority ? undefined : 'lazy'}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : undefined}
           className={imageClassName}
         />
       </motion.div>

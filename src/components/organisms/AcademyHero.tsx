@@ -20,7 +20,8 @@ export function AcademyHero() {
           sizes="100vw"
           // On phones only a narrow slice shows: keep the teacher and student (right of centre) in frame
           className="object-cover object-[72%_center] lg:object-center"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2]/95 via-[#faf8f2]/85 to-[#faf8f2]/50 sm:from-[#faf8f2]/90" />
       </div>

@@ -90,7 +90,8 @@ export function ComingSoonBanner({
                 src={imageSrc}
                 alt={imageAlt}
                 fill
-                priority
+                loading="eager"
+                fetchPriority="high"
                 sizes="(max-width: 1024px) 360px, 440px"
                 className="object-cover"
               />

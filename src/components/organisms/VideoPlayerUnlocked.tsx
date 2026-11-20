@@ -59,7 +59,8 @@ export function VideoPlayerUnlocked({ title, date, youtubeId, accessReason }: Vi
               fill
               sizes="(max-width: 1024px) 100vw, 896px"
               className="object-cover group-hover:scale-105 transition-transform duration-700"
-              priority
+              loading="eager"
+              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition-colors" />
 

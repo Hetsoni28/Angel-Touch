@@ -27,7 +27,8 @@ export function TreatmentsHero({ placeholder = false }: { placeholder?: boolean 
           fill
           sizes="100vw"
           className="object-cover object-[center_35%] sm:object-center"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f2]/92 via-[#faf8f2]/70 to-[#faf8f2]/10 sm:from-[#faf8f2]/88" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#faf8f2] to-transparent" />

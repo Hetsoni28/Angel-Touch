@@ -188,7 +188,8 @@ export default async function MasterclassDetailPage({ params }: Props) {
           alt={heroAlt(masterclass)}
           fill
           className="object-cover object-center opacity-60 mix-blend-overlay"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1e2228]/85 via-[#1e2228]/50 to-transparent" />
         

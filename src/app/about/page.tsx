@@ -55,7 +55,8 @@ export default function AboutPage() {
           alt="Ayurvedic herbs and botanicals used in Angel Touch skincare and treatments"
           fill
           className="object-cover object-center absolute inset-0 z-0"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-[#faf8f2]/80 backdrop-blur-sm z-10" />
         

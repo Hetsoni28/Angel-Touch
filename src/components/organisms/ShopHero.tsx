@@ -18,7 +18,8 @@ export function ShopHero({ placeholder = false }: { placeholder?: boolean } = {}
           fill
           sizes="100vw"
           className="object-cover object-center"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-[#faf8f2]/30 backdrop-blur-[0.5px]" />
       </div>

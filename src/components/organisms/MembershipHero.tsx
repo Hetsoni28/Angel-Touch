@@ -11,7 +11,8 @@ export function MembershipHero({ placeholder = false }: { placeholder?: boolean 
           alt="Ayurvedic herbs, oils and botanicals on a formulation table"
           fill
           className="object-cover object-center"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
       </div>
       <div className="absolute inset-0 bg-[#faf8f2]/65 z-[1] backdrop-blur-[0.5px]" />

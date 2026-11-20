@@ -263,7 +263,7 @@ export function WelcomeAnimation() {
                 transition={{ delay: MERGE_AT, duration: 1.1, ease: EASE_SOFT }}
                 className="relative"
               >
-                <Image src="/logo.svg" alt="Angel Touch by Heena Thaker" width={1287} height={692} priority className="w-full h-auto" />
+                <Image src="/logo.svg" alt="Angel Touch by Heena Thaker" width={1287} height={692} loading="eager" fetchPriority="high" className="w-full h-auto" />
                 {/* Shimmer: a band of light sweeps across the logo, masked to its shape */}
                 <motion.div
                   aria-hidden="true"

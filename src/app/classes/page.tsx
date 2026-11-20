@@ -62,7 +62,8 @@ export default async function ClassesPage() {
             fill
             sizes="100vw"
             className="object-cover object-[center_30%] sm:object-center"
-            priority
+            loading="eager"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1e2228]/85 via-[#1e2228]/60 to-[#1e2228]/30 sm:from-[#1e2228]/75" />
         </div>

@@ -125,6 +125,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // globals.css sets smooth scrolling; this tells Next.js to switch it off during page changes
+      data-scroll-behavior="smooth"
       className={`${playfairDisplay.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ivory text-body">

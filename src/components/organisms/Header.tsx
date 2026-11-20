@@ -206,7 +206,8 @@ export function Header() {
               width={220}
               height={64}
               className="w-auto object-contain h-10 sm:h-11 lg:h-[52px] max-w-[150px] sm:max-w-[185px] lg:max-w-none"
-              priority
+              loading="eager"
+              fetchPriority="high"
             />
           </Link>
 

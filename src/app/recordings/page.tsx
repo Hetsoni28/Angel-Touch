@@ -83,7 +83,8 @@ export default async function RecordingsPage() {
             alt="Study desk with Ayurvedic herbs and notes for Angel Touch recorded masterclasses"
             fill
             className="object-cover object-center"
-            priority
+            loading="eager"
+            fetchPriority="high"
           />
         </div>
         <div className="absolute inset-0 bg-[#faf8f2]/65 z-[1] backdrop-blur-[0.5px]" />

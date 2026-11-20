@@ -17,7 +17,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           alt="Ayurvedic Wellness"
           fill
           className="object-cover opacity-80"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#1e2228]/40 via-transparent to-[#1e2228]/80"></div>
