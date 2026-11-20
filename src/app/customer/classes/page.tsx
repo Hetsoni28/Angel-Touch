@@ -6,10 +6,11 @@ import { CalendarDays, Clock, CheckCircle2, PlayCircle, Hourglass, ArrowRight } 
 import { createClient } from '@/lib/supabase/server'
 import { getPortalData, dayParts, fmtDate, fmtTime, fmtWeekday, relativeDay } from '@/lib/portal'
 import { slugOf } from '@/sanity/lib/types'
+import { ClassListTabs } from '@/components/organisms/ClassListTabs'
 
 export const instant = false
 
-/** Customer portal — My classes. Upcoming / Past tabs (via ?tab=past, no client JS needed). */
+/** Customer portal — My classes. Upcoming / Past switch instantly on the client (?tab=past opens Past). */
 export default async function MyClassesPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   await connection()
   const supabase = await createClient()
@@ -18,13 +19,21 @@ export default async function MyClassesPage({ searchParams }: { searchParams: Pr
 
   const { tab } = await searchParams
   const { now, upcoming, past } = await getPortalData(user.id)
-  const showPast = tab === 'past'
-  const list = showPast ? past : upcoming
 
-  const tabs = [
-    { key: 'upcoming', label: 'Upcoming', count: upcoming.length, href: '/customer/classes' },
-    { key: 'past', label: 'Past', count: past.length, href: '/customer/classes?tab=past' },
-  ]
+  const empty = (isPast: boolean) => (
+    <div className="rounded-2xl border border-dashed border-[#c9d6c9] bg-white/60 px-5 py-10 text-center">
+      <span className="mx-auto mb-3 w-12 h-12 rounded-full bg-[#e9f3e9] text-[#1e5f2e] flex items-center justify-center" aria-hidden="true">
+        <CalendarDays className="w-5 h-5" />
+      </span>
+      <p className="text-[16px] text-[#1e2228] font-medium">{isPast ? 'No past classes yet' : 'No upcoming classes'}</p>
+      <p className="text-[13.5px] text-[#6b6e68] mt-1 mb-5 max-w-xs mx-auto">
+        {isPast ? 'Classes you join will appear here after they take place.' : 'Join a live class and it will appear here with its date and time.'}
+      </p>
+      <Link href="/classes" className="inline-flex items-center justify-center min-h-[46px] px-6 rounded-full bg-[#1e2228] text-white text-[14px] font-medium active:bg-[#2e7a3a]">
+        Browse live classes
+      </Link>
+    </div>
+  )
 
   return (
     <div className="w-full">
@@ -33,42 +42,10 @@ export default async function MyClassesPage({ searchParams }: { searchParams: Pr
         <p className="text-[#5c5a58] text-[14px] md:text-[15px]">Live classes you&apos;ve joined, and their recordings.</p>
       </div>
 
-      {/* Segmented control */}
-      <nav aria-label="Class list" className="grid grid-cols-2 p-1 mb-5 rounded-full bg-white border border-[#dde7dd] max-w-sm">
-        {tabs.map((t) => {
-          const active = (t.key === 'past') === showPast
-          return (
-            <Link
-              key={t.key}
-              href={t.href}
-              aria-current={active ? 'page' : undefined}
-              className={`flex items-center justify-center gap-2 h-10 rounded-full text-[14px] transition-colors ${
-                active ? 'bg-[#1e5f2e] text-white font-semibold' : 'text-[#4a4846] hover:text-[#1e2228]'
-              }`}
-            >
-              {t.label}
-              <span className={`min-w-[22px] h-[22px] px-1.5 rounded-full text-[11px] flex items-center justify-center tabular ${active ? 'bg-white/20' : 'bg-[#faf8f2] border border-[#dde7dd]'}`}>
-                {t.count}
-              </span>
-            </Link>
-          )
-        })}
-      </nav>
-
-      {list.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[#c9d6c9] bg-white/60 px-5 py-10 text-center">
-          <span className="mx-auto mb-3 w-12 h-12 rounded-full bg-[#e9f3e9] text-[#1e5f2e] flex items-center justify-center" aria-hidden="true">
-            <CalendarDays className="w-5 h-5" />
-          </span>
-          <p className="text-[16px] text-[#1e2228] font-medium">{showPast ? 'No past classes yet' : 'No upcoming classes'}</p>
-          <p className="text-[13.5px] text-[#6b6e68] mt-1 mb-5 max-w-xs mx-auto">
-            {showPast ? 'Classes you join will appear here after they take place.' : 'Join a live class and it will appear here with its date and time.'}
-          </p>
-          <Link href="/classes" className="inline-flex items-center justify-center min-h-[46px] px-6 rounded-full bg-[#1e2228] text-white text-[14px] font-medium active:bg-[#2e7a3a]">
-            Browse live classes
-          </Link>
-        </div>
-      ) : showPast ? (
+      <ClassListTabs
+        initial={tab === 'past' ? 'past' : 'upcoming'}
+        counts={{ upcoming: upcoming.length, past: past.length }}
+        past={past.length === 0 ? empty(true) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-5">
           {past.map((c) => (
             <li key={c._id} className="rounded-2xl bg-white border border-[#dde7dd] overflow-hidden flex flex-col">
@@ -100,7 +77,8 @@ export default async function MyClassesPage({ searchParams }: { searchParams: Pr
             </li>
           ))}
         </ul>
-      ) : (
+        )}
+        upcoming={upcoming.length === 0 ? empty(false) : (
         <ul className="space-y-3">
           {upcoming.map((c) => {
             const { day, month } = dayParts(c.date)
@@ -134,7 +112,8 @@ export default async function MyClassesPage({ searchParams }: { searchParams: Pr
             )
           })}
         </ul>
-      )}
+        )}
+      />
     </div>
   )
 }
