@@ -95,13 +95,14 @@ export function HeroSection() {
           </FadeIn>
         </div>
 
-        <FadeIn direction="none" delay={0.1} className="relative w-full">
+        {/* Photos are shown from tablet width up; phones get the text-only hero */}
+        <FadeIn direction="none" delay={0.1} className="relative w-full hidden sm:block">
           <div className="relative offset-frame mr-3.5 sm:mr-4">
             {/* Main photo: loads immediately (no wipe) and drifts slowly as you scroll */}
             <CinematicImage
               src="/images/hero_ayurvedic_wellness.jpg"
               alt="Serene woman embracing holistic Ayurvedic wellness and natural beauty at Angel Touch"
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="(max-width: 639px) 16px, (max-width: 1024px) 100vw, 50vw"
               priority
               parallax={5}
               className="w-full aspect-[4/5] sm:aspect-[5/5.4] lg:aspect-[4/5] bg-[#e9f3e9]"
