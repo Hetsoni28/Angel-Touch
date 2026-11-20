@@ -51,7 +51,7 @@ export default async function CustomerLayout({ children }: { children: React.Rea
           <DashboardSidebar isAdmin={isAdmin} />
 
           {/* Bottom padding keeps content clear of the phone tab bar (+ iPhone home indicator) */}
-          <main className="flex-1 min-w-0 px-4 pt-5 pb-[calc(88px+env(safe-area-inset-bottom))] sm:px-6 md:p-0">
+          <main className="flex-1 min-w-0 px-4 pt-5 pb-[calc(104px+env(safe-area-inset-bottom))] sm:px-6 md:p-0">
             {children}
           </main>
         </div>
