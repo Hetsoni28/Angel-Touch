@@ -13,7 +13,7 @@ export async function updateProfileAction(_prevState: UpdateProfileResult, formD
   const { data: { user } } = await supabase.auth.getUser()
   
   if (!user) {
-    return { success: false, error: 'Not authenticated' }
+    return { success: false, error: 'Your session has expired. Please sign in again.' }
   }
 
   const fullName = formData.get('fullName')?.toString() || ''

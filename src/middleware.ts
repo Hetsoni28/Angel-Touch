@@ -46,6 +46,14 @@ export async function middleware(request: NextRequest) {
   // ── Refresh session — DO NOT REMOVE ───────────────────────────────────────
   const { data: { user } } = await supabase.auth.getUser()
 
+  // ── Server Actions (form buttons, e.g. Sign out) ─────────────────────────
+  // Never redirect these: the browser expects an action result, and an HTML
+  // redirect to /login crashes the page ("unexpected response from the server")
+  // when the session has already expired. Each action checks auth itself.
+  if (request.method === 'POST' && request.headers.has('next-action')) {
+    return supabaseResponse
+  }
+
   // ── Route: /admin/* ────────────────────────────────────────────────────────
   // Layer 1: Not logged in at all → redirect to login
   // Layer 2: Logged in but not admin → handled server-side inside the page via requireAdmin()
