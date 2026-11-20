@@ -12,7 +12,6 @@ import { TestimonialsSection } from '@/components/organisms/TestimonialsSection'
 import { SocialSection } from '@/components/organisms/SocialSection'
 import { FinalCTASection } from '@/components/organisms/FinalCTASection'
 import { WelcomeAnimation } from '@/components/organisms/WelcomeAnimation'
-import { INTRO_GATE_SCRIPT } from '@/lib/intro'
 import type { Metadata } from 'next'
 import { pageMetadata } from '@/lib/seo'
 import { JsonLd } from '@/components/atoms/JsonLd'
@@ -186,8 +185,6 @@ export default function HomePage() {
     <>
       <JsonLd data={organizationSchema} />
       <ScrollProgress />
-      {/* Decides before first paint whether to show the intro (no homepage flash) */}
-      <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
       <WelcomeAnimation />
       <HeroSection />
       <BrandIntroductionSection />

@@ -63,7 +63,7 @@ export default async function MembershipCheckoutPage({ searchParams }: { searchP
               Subscription Active
             </span>
             <h2 className="font-playfair text-2xl md:text-3xl text-[#1e2228] mb-4">
-              You Already Have an Active Membership
+              You already have an active <span className="accent-italic">membership</span>
             </h2>
             <p className="text-[14px] text-[#5c5a58] leading-relaxed mb-8">
               Your {activeMembership.plan_name || 'Premium'} membership is active and valid until{' '}
@@ -92,7 +92,7 @@ export default async function MembershipCheckoutPage({ searchParams }: { searchP
         ) : (
           <>
             <div className="mb-10 text-center">
-              <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-4">Secure Checkout</h1>
+              <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-4">Secure <span className="accent-italic">checkout</span></h1>
               <p className="text-[#5c5a58] text-[15px]">You are upgrading to the Angel Touch Premium Membership.</p>
             </div>
 

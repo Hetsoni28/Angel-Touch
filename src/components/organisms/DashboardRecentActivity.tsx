@@ -14,7 +14,7 @@ interface DashboardRecentActivityProps {
 
 export function DashboardRecentActivity({ payments }: DashboardRecentActivityProps) {
   return (
-    <section className="bg-white border border-[#dde7dd] p-8" aria-label="Recent Account Activity">
+    <section className="bg-white border border-[#dde7dd] rounded-xl p-5 sm:p-7" aria-label="Recent Account Activity">
       <h2 className="text-[#5c5a58] text-[11px] font-semibold tracking-widest uppercase mb-6 flex items-center">
         <History className="w-3.5 h-3.5 mr-2" aria-hidden="true" />
         Recent Activity

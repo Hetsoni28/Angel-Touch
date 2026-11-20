@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
-import { Eye } from 'lucide-react'
 
 export const instant = false
 
@@ -68,7 +67,6 @@ export default async function AdminRecordingsPage() {
               <th className="px-6 py-4">Total Eligible Users</th>
               <th className="px-6 py-4">Individual Purchases</th>
               <th className="px-6 py-4">Membership Access</th>
-              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -92,17 +90,12 @@ export default async function AdminRecordingsPage() {
                   </td>
                   <td className="px-6 py-4 font-medium text-[#1e2228]">{individualPurchases} Users</td>
                   <td className="px-6 py-4 font-medium text-[#1e5f2e]">{membershipAccess} Active Members</td>
-                  <td className="px-6 py-4">
-                    <button className="inline-flex items-center text-[#8a8d87] hover:text-[#1e2228] transition-colors" title="Inspect Access List">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </td>
                 </tr>
               )
             })}
             {(!masterclasses || masterclasses.length === 0) && (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center">No recordings found.</td>
+                <td colSpan={4} className="px-6 py-8 text-center">No recordings found.</td>
               </tr>
             )}
           </tbody>

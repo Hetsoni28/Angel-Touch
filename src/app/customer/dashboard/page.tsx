@@ -1,114 +1,112 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { client } from '@/sanity/lib/client'
-import type { MasterclassListItem } from '@/sanity/lib/types'
 import { connection } from 'next/server'
-
+import { getPortalData, greeting } from '@/lib/portal'
 import { DashboardMembershipCard } from '@/components/organisms/DashboardMembershipCard'
-import { DashboardUpcomingClass } from '@/components/organisms/DashboardUpcomingClass'
-import { DashboardRecentActivity } from '@/components/organisms/DashboardRecentActivity'
+import { PortalQuickActions } from '@/components/organisms/PortalQuickActions'
+import { PAYMENTS_ENABLED } from '@/lib/features'
+import {
+  PortalWelcome,
+  PortalSectionTitle,
+  PortalNextClass,
+  PortalRecordingsRail,
+  PortalRecentPayments,
+  PortalMembershipComingSoon,
+} from '@/components/organisms/PortalHome'
 
 export const instant = false
 
+/**
+ * Customer portal — Home.
+ * Everything on this screen is the customer's own data (Supabase + Sanity).
+ */
 export default async function DashboardPage() {
-  await connection() // Force dynamic rendering for Next.js 16
+  await connection() // per-request: depends on the signed-in customer
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login?redirect=/customer/dashboard')
 
-  if (!user) {
-    redirect('/login?redirect=/dashboard')
-  }
+  const [data, { data: rawPayments }] = await Promise.all([
+    getPortalData(user.id),
+    supabase
+      .from('payments')
+      .select('id, amount_paise, status, created_at, payment_type')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(3),
+  ])
+  const { now, profile, membership, isMember, joined, upcoming, recordings } = data
 
-  // 1. Fetch Profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('full_name, created_at')
-    .eq('id', user.id)
-    .single()
-
-  const firstName = profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'There'
-
-  // 2. Fetch Membership
-  const { data: membership } = await supabase
-    .from('memberships')
-    .select('status, expires_at')
-    .eq('user_id', user.id)
-    .eq('status', 'active')
-    .order('expires_at', { ascending: false, nullsFirst: false })
-    .limit(1)
-    .maybeSingle()
-
-  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
-
-  // 3. Fetch Class Enrollments
-  const { data: enrollments } = await supabase
-    .from('class_enrollments')
-    .select('id, class_id, status, created_at')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-
-  const confirmedClassIds = (enrollments || [])
-    .filter(e => e.status === 'confirmed')
-    .map(e => e.class_id)
-
-  let enrolledClasses: MasterclassListItem[] = []
-  if (confirmedClassIds.length > 0) {
-    // Fetch details from Sanity
-    enrolledClasses = await client.fetch<MasterclassListItem[]>(`
-      *[_type == "masterclass" && _id in $ids] | order(date asc) {
-        _id,
-        title,
-        slug,
-        date,
-        time
-      }
-    `, { ids: confirmedClassIds })
-  }
-
-  const now = new Date()
-  const upcomingClasses = enrolledClasses.filter(c => new Date(c.date) >= now)
-  const nextClass = upcomingClasses.length > 0 ? upcomingClasses[0] : null
-
-  // 4. Fetch Payments (for Recent Activity)
-  const { data: rawPayments } = await supabase
-    .from('payments')
-    .select('id, amount_paise, status, created_at, payment_type')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(3)
-
-  const payments = (rawPayments || []).map(p => ({
+  const firstName = profile?.full_name?.trim().split(/\s+/)[0] || user.email?.split('@')[0] || 'there'
+  const payments = (rawPayments ?? []).map((p) => ({
     id: p.id,
     amount: p.amount_paise ? p.amount_paise / 100 : 0,
     status: p.status,
-    created_at: p.created_at || new Date().toISOString(),
+    created_at: p.created_at,
     payment_type: p.payment_type,
   }))
 
   return (
-    <div className="w-full space-y-10">
-      
-      {/* Welcome Section */}
-      <div className="border-b border-[#dde7dd] pb-8">
-        <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-2">
-          Welcome back, {firstName}.
-        </h1>
-        <p className="text-[#5c5a58] text-[15px]">
-          Manage your classes, membership, and account details here.
-        </p>
-      </div>
+    <div className="w-full space-y-7 md:space-y-9">
+      <PortalWelcome
+        greeting={greeting(now)}
+        firstName={firstName}
+        memberSince={profile?.created_at}
+        isMember={isMember}
+        membershipEnds={membership?.expires_at}
+        stats={[
+          { label: upcoming.length === 1 ? 'Upcoming class' : 'Upcoming classes', value: upcoming.length, href: '/customer/classes' },
+          { label: joined.length === 1 ? 'Class joined' : 'Classes joined', value: joined.length, href: '/customer/classes' },
+          { label: recordings.length === 1 ? 'Recording' : 'Recordings', value: recordings.length, href: '/customer/library' },
+        ]}
+      />
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <DashboardMembershipCard 
-          isMember={isMember} 
-          expiresAt={membership?.expires_at || undefined}
-          status={membership?.status}
+      <PortalQuickActions />
+
+      <section aria-labelledby="next-class-title">
+        <PortalSectionTitle
+          id="next-class-title"
+          title="Your next class"
+          href={upcoming.length > 1 ? '/customer/classes' : undefined}
+          linkLabel={`All ${upcoming.length}`}
         />
-        <DashboardUpcomingClass nextClass={nextClass} />
+        <PortalNextClass nextClass={upcoming[0] ?? null} now={now} />
+      </section>
+
+      <section aria-labelledby="recordings-title">
+        <PortalSectionTitle
+          id="recordings-title"
+          title="Your recordings"
+          href={recordings.length ? '/customer/library' : undefined}
+          linkLabel="Library"
+        />
+        <PortalRecordingsRail recordings={recordings} />
+      </section>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-7 md:gap-8">
+        <section aria-labelledby="membership-title">
+          <PortalSectionTitle id="membership-title" title="Membership" />
+          {/* Membership isn't on sale yet: say so, unless this customer already has one */}
+          {!isMember && !PAYMENTS_ENABLED ? (
+            <PortalMembershipComingSoon />
+          ) : (
+            <DashboardMembershipCard
+              isMember={isMember}
+              expiresAt={membership?.expires_at || undefined}
+              status={membership?.status}
+            />
+          )}
+        </section>
+        <section aria-labelledby="payments-title">
+          <PortalSectionTitle
+            id="payments-title"
+            title="Recent payments"
+            href={payments.length ? '/customer/billing' : undefined}
+            linkLabel="Billing"
+          />
+          <PortalRecentPayments payments={payments} />
+        </section>
       </div>
-
-      <DashboardRecentActivity payments={payments} />
-
     </div>
   )
 }

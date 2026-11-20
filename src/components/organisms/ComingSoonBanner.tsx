@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { MessageCircle } from 'lucide-react'
+import { AccentTitle } from '@/components/atoms/AccentTitle'
 
 interface ComingSoonBannerProps {
   title: string
@@ -45,7 +46,7 @@ export function ComingSoonBanner({
             className="text-[2.3rem] sm:text-[3.4rem] lg:text-[4.2rem] font-medium text-[#1e2228] leading-[1.04] mb-5 sm:mb-7"
             style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
           >
-            {title}
+            <AccentTitle text={title} />
           </h1>
 
           <p className="text-[16px] sm:text-[18px] text-[#4a4846] leading-[1.7] max-w-[34rem] mb-8 sm:mb-10">

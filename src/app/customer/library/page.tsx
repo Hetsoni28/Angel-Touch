@@ -1,109 +1,96 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { client } from '@/sanity/lib/client'
-import { slugOf, type MasterclassListItem } from '@/sanity/lib/types'
-import { Video } from 'lucide-react'
-import { connection } from 'next/server'
 import Link from 'next/link'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
+import { connection } from 'next/server'
+import { PlayCircle, Hourglass, Crown, Video } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import { getPortalData, fmtDate } from '@/lib/portal'
+import { slugOf } from '@/sanity/lib/types'
+import { PAYMENTS_ENABLED } from '@/lib/features'
 
 export const instant = false
 
+/**
+ * Customer portal — Library.
+ * Same access rule as the video player: members see every past class, everyone
+ * else the classes they joined. Shows honestly whether each recording is ready.
+ */
 export default async function VideoLibraryPage() {
   await connection()
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login?redirect=/customer/library')
 
-  if (!user) {
-    redirect('/login?redirect=/customer/library')
-  }
-
-  // 1. Check Membership
-  const { data: membership } = await supabase
-    .from('memberships')
-    .select('status, expires_at')
-    .eq('user_id', user.id)
-    .eq('status', 'active')
-    .order('expires_at', { ascending: false, nullsFirst: false })
-    .limit(1)
-    .maybeSingle()
-
-  const isMember = !!membership?.expires_at && new Date(membership.expires_at) > new Date()
-
-  // 2. Fetch Class Enrollments (if they are not a member, they can only watch what they bought)
-  const { data: enrollments } = await supabase
-    .from('class_enrollments')
-    .select('class_id')
-    .eq('user_id', user.id)
-    .eq('status', 'confirmed')
-
-  const confirmedClassIds = (enrollments || []).map(e => e.class_id)
-
-  // 3. Fetch Available Videos from Sanity
-  // If member, fetch all past classes. If not, fetch only the ones they enrolled in.
-  const query = isMember
-    ? `*[_type == "masterclass" && date < now()] | order(date desc) { _id, title, slug, "imageUrl": mainImage.asset->url, date }`
-    : `*[_type == "masterclass" && _id in $ids && date < now()] | order(date desc) { _id, title, slug, "imageUrl": mainImage.asset->url, date }`
-
-  const videos = await client.fetch<MasterclassListItem[]>(query, { ids: confirmedClassIds })
+  const { isMember, recordings } = await getPortalData(user.id)
+  const ready = recordings.filter((r) => r.hasRecording).length
 
   return (
     <div className="w-full">
-      <div className="border-b border-[#dde7dd] pb-8 mb-10">
-        <h1 className="font-playfair text-3xl md:text-4xl text-[#1e2228] mb-2">
-          Video Library
-        </h1>
-        <p className="text-[#5c5a58] text-[15px]">
-          Watch recordings of your purchased classes and membership exclusives.
+      <div className="mb-5 md:mb-8">
+        <h1 className="font-playfair text-[1.65rem] leading-tight md:text-4xl text-[#1e2228] mb-1.5">Your <span className="accent-italic">library</span></h1>
+        <p className="text-[#5c5a58] text-[14px] md:text-[15px]">
+          {recordings.length > 0
+            ? `${ready} recording${ready === 1 ? '' : 's'} ready to watch${isMember ? ' with your membership' : ''}.`
+            : 'Recordings of your classes appear here.'}
         </p>
       </div>
 
-      {!videos || videos.length === 0 ? (
-        <div className="text-center p-12 bg-white border border-[#dde7dd]">
-          <Video className="w-12 h-12 text-[#dde7dd] mx-auto mb-4" />
-          <h3 className="text-[#1e2228] font-semibold text-lg mb-2">No videos available</h3>
-          <p className="text-[#5c5a58] text-[14px]">
-            {isMember 
-              ? "We are currently uploading new class recordings. Check back soon!" 
-              : "You haven't unlocked any recorded classes yet. Join our membership or purchase a past class to start watching."}
+      {recordings.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-[#c9d6c9] bg-white/60 px-5 py-10 text-center">
+          <span className="mx-auto mb-3 w-12 h-12 rounded-full bg-[#e9f3e9] text-[#1e5f2e] flex items-center justify-center" aria-hidden="true">
+            <Video className="w-5 h-5" />
+          </span>
+          <p className="text-[16px] text-[#1e2228] font-medium">No recordings yet</p>
+          <p className="text-[13.5px] text-[#6b6e68] mt-1 mb-5 max-w-xs mx-auto">
+            {isMember
+              ? 'New class recordings will appear here as they are added.'
+              : PAYMENTS_ENABLED
+                ? 'Join a live class to get its recording, or a membership for the whole library.'
+                : 'Join a live class to get its recording. A membership for the whole library is coming soon.'}
           </p>
+          <div className="flex flex-col sm:flex-row gap-2 justify-center">
+            <Link href="/classes" className="inline-flex items-center justify-center min-h-[46px] px-6 rounded-full bg-[#1e2228] text-white text-[14px] font-medium active:bg-[#2e7a3a]">
+              Browse live classes
+            </Link>
+            {!isMember && (
+              <Link href="/membership" className="inline-flex items-center justify-center gap-2 min-h-[46px] px-6 rounded-full border border-[#dde7dd] bg-white text-[14px] text-[#1e2228] font-medium">
+                <Crown className="w-4 h-4 text-[#b38538]" aria-hidden="true" /> {PAYMENTS_ENABLED ? 'About membership' : 'Membership · coming soon'}
+              </Link>
+            )}
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <Link key={video._id} href={`/customer/library/${slugOf(video.slug)}`} className="group block bg-white border border-[#dde7dd] overflow-hidden hover:border-[#2e7a3a]/30 hover:shadow-lg transition-all duration-300">
-              <div className="aspect-video bg-[#faf8f2] relative overflow-hidden">
-                {video.imageUrl ? (
-                  <Image
-                    src={video.imageUrl}
-                    alt={video.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Video className="w-8 h-8 text-[#dde7dd]" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
-                    <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-[#2e7a3a] border-b-[8px] border-b-transparent ml-1"></div>
-                  </div>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-5">
+          {recordings.map((r) => (
+            <li key={r._id}>
+              <Link
+                href={`/customer/library/${slugOf(r.slug)}`}
+                className="group block rounded-2xl bg-white border border-[#dde7dd] overflow-hidden hover:border-[#2e7a3a]/40 active:scale-[0.99] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
+              >
+                <div className="relative aspect-video bg-[#e9f3e9]">
+                  {r.imageUrl ? (
+                    <Image src={r.imageUrl} alt={r.imageAlt || r.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#e9f3e9] to-[#f6e7c8]" aria-hidden="true" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1e2228]/55 via-transparent to-transparent" aria-hidden="true" />
+                  <span
+                    className={`absolute left-3 bottom-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold ${
+                      r.hasRecording ? 'bg-white text-[#1e5f2e]' : 'bg-[#1e2228]/70 text-white'
+                    }`}
+                  >
+                    {r.hasRecording ? <PlayCircle className="w-4 h-4" aria-hidden="true" /> : <Hourglass className="w-3.5 h-3.5" aria-hidden="true" />}
+                    {r.hasRecording ? 'Watch' : 'Coming soon'}
+                  </span>
                 </div>
-              </div>
-              <div className="p-5">
-                <p className="text-[10px] font-semibold tracking-widest uppercase text-[#8a8d87] mb-2">
-                  {new Date(video.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </p>
-                <h3 className="font-playfair text-lg text-[#1e2228] line-clamp-2">
-                  {video.title}
-                </h3>
-              </div>
-            </Link>
+                <div className="p-4">
+                  <h2 className="text-[16px] text-[#1e2228] font-semibold leading-snug line-clamp-2">{r.title}</h2>
+                  <p className="text-[12.5px] text-[#6b6e68] mt-1">Recorded {fmtDate(r.date)}</p>
+                </div>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )

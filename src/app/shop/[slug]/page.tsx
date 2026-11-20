@@ -282,7 +282,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center mb-24 md:mb-32">
             <div className="order-2 md:order-1">
               <h2 className="text-[2rem] md:text-[2.5rem] font-medium text-[#1e2228] leading-[1.15] mb-6" style={{ fontFamily: 'var(--font-heading)' }}>
-                Thoughtfully chosen for your ritual.
+                Thoughtfully chosen for your <span className="accent-italic">ritual</span>.
               </h2>
               <p className="text-[15px] md:text-[16px] text-[#5c5a58] leading-[1.8]">
                 {product.description} We believe that a thoughtful product deserves a thoughtful presentation. Rooted in traditional Ayurvedic practices, this creation is designed to elevate your daily self-care into a restorative experience.
@@ -340,7 +340,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
           <FadeIn>
             <div className="mb-24 md:mb-32 border-t border-[#dde7dd] pt-16 md:pt-24">
               <h2 className="text-[2rem] font-medium text-[#1e2228] mb-12 text-center" style={{ fontFamily: 'var(--font-heading)' }}>
-                You may also like
+                You may also <span className="accent-italic">like</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {relatedProducts.map((p: { _id?: string, name?: string, category?: string, imageUrl?: string, description?: string, slug?: string }, idx: number) => (
@@ -355,7 +355,7 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
         <FadeIn>
           <div className="bg-[#e9f3e9]/30 border border-[#dde7dd]/50 px-8 py-16 md:py-24 text-center">
             <h2 className="text-[2rem] md:text-[2.5rem] font-medium text-[#1e2228] mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
-              Looking for something specific?
+              Looking for something <span className="accent-italic">specific</span>?
             </h2>
             <p className="text-[15px] md:text-[16px] text-[#5c5a58] max-w-2xl mx-auto mb-10">
               Tell us what you&apos;re looking for and we&apos;ll help you find the right Angel Touch product.

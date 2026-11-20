@@ -60,7 +60,7 @@ export function AcademyCurriculum() {
             className="text-[2rem] sm:text-[2.6rem] font-medium text-[#1e2228] leading-[1.15]"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            What You Will Learn
+            What you will <span className="accent-italic">learn</span>
           </h2>
         </div>
         <p className="text-[14px] text-[#5c5a58] max-w-md">

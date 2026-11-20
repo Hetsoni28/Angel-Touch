@@ -10,13 +10,9 @@ export type { AcademyCourse, SubModule } from '@/lib/academyCourses'
 
 const ITEMS_PER_PAGE = 6
 
-function shuffleCourses(items: AcademyCourse[]): AcademyCourse[] {
-  const arr = [...items]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
+/** Course order: by course number (1–13), the order of the official syllabus. */
+function byCourseNumber(items: AcademyCourse[]): AcademyCourse[] {
+  return [...items].sort((a, b) => (Number(a.num) || 99) - (Number(b.num) || 99))
 }
 
 function AcademySyllabusModal({
@@ -282,7 +278,7 @@ export function AcademyCatalogue({
   initialCourses?: AcademyCourse[]
 }) {
   const defaultList = useMemo(() => {
-    return initialCourses && initialCourses.length > 0 ? initialCourses : OFFICIAL_ACADEMY_COURSES
+    return byCourseNumber(initialCourses && initialCourses.length > 0 ? initialCourses : OFFICIAL_ACADEMY_COURSES)
   }, [initialCourses])
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -333,9 +329,6 @@ export function AcademyCatalogue({
   }, [])
 
   const handleSelectCategory = (catKey: string) => {
-    if (catKey === 'all') {
-      setCoursesList(shuffleCourses(OFFICIAL_ACADEMY_COURSES))
-    }
     setSelectedCategory(catKey)
     setCurrentPage(1)
     setIsOpen(false)
@@ -403,30 +396,14 @@ export function AcademyCatalogue({
                 className="text-[2rem] sm:text-[2.6rem] md:text-[3rem] font-medium text-[#1e2228] leading-[1.15]"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                Academy Courses & Categories
+                Academy courses &amp; <span className="accent-italic">categories</span>
               </h2>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 <p className="text-[14px] sm:text-[15px] text-[#5c5a58]">
                   {selectedCategory === 'all'
-                    ? `Showing all ${filteredCourses.length} accredited courses across 3 official syllabus groups.`
-                    : `Showing all ${filteredCourses.length} courses under ${selectedCategoryLabel}.`}
+                    ? `${filteredCourses.length} courses across 3 syllabus groups, in course order.`
+                    : `${filteredCourses.length} course${filteredCourses.length === 1 ? '' : 's'} in ${selectedCategoryLabel.replace(/^d+.s*/, '')}.`}
                 </p>
-                {selectedCategory === 'all' && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCoursesList(shuffleCourses(OFFICIAL_ACADEMY_COURSES))
-                      setCurrentPage(1)
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#e9f3e9] hover:bg-[#1e5f2e] text-[#1e5f2e] hover:text-white border border-[#1e5f2e]/20 text-[11px] font-semibold tracking-[0.08em] uppercase rounded-sm transition-colors cursor-pointer"
-                    title="Shuffle courses order"
-                  >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    <span>Shuffle Random</span>
-                  </button>
-                )}
               </div>
             </div>
 

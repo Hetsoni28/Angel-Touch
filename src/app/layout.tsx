@@ -24,6 +24,8 @@ const dmSans = DM_Sans({
 import { Suspense } from "react";
 import { Toaster } from '@/components/atoms/Toaster'
 import { SITE_INFO } from '@/lib/siteInfo'
+import Script from 'next/script'
+import { INTRO_GATE_SCRIPT } from '@/lib/intro'
 
 const SITE_URL = 'https://angeltouch.in'
 
@@ -144,6 +146,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <FloatingWhatsApp />
         </Suspense>
         <Toaster />
+        {/* Welcome intro gate: decides before hydration whether the homepage shows the intro (no flash) */}
+        <Script id="intro-gate" strategy="beforeInteractive">{INTRO_GATE_SCRIPT}</Script>
       </body>
     </html>
   );

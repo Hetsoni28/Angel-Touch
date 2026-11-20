@@ -45,7 +45,7 @@ export default function FaqPage() {
             className="text-[2.2rem] sm:text-[2.8rem] font-medium text-[#1e2228] leading-[1.1] mb-5"
             style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
           >
-            Frequently asked questions
+            Frequently asked <span className="accent-italic">questions</span>
           </h1>
           <p className="text-[16px] text-[#4a4846] leading-[1.8]">
             Quick answers about visiting us, booking, products and classes. Can&apos;t find what you need?{' '}

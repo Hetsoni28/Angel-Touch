@@ -95,7 +95,7 @@ export default async function RecordingsPage() {
           
           <div className="max-w-3xl">
             <h1 className="font-playfair text-[2.2rem] xs:text-[2.6rem] sm:text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6 leading-[1.1]">
-              Recorded Library
+              Recorded <span className="accent-italic">library</span>
             </h1>
             <p className="text-[#3c3a38] text-base sm:text-lg md:text-xl leading-relaxed font-medium">
               {PAYMENTS_ENABLED

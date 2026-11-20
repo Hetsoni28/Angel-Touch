@@ -83,7 +83,7 @@ export default async function ShopPage() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <div>
             <h2 className="text-[1.5rem] text-[#1e2228] font-medium" style={{ fontFamily: 'var(--font-heading)' }}>
-              Explore the collection.
+              Explore the <span className="accent-italic">collection</span>.
             </h2>
             <p className="text-[14px] text-[#5c5a58] mt-2">
               Discover our botanical formulations.

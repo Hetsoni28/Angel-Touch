@@ -39,7 +39,7 @@ export function AcademyHero() {
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
             >
               Learn the craft.<br />
-              Master the science of beauty.
+              Master the science of <span className="accent-italic">beauty</span>.
             </p>
           </FadeIn>
 

@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
-import { Eye } from 'lucide-react'
 
 export const instant = false
 
@@ -64,7 +63,6 @@ export default async function AdminMembershipsPage() {
               <th className="px-6 py-4">Start</th>
               <th className="px-6 py-4">Renewal / End</th>
               <th className="px-6 py-4">Payment Status</th>
-              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -108,17 +106,12 @@ export default async function AdminMembershipsPage() {
                       {paymentStatus}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <button className="inline-flex items-center text-[#8a8d87] hover:text-[#1e2228] transition-colors" title="Inspect Membership">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </td>
                 </tr>
               )
             })}
             {(!memberships || memberships.length === 0) && (
               <tr>
-                <td colSpan={7} className="px-6 py-8 text-center">No memberships found.</td>
+                <td colSpan={6} className="px-6 py-8 text-center">No memberships found.</td>
               </tr>
             )}
           </tbody>

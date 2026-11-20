@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { Pagination } from '@/components/molecules/Pagination'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
 
 export const CATEGORY_MAP: Record<string, string> = {
   'threading': '1. Threading',
@@ -71,7 +72,7 @@ type Treatment = {
   featured?: boolean
 }
 
-const ITEMS_PER_PAGE = 6
+const ITEMS_PER_PAGE = 12
 
 // Inner subcategory tabs for specific parent categories
 const SUBCATEGORY_TABS: Record<string, { key: string; label: string }[]> = {
@@ -93,44 +94,13 @@ const SUBCATEGORY_TABS: Record<string, { key: string; label: string }[]> = {
   ],
 }
 
-function shuffleTreatments(items: Treatment[]): Treatment[] {
-  const arr = [...items]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
-
-function interleaveTreatments(items: Treatment[]): Treatment[] {
-  const groups: Record<string, Treatment[]> = {}
-  for (const item of items) {
-    const cat = item.category || 'other'
-    if (!groups[cat]) groups[cat] = []
-    groups[cat].push(item)
-  }
-  const result: Treatment[] = []
-  const catOrder = [
-    'facial', 'shirodhara', 'hair-spa', 'threading', 'body-spa', 'bridal-makeup',
-    'clean-up', 'skin', 'bleach-dtan', 'waxing', 'hair-cut', 'scalp-analysis-hair-regrowth',
-    'hair-treatments', 'technical-style-services', 'special-hair-care', 'hair-care-style',
-    'body-scrub', 'body-wrap', 'steam-bath', 'hand-feet-care', 'body-care-spa',
-    'family-makeup', 'occasion-makeup', 'bridal-packages', 'nail-art'
-  ].filter(k => groups[k])
-
-  let round = 0
-  let added = true
-  while (added) {
-    added = false
-    for (const cat of catOrder) {
-      if (groups[cat] && groups[cat][round]) {
-        result.push(groups[cat][round])
-        added = true
-      }
-    }
-    round++
-  }
-  return result.length > 0 ? result : items
+/** Menu order: by official category (1–25), then by name — stable, like a printed salon menu. */
+const CATEGORY_ORDER = new Map(OFFICIAL_CATEGORIES.map((c, i) => [c.key, i]))
+function menuOrder(items: Treatment[]): Treatment[] {
+  return [...items].sort((x, y) =>
+    (CATEGORY_ORDER.get(x.category ?? '') ?? 99) - (CATEGORY_ORDER.get(y.category ?? '') ?? 99) ||
+    x.name.localeCompare(y.name)
+  )
 }
 
 /** Valid category key from a ?category= value, or 'all'. */
@@ -156,20 +126,14 @@ export function TreatmentsCatalogue({
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState(false)
-  const [shuffledAll, setShuffledAll] = useState<Treatment[]>(() => interleaveTreatments(displayTreatments))
   const dropdownRef = useRef<HTMLDivElement>(null)
   const catalogueTopRef = useRef<HTMLDivElement>(null)
 
   // Active subcategory tabs for the current category (if any)
   const activeSubcategoryTabs = SUBCATEGORY_TABS[selectedCategory] || []
 
-  // Shuffle randomly on client mount
-  // (random order must be client-only, otherwise server and client HTML differ)
-  useEffect(() => {
-    if (displayTreatments.length === 0) return
-    const frame = requestAnimationFrame(() => setShuffledAll(shuffleTreatments(displayTreatments)))
-    return () => cancelAnimationFrame(frame)
-  }, [displayTreatments])
+  const menu = useMemo(() => menuOrder(displayTreatments), [displayTreatments])
+  const categoriesWithServices = useMemo(() => new Set(displayTreatments.map((t) => t.category).filter(Boolean)).size, [displayTreatments])
 
   // Close dropdown on click outside or escape key
   useEffect(() => {
@@ -190,9 +154,6 @@ export function TreatmentsCatalogue({
   }, [])
 
   const handleSelectCategory = (catKey: string) => {
-    if (catKey === 'all') {
-      setShuffledAll(shuffleTreatments(displayTreatments))
-    }
     setSelectedCategory(catKey)
     setSelectedSubcategory('all')
     setCurrentPage(1)
@@ -230,18 +191,16 @@ export function TreatmentsCatalogue({
     return found ? found.label : (CATEGORY_MAP[selectedCategory] || selectedCategory)
   }, [selectedCategory])
 
-  // Filtered treatments by active category (randomized when viewing All Treatments)
+  // Filtered treatments by active category, always in menu order
   const filteredTreatments = useMemo(() => {
-    if (selectedCategory === 'all') {
-      return shuffledAll.length > 0 ? shuffledAll : displayTreatments
-    }
-    const byCat = displayTreatments.filter((t) => t.category === selectedCategory)
+    if (selectedCategory === 'all') return menu
+    const byCat = menu.filter((t) => t.category === selectedCategory)
     // If a subcategory tab is selected, further filter by it
     if (selectedSubcategory !== 'all') {
       return byCat.filter((t) => t.subcategory === selectedSubcategory)
     }
     return byCat
-  }, [displayTreatments, selectedCategory, selectedSubcategory, shuffledAll])
+  }, [menu, selectedCategory, selectedSubcategory])
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredTreatments.length / ITEMS_PER_PAGE)
@@ -259,38 +218,19 @@ export function TreatmentsCatalogue({
         <div className="mb-12 md:mb-16">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pb-8 border-b border-[#dde7dd]/80">
             <div>
-              <p className="text-[10px] font-semibold tracking-[0.28em] text-[#1e5f2e] uppercase mb-3">
-                Official Salon Menu
-              </p>
+              <p className="eyebrow mb-4">The salon menu</p>
               <h2
                 className="text-[2rem] sm:text-[2.6rem] md:text-[3rem] font-medium text-[#1e2228] leading-[1.15]"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                Treatments & Services
+                Treatments &amp; <span className="accent-italic">services</span>
               </h2>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
-                <p className="text-[14px] sm:text-[15px] text-[#5c5a58]">
-                  {selectedCategory === 'all' 
-                    ? `Showing a randomized discovery of all ${filteredTreatments.length} services across 25 salon categories.`
-                    : `Showing all ${filteredTreatments.length} services under ${selectedCategoryLabel}.`
-                  }
+                <p className="text-[14px] sm:text-[15px] text-[#4a4846]">
+                  {selectedCategory === 'all'
+                    ? `${filteredTreatments.length} services across ${categoriesWithServices} categories, in menu order.`
+                    : `${filteredTreatments.length} service${filteredTreatments.length === 1 ? '' : 's'} in ${selectedCategoryLabel.replace(/^d+.s*/, '')}.`}
                 </p>
-                {selectedCategory === 'all' && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShuffledAll(shuffleTreatments(displayTreatments))
-                      setCurrentPage(1)
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#e9f3e9] hover:bg-[#1e5f2e] text-[#1e5f2e] hover:text-white border border-[#1e5f2e]/20 text-[11px] font-semibold tracking-[0.08em] uppercase rounded-sm transition-colors cursor-pointer"
-                    title="Shuffle random treatments"
-                  >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    <span>Shuffle Random</span>
-                  </button>
-                )}
               </div>
             </div>
 
@@ -477,7 +417,7 @@ export function TreatmentsCatalogue({
               </p>
               <div className="flex items-center justify-center gap-4 flex-wrap">
                 <a
-                  href={`https://wa.me/919723179638?text=Hello%20Angel%20Touch%2C%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(selectedCategoryLabel)}`}
+                  href={generateWhatsAppLink({ type: 'TREATMENT', itemName: selectedCategoryLabel.replace(/^d+.s*/, '') })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1e5f2e] text-white text-[11px] font-semibold tracking-[0.16em] uppercase hover:bg-[#164722] transition-colors rounded-sm"
@@ -535,11 +475,10 @@ export function TreatmentsCatalogue({
                 const catLabel = treatment.category 
                   ? (CATEGORY_MAP[treatment.category] || treatment.category) 
                   : selectedCategoryLabel
-                const globalIndex = startIndex + idx + 1
 
                 return (
                   <FadeIn key={treatment._id || idx} delay={Math.min(idx * 0.05, 0.25)}>
-                    <article className="group relative flex flex-col justify-between h-full p-6 sm:p-7 bg-white border border-[#dde7dd]/80 hover:border-[#2e7a3a] transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(46,122,58,0.08)] rounded-sm">
+                    <article className="at-card group relative flex flex-col justify-between h-full p-6 sm:p-7 bg-white">
                       
                       <div>
                         {/* Header badge */}
@@ -556,34 +495,33 @@ export function TreatmentsCatalogue({
                                 {treatment.duration}
                               </span>
                             )}
-                            <span className="text-[11px] font-mono text-[#8a8d87]/60">
-                              #{String(globalIndex).padStart(2, '0')}
-                            </span>
                           </div>
                         </div>
 
                         {/* Service Name */}
                         <h4 
-                          className="text-[1.2rem] sm:text-[1.35rem] font-medium text-[#1e2228] leading-[1.3] mb-3"
+                          className="text-[1.25rem] sm:text-[1.4rem] font-medium text-[#1e2228] leading-[1.25] mb-3"
                           style={{ fontFamily: 'var(--font-heading)' }}
                         >
                           {treatment.name}
                         </h4>
 
                         {/* Service Description */}
-                        <p className="text-[13px] sm:text-[14px] text-[#5c5a58] leading-[1.7] mb-6 line-clamp-3">
-                          {treatment.description || 'An intentional Ayurvedic ritual designed to restore radiant balance and natural wellbeing.'}
-                        </p>
+                        {/* Only the real description from Sanity — never filler text */}
+                        {treatment.description && (
+                          <p className="text-[14px] text-[#4a4846] leading-[1.7] mb-6 line-clamp-3">{treatment.description}</p>
+                        )}
                       </div>
 
                       {/* Card Footer Actions */}
-                      <div className="pt-4 border-t border-[#dde7dd]/60 flex items-center justify-between gap-4">
+                      <div className="mt-auto pt-4 border-t border-[#dde7dd]/70 flex items-center justify-between gap-4">
                         <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#8a8d87]">
                           By Appointment
                         </span>
 
                         <a
-                          href={`https://wa.me/919723179638?text=${encodeURIComponent(`Hello Angel Touch, I would like to book an appointment for: ${treatment.name}`)}`}
+                          href={generateWhatsAppLink({ type: 'TREATMENT', itemName: treatment.name })}
+                          aria-label={`Book ${treatment.name} on WhatsApp (opens in a new tab)`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#1e5f2e] hover:bg-[#164722] text-white text-[11px] font-semibold tracking-[0.12em] uppercase rounded-sm transition-all duration-200 shadow-sm"

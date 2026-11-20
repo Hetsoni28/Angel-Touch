@@ -1,5 +1,8 @@
 import Link from 'next/link'
-import { ArrowLeft, Lock, Crown } from 'lucide-react'
+import { ArrowLeft, Lock, Crown, MessageCircle } from 'lucide-react'
+import { PAYMENTS_ENABLED } from '@/lib/features'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
+import { fmtDate } from '@/lib/portalFormat'
 
 interface VideoPlayerLockedProps {
   title: string
@@ -12,17 +15,17 @@ export function VideoPlayerLocked({ title, slug, reason, expiresAt }: VideoPlaye
   const isExpired = reason === 'expired_membership'
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-12" role="status" aria-live="polite">
+    <div className="w-full max-w-2xl mx-auto md:py-12" role="status" aria-live="polite">
       <div className="mb-6">
         <Link 
           href="/customer/library" 
-          className="inline-flex items-center min-h-[44px] text-[#5c5a58] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
+          className="inline-flex items-center gap-1.5 min-h-[44px] pr-2 text-[#1e2228] hover:text-[#2e7a3a] text-[14px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" /> Back to Library
+          <ArrowLeft className="w-[18px] h-[18px]" aria-hidden="true" /> Library
         </Link>
       </div>
       
-      <div className="bg-white border border-[#dde7dd] p-5 sm:p-8 md:p-12 text-center">
+      <div className="rounded-2xl bg-white border border-[#dde7dd] p-5 sm:p-8 md:p-12 text-center">
         <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#faf8f2] rounded-full flex items-center justify-center mx-auto mb-6">
           <Lock className="w-6 h-6 text-[#5c5a58]" aria-hidden="true" />
         </div>
@@ -37,23 +40,37 @@ export function VideoPlayerLocked({ title, slug, reason, expiresAt }: VideoPlaye
 
         <p className="text-[#5c5a58] text-[15px] leading-relaxed mb-8 max-w-md mx-auto">
           {isExpired
-            ? `Your membership concluded on ${expiresAt ? new Date(expiresAt).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' }) : 'a past date'}. Renew your membership to resume streaming "${title}" and all other recordings.`
-            : `You do not currently have access to "${title}". You can unlock it by joining our membership for full library access, or purchasing this single recording.`}
+            ? `Your membership ended on ${expiresAt ? fmtDate(expiresAt) : 'a past date'}. Renew it to watch "${title}" and every other recording again.`
+            : PAYMENTS_ENABLED
+              ? `"${title}" isn't in your library yet. Unlock it with a membership, or buy this recording on its own.`
+              : `"${title}" isn't in your library yet. Message us on WhatsApp and we'll arrange access for you.`}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link 
             href="/membership" 
-            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3.5 bg-[#1e2228] text-white text-[11px] font-semibold tracking-widest uppercase hover:bg-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
+            className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 rounded-xl border border-[#dde7dd] bg-white text-[#1e2228] text-[14px] font-medium hover:border-[#2e7a3a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
           >
-            <Crown className="w-4 h-4 mr-2" aria-hidden="true" /> {isExpired ? 'Renew Membership' : 'Join Membership'}
+            <Crown className="w-4 h-4 text-[#b38538]" aria-hidden="true" /> {isExpired ? 'Renew membership' : PAYMENTS_ENABLED ? 'Join membership' : 'Membership · coming soon'}
           </Link>
-          <Link 
-            href={`/classes/${slug}`} 
-            className="inline-flex items-center justify-center min-h-[44px] px-6 py-3.5 bg-transparent border border-[#2e7a3a] text-[#1e5f2e] hover:bg-[#2e7a3a] hover:text-white text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
-          >
-            Purchase Recording
-          </Link>
+          {PAYMENTS_ENABLED ? (
+            <Link
+              href={`/classes/${slug}`}
+              className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-xl border border-[#2e7a3a] text-[#1e5f2e] hover:bg-[#2e7a3a] hover:text-white text-[14px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
+            >
+              Buy this recording
+            </Link>
+          ) : (
+            <a
+              href={generateWhatsAppLink({ type: 'RECORDING', itemName: title })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 rounded-xl bg-[#1e5f2e] hover:bg-[#2e7a3a] text-white text-[14px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2 transition-colors"
+              aria-label={`Ask about access to ${title} on WhatsApp (opens in a new tab)`}
+            >
+              <MessageCircle className="w-4 h-4" aria-hidden="true" /> Ask on WhatsApp
+            </a>
+          )}
         </div>
       </div>
     </div>

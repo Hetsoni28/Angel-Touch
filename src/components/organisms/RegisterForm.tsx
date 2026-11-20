@@ -45,7 +45,7 @@ export function RegisterForm() {
     <div className="w-full">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-3">Join Angel Touch</h1>
+        <h1 className="font-playfair text-3xl sm:text-4xl text-[#1e2228] mb-3">Join Angel <span className="accent-italic">Touch</span></h1>
         <p className="text-[15px] text-[#5c5a58] leading-relaxed">
           Create an account to book live masterclasses and unlock the recorded formulation vault.
         </p>

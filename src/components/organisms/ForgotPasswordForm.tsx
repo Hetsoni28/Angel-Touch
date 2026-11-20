@@ -11,7 +11,7 @@ export function ForgotPasswordForm() {
   if (state.success) {
     return (
       <div className="text-center fade-in-up" role="status" aria-live="polite">
-        <h1 className="font-playfair text-3xl text-[#1e2228] mb-4">Check your email</h1>
+        <h1 className="font-playfair text-3xl text-[#1e2228] mb-4">Check your <span className="accent-italic">email</span></h1>
         <p className="text-[#5c5a58] text-[15px] leading-relaxed mb-8">
           {state.message}
         </p>
@@ -29,7 +29,7 @@ export function ForgotPasswordForm() {
   return (
     <div className="w-full">
       <div className="mb-10 text-center">
-        <h1 className="font-playfair text-3xl text-[#1e2228] mb-3">Reset Password</h1>
+        <h1 className="font-playfair text-3xl text-[#1e2228] mb-3">Reset your <span className="accent-italic">password</span></h1>
         <p className="text-[#5c5a58] text-[14px]">
           Enter your email address and we&apos;ll send you a link to reset your password.
         </p>

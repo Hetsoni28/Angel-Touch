@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, Play } from 'lucide-react'
+import { fmtDate } from '@/lib/portalFormat'
 
 interface VideoPlayerUnlockedProps {
   title: string
@@ -17,19 +18,19 @@ export function VideoPlayerUnlocked({ title, date, youtubeId, accessReason }: Vi
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+      <div className="mb-4 sm:mb-6 flex items-center justify-between gap-3">
         <Link 
           href="/customer/library" 
-          className="inline-flex items-center min-h-[44px] text-[#5c5a58] hover:text-[#2e7a3a] text-[11px] font-semibold tracking-widest uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
+          className="inline-flex items-center gap-1.5 min-h-[44px] pr-2 text-[#1e2228] hover:text-[#2e7a3a] text-[14px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded-sm transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" /> Back to Library
+          <ArrowLeft className="w-[18px] h-[18px]" aria-hidden="true" /> Library
         </Link>
-        <span className="inline-flex items-center self-start sm:self-auto bg-[#e9f3e9] text-[#1e5f2e] text-[10px] px-3 py-1.5 font-bold tracking-widest uppercase rounded">
-          Unlocked via {accessReason}
+        <span className="inline-flex items-center bg-[#e9f3e9] text-[#1e5f2e] text-[12px] px-3 py-1 font-semibold rounded-full">
+          {accessReason === 'Membership' ? 'Membership' : 'Your class'}
         </span>
       </div>
 
-      <div className="bg-black aspect-video w-full rounded-lg overflow-hidden shadow-xl mb-8 relative group">
+      <div className="bg-black aspect-video -mx-4 sm:mx-0 sm:rounded-2xl overflow-hidden shadow-xl mb-5 sm:mb-8 relative group">
         {!youtubeId ? (
           <div className="w-full h-full flex items-center justify-center text-white" role="alert">
             <p>Invalid video URL provided.</p>
@@ -67,22 +68,21 @@ export function VideoPlayerUnlocked({ title, date, youtubeId, accessReason }: Vi
               <Play className="w-8 h-8 ml-1 fill-[#2e7a3a]" aria-hidden="true" />
             </div>
 
-            <div className="absolute bottom-4 left-4 z-10 bg-black/70 px-3 py-1.5 rounded text-white text-[11px] font-medium tracking-wide">
-              Click to Play Masterclass
+            <div className="absolute bottom-3 left-3 z-10 bg-black/65 px-3 py-1.5 rounded-full text-white text-[12px] font-medium">
+              Tap to play
             </div>
           </button>
         )}
       </div>
 
-      <div className="bg-white border border-[#dde7dd] p-5 sm:p-8">
-        <h1 className="font-playfair text-2xl sm:text-3xl text-[#1e2228] mb-2">{title}</h1>
-        <p className="text-[#5c5a58] text-[12px] font-semibold tracking-widest uppercase mb-8">
-          Recorded on {new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+      <div className="rounded-2xl bg-white border border-[#dde7dd] p-4 sm:p-7">
+        <h1 className="font-playfair text-[1.4rem] sm:text-3xl leading-snug text-[#1e2228] mb-1.5">{title}</h1>
+        <p className="text-[#6b6e68] text-[13px] mb-4">Recorded {fmtDate(date)}</p>
+        <p className="text-[14px] text-[#4a4846] leading-relaxed">
+          {accessReason === 'Membership'
+            ? 'Included with your membership — watch it as often as you like while your membership is active.'
+            : 'Part of a class you joined — this recording stays in your library.'}
         </p>
-        
-        <div className="prose prose-sm max-w-none text-[#5c5a58]">
-          <p>We hope you enjoy this recording. You have unlimited access as long as your membership is active or via your lifetime purchase.</p>
-        </div>
       </div>
     </div>
   )

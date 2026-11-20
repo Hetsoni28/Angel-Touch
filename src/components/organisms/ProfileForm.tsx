@@ -2,93 +2,84 @@
 
 import { useActionState } from 'react'
 import { updateProfileAction } from '@/app/actions/profile'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, Lock } from 'lucide-react'
 
-export function ProfileForm({ initialData }: { initialData: { full_name: string | null, phone: string | null, email: string | undefined } }) {
+const field =
+  'w-full h-[52px] px-4 rounded-xl bg-white border border-[#dde7dd] text-[16px] text-[#1e2228] placeholder-[#a3a69f] focus:outline-none focus:border-[#2e7a3a] focus:ring-2 focus:ring-[#2e7a3a]/20 transition'
+const label = 'block text-[13px] font-medium text-[#4a4846] mb-1.5'
+
+/** Profile details form — app-style fields (16px text so iOS doesn't zoom on focus). */
+export function ProfileForm({ initialData }: { initialData: { full_name: string | null; phone: string | null; email: string | undefined } }) {
   const [state, action, isPending] = useActionState(updateProfileAction, { success: false })
 
   return (
-    <form action={action} className="bg-white border border-[#dde7dd] p-8 md:p-12">
-      <div className="mb-10">
-        <h2 className="font-playfair text-2xl text-[#1e2228] mb-2">Personal Information</h2>
-        <p className="text-[#5c5a58] text-[14px]">Update your name and contact details.</p>
-      </div>
+    <form action={action} className="rounded-2xl bg-white/60 md:bg-white border border-[#dde7dd] p-4 sm:p-6 md:p-8">
+      <h2 className="text-[1.2rem] text-[#1e2228] mb-4" style={{ fontFamily: 'var(--font-heading)' }}>Personal details</h2>
 
       {state.success && (
-        <div className="mb-8 p-4 bg-[#e9f3e9] border border-[#2e7a3a] flex items-center gap-3" role="status" aria-live="polite">
-          <CheckCircle2 className="w-5 h-5 text-[#2e7a3a]" aria-hidden="true" />
-          <p className="text-[13px] text-[#1e5f2e] font-medium">Profile updated successfully.</p>
+        <div className="mb-5 p-3.5 rounded-xl bg-[#e9f3e9] border border-[#2e7a3a]/40 flex items-center gap-2.5" role="status" aria-live="polite">
+          <CheckCircle2 className="w-5 h-5 text-[#2e7a3a] shrink-0" aria-hidden="true" />
+          <p className="text-[14px] text-[#1e5f2e] font-medium">Your details are saved.</p>
         </div>
       )}
-
       {state.error && (
-        <div className="mb-8 p-4 bg-red-50 border border-red-500" role="alert" aria-live="assertive">
-          <p className="text-[13px] text-red-700 font-medium">{state.error}</p>
+        <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-300" role="alert" aria-live="assertive">
+          <p className="text-[14px] text-red-700 font-medium">{state.error}</p>
         </div>
       )}
 
-      <div className="flex flex-col gap-8 max-w-xl">
-        {/* Email (Read-only) */}
+      <div className="flex flex-col gap-5 max-w-xl">
         <div>
-          <label htmlFor="user-email" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
-            Email Address
-          </label>
-          <input
-            id="user-email"
-            type="email"
-            value={initialData.email || ''}
-            disabled
-            aria-describedby="email-help"
-            className="w-full bg-[#faf8f2] border-b border-[#dde7dd] pb-3 text-[15px] text-[#5c5a58] cursor-not-allowed outline-none"
-          />
-          <p id="email-help" className="mt-2 text-[11px] text-[#5c5a58]">Email address is managed by authentication and cannot be edited directly.</p>
-        </div>
-
-        {/* Full Name */}
-        <div>
-          <label htmlFor="fullName" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
-            Full Name
-          </label>
+          <label htmlFor="fullName" className={label}>Full name</label>
           <input
             id="fullName"
             name="fullName"
             type="text"
+            autoComplete="name"
             defaultValue={initialData.full_name || ''}
             required
             aria-required="true"
-            className="w-full bg-transparent border-b border-[#dde7dd] pb-3 text-[15px] text-[#1e2228] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] focus:border-[#2e7a3a] transition-colors rounded-none"
+            className={field}
           />
         </div>
 
-        {/* Phone */}
         <div>
-          <label htmlFor="phone" className="block text-[11px] font-bold tracking-widest uppercase text-[#4a4e4d] mb-2">
-            Phone Number
-          </label>
+          <label htmlFor="phone" className={label}>Phone number</label>
           <input
             id="phone"
             name="phone"
             type="tel"
+            inputMode="tel"
+            autoComplete="tel"
             defaultValue={initialData.phone || ''}
-            placeholder="+91"
-            className="w-full bg-transparent border-b border-[#dde7dd] pb-3 text-[15px] text-[#1e2228] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2e7a3a] focus:border-[#2e7a3a] transition-colors rounded-none"
+            placeholder="+91 98765 43210"
+            className={field}
           />
+        </div>
+
+        <div>
+          <label htmlFor="user-email" className={label}>Email</label>
+          <div className="relative">
+            <input
+              id="user-email"
+              type="email"
+              value={initialData.email || ''}
+              readOnly
+              aria-describedby="email-help"
+              className={`${field} bg-[#faf8f2] text-[#6b6e68] pr-11 cursor-default`}
+            />
+            <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a3a69f]" aria-hidden="true" />
+          </div>
+          <p id="email-help" className="mt-1.5 text-[12.5px] text-[#6b6e68]">This is your sign-in email and can&apos;t be changed here.</p>
         </div>
 
         <button
           type="submit"
           disabled={isPending}
           aria-busy={isPending}
-          className="mt-4 self-start bg-[#1e2228] hover:bg-[#2e7a3a] disabled:bg-[#6b6e68] text-white text-[11px] font-semibold tracking-widest uppercase px-10 min-h-[48px] py-4 transition-colors flex items-center justify-center min-w-[160px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
+          className="mt-1 w-full md:w-auto md:self-start md:px-10 h-[52px] rounded-xl bg-[#1e5f2e] hover:bg-[#2e7a3a] disabled:bg-[#6b6e68] text-white text-[15px] font-medium flex items-center justify-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] focus-visible:ring-offset-2"
         >
-          {isPending ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin mr-2" aria-hidden="true" />
-              <span>Saving...</span>
-            </>
-          ) : (
-            'Save Changes'
-          )}
+          {isPending ? (<><Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> Saving…</>) : 'Save changes'}
         </button>
       </div>
     </form>

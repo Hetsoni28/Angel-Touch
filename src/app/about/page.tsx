@@ -68,7 +68,7 @@ export default function AboutPage() {
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
-              Rooted in ancient wisdom,<br />crafted for modern wellness.
+              Rooted in ancient <span className="accent-italic">wisdom</span>,<br />crafted for modern wellness.
             </p>
             <p className="text-[16px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl mx-auto">
               Angel Touch is a sanctuary of authentic Ayurvedic healing, dedicated to reviving the pure, unadulterated practices of natural wellness. We believe that true beauty and health begin with a profound connection to nature.
@@ -106,7 +106,7 @@ export default function AboutPage() {
                 className="text-[2.2rem] md:text-[3rem] font-medium text-[#1e2228] leading-[1.15] mb-10"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                Meet Heena Thaker
+                Meet Heena <span className="accent-italic">Thaker</span>
               </h2>
               <div className="space-y-6 text-[16px] text-[#5c5a58] leading-[1.85]">
                 <p>
@@ -148,7 +148,7 @@ export default function AboutPage() {
                 className="text-[2.5rem] md:text-[3.2rem] font-medium text-[#1e2228] leading-[1.15] mb-6"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
               >
-                Our Philosophy
+                Our <span className="accent-italic">philosophy</span>
               </h2>
               <p className="text-[16px] text-[#5c5a58] leading-[1.8]">
                 We stand against the commercialization of wellness. Our approach is slow, deliberate, and entirely natural.

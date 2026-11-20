@@ -11,7 +11,7 @@ export function ResetPasswordForm() {
   return (
     <div className="w-full">
       <div className="mb-10 text-center">
-        <h1 className="font-playfair text-3xl text-[#1e2228] mb-3">Set New Password</h1>
+        <h1 className="font-playfair text-3xl text-[#1e2228] mb-3">Set a new <span className="accent-italic">password</span></h1>
         <p className="text-[#5c5a58] text-[14px]">
           Enter your new password below.
         </p>

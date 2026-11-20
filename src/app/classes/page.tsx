@@ -81,7 +81,7 @@ export default async function ClassesPage() {
                 className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem] font-medium text-white leading-[1.05] mb-6 md:mb-8 drop-shadow-md"
                 style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.015em' }}
               >
-                Learn the craft<br />behind the ritual.
+                Learn the craft<br />behind the <span className="italic font-normal text-[#edc179]">ritual</span>.
               </p>
             </FadeIn>
 
@@ -124,7 +124,7 @@ export default async function ClassesPage() {
           className="text-[2.5rem] md:text-[3rem] font-medium text-[#1e2228] mb-8 leading-[1.2]"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
-          Learn by making.
+          Learn by <span className="accent-italic">making</span>.
         </h2>
         <p className="text-[16px] text-[#5c5a58] leading-[1.9] max-w-2xl mx-auto">
           We believe true understanding comes from working directly with the elements. Our masterclasses are not theoretical lectures—they are practical, hands-on workshops where you learn to formulate, blend, and create authentic Ayurvedic remedies.
@@ -186,7 +186,7 @@ export default async function ClassesPage() {
               className="text-[2.5rem] font-medium text-[#1e2228] mb-4"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Upcoming classes
+              Upcoming <span className="accent-italic">classes</span>
             </h2>
             <p className="text-[16px] text-[#5c5a58]">
               Join a focused, hands-on learning experience.
@@ -250,7 +250,7 @@ export default async function ClassesPage() {
               className="text-[2.5rem] font-medium text-[#1e2228] mb-4"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Continue learning with the recorded library.
+              Continue learning with the recorded <span className="accent-italic">library</span>.
             </h2>
             <p className="text-[16px] text-[#5c5a58] max-w-2xl mb-8">
               Explore past class recordings through Angel Touch membership. 

@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { getEmailsByUserId } from '@/lib/supabase/userEmails'
 import { connection } from 'next/server'
 import { client } from '@/sanity/lib/client'
-import { Eye } from 'lucide-react'
 
 export const instant = false
 
@@ -57,7 +56,6 @@ export default async function AdminEnrollmentsPage() {
               <th className="px-6 py-4">Purchase Date</th>
               <th className="px-6 py-4">Payment</th>
               <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -92,17 +90,12 @@ export default async function AdminEnrollmentsPage() {
                       {enrollment.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <button className="inline-flex items-center text-[#8a8d87] hover:text-[#1e2228] transition-colors" title="View Details">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </td>
                 </tr>
               )
             })}
             {(!enrollments || enrollments.length === 0) && (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center">No enrollments found.</td>
+                <td colSpan={5} className="px-6 py-8 text-center">No enrollments found.</td>
               </tr>
             )}
           </tbody>

@@ -79,12 +79,17 @@ export function Header() {
     setOpenMenu(null)
   }
 
-  // Compact header once the page has scrolled a little.
+  // Once the page has scrolled, the header only gains a soft shadow. It never
+  // changes size: resizing a sticky header shifts the page, the browser corrects
+  // the scroll position, and the header flips back and forth (flicker loop).
   useEffect(() => {
     let frame = 0
     const onScroll = () => {
       cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => setScrolled(window.scrollY > 24))
+      frame = requestAnimationFrame(() => {
+        const next = window.scrollY > 8
+        setScrolled((prev) => (prev === next ? prev : next))
+      })
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -141,44 +146,39 @@ export function Header() {
   }
 
   if (pathname.startsWith('/studio')) return null
+  // Customer portal on phones uses its own app bar (see customer/layout.tsx)
+  const inPortal = pathname.startsWith('/customer')
 
   const bookingLink = generateWhatsAppLink({ type: 'GENERAL', message: 'I would like to book an appointment.' })
 
   return (
     <>
+      {/* ── Utility bar: the facts people look for first. Not sticky — it scrolls away. ── */}
+      <div className={`${inPortal ? 'hidden lg:block' : 'hidden md:block'} bg-[#1e2228] text-white/80`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-10 h-9 flex items-center justify-between text-[11px] tracking-[0.08em]">
+          <p className="flex items-center gap-2">
+            <MapPin className="w-3.5 h-3.5 text-[#edc179]" aria-hidden="true" />
+            Women-only studio · Satellite, Ahmedabad
+          </p>
+          <div className="flex items-center gap-6">
+            <span className="hidden lg:inline tabular">{HOURS_SHORT}</span>
+            <a href={SITE_INFO.phoneHref} className="inline-flex items-center gap-1.5 hover:text-white transition-colors tabular">
+              <Phone className="w-3 h-3 text-[#edc179]" aria-hidden="true" />
+              {SITE_INFO.phoneDisplay}
+            </a>
+          </div>
+        </div>
+      </div>
+
       <header
         ref={headerRef}
-        className={`sticky top-0 inset-x-0 z-50 w-full bg-[#faf8f2]/95 backdrop-blur-md border-b transition-[box-shadow,border-color] duration-300 ${
+        className={`${inPortal ? 'hidden md:block' : ''} sticky top-0 inset-x-0 z-50 w-full bg-[#faf8f2]/95 backdrop-blur-md border-b transition-[box-shadow,border-color] duration-300 ${
           scrolled ? 'border-[#dde7dd] shadow-[0_8px_30px_-18px_rgba(30,34,40,0.25)]' : 'border-[#dde7dd]/70'
         }`}
       >
-        {/* ── Utility bar: the facts people look for first ── */}
-        <div
-          className={`hidden md:block bg-[#1e2228] text-white/80 overflow-hidden transition-[max-height,opacity] duration-300 ${
-            scrolled ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'
-          }`}
-          aria-hidden={scrolled}
-        >
-          <div className="max-w-7xl mx-auto px-6 md:px-10 h-9 flex items-center justify-between text-[11px] tracking-[0.08em]">
-            <p className="flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5 text-[#edc179]" aria-hidden="true" />
-              Women-only studio · Satellite, Ahmedabad
-            </p>
-            <div className="flex items-center gap-6">
-              <span className="hidden lg:inline tabular">{HOURS_SHORT}</span>
-              <a href={SITE_INFO.phoneHref} tabIndex={scrolled ? -1 : 0} className="inline-flex items-center gap-1.5 hover:text-white transition-colors tabular">
-                <Phone className="w-3 h-3 text-[#edc179]" aria-hidden="true" />
-                {SITE_INFO.phoneDisplay}
-              </a>
-            </div>
-          </div>
-        </div>
-
         {/* ── Main bar ── */}
         <div
-          className={`max-w-7xl mx-auto px-4 sm:px-6 md:px-10 flex items-center justify-between relative transition-[height] duration-300 ${
-            scrolled ? 'h-[64px] sm:h-[70px]' : 'h-[76px] sm:h-[84px]'
-          }`}
+          className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 flex items-center justify-between relative h-[68px] sm:h-[76px]"
         >
           {/* Mobile menu toggle */}
           <div className="flex items-center lg:hidden">
@@ -205,9 +205,7 @@ export function Header() {
               alt="Angel Touch by Heena Thaker"
               width={220}
               height={64}
-              className={`w-auto object-contain transition-[height] duration-300 max-w-[150px] sm:max-w-[185px] lg:max-w-none ${
-                scrolled ? 'h-9 sm:h-10 lg:h-12' : 'h-10 sm:h-12 lg:h-14'
-              }`}
+              className="w-auto object-contain h-10 sm:h-11 lg:h-[52px] max-w-[150px] sm:max-w-[185px] lg:max-w-none"
               priority
             />
           </Link>

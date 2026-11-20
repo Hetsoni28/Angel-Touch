@@ -23,7 +23,7 @@ export function FeaturedProduct({ product }: { product: ProductCardProps }) {
                 className="text-[2.2rem] md:text-[2.8rem] font-medium text-[#1e2228] leading-[1.1] mb-5 md:mb-6"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                A ritual worth making time for.
+                A ritual worth making <span className="accent-italic">time</span> for.
               </h2>
             </FadeIn>
             

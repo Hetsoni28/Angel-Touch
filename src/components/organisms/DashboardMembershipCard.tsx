@@ -13,7 +13,7 @@ export function DashboardMembershipCard({ isMember, expiresAt, status }: Dashboa
   const isPaused = status === 'paused'
 
   return (
-    <section className="bg-white border border-[#dde7dd] p-8 relative overflow-hidden" aria-label="Membership Status">
+    <section className="bg-white border border-[#dde7dd] rounded-xl p-5 sm:p-7 relative overflow-hidden" aria-label="Membership Status">
       <div className="flex items-start justify-between mb-6 relative z-10">
         <div>
           <h2 className="text-[#5c5a58] text-[11px] font-semibold tracking-widest uppercase mb-1">

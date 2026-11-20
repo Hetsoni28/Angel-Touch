@@ -106,7 +106,7 @@ export function AcademyModulesList() {
               className="text-[2rem] sm:text-[2.6rem] font-medium text-[#1e2228] leading-[1.15]"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              All 13 Academy Categories (26 &ndash; 38)
+              All 13 academy <span className="accent-italic">categories</span> (26 &ndash; 38)
             </h2>
           </div>
           <p className="text-[14px] text-[#5c5a58] max-w-md">

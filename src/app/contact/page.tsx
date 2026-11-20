@@ -94,7 +94,7 @@ export default function ContactPage() {
               className="text-[2.2rem] xs:text-[2.6rem] sm:text-[3.5rem] md:text-[4.5rem] font-medium text-[#1e2228] leading-[1.08] mb-6 sm:mb-8"
               style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}
             >
-              Let&apos;s start your wellness journey.
+              Let&apos;s start your wellness <span className="accent-italic">journey</span>.
             </p>
             <p className="text-[15px] md:text-[18px] text-[#5c5a58] leading-[1.8] max-w-2xl">
               Whether you are looking to book a holistic treatment, inquire about our raw Ayurvedic products, or enroll in a masterclass, we are here to assist you.

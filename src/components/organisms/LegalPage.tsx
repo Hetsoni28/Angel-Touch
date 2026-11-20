@@ -4,6 +4,7 @@ import { SITE_INFO } from '@/lib/siteInfo'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 import { JsonLd } from '@/components/atoms/JsonLd'
 import { breadcrumbJsonLd } from '@/lib/seo'
+import { AccentTitle } from '@/components/atoms/AccentTitle'
 
 interface LegalPageProps {
   title: string
@@ -33,7 +34,7 @@ export function LegalPage({ title, path, lastUpdated, intro, children }: LegalPa
             className="text-[2.2rem] sm:text-[2.8rem] font-medium text-[#1e2228] leading-[1.1] mb-4"
             style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.01em' }}
           >
-            {title}
+            <AccentTitle text={title} />
           </h1>
           <p className="text-[13px] text-[#6b6e68] mb-8">Last updated {lastUpdated}</p>
           <div className="text-[16px] text-[#4a4846] leading-[1.8]">{intro}</div>

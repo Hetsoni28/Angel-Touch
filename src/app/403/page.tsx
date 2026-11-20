@@ -15,7 +15,7 @@ export default function ForbiddenPage() {
           className="text-[3rem] md:text-[4rem] font-medium text-[#1e2228] leading-[1.1] mb-6"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
-          This area is restricted.
+          This area is <span className="accent-italic">restricted</span>.
         </h1>
 
         {/* Description */}

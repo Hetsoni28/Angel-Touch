@@ -66,7 +66,8 @@ export function Footer() {
   const bookingLink = generateWhatsAppLink({ type: 'GENERAL', message: 'I would like to book an appointment.' })
 
   return (
-    <footer className="bg-[#faf8f2] border-t border-[#dde7dd]">
+    // Customer portal on phones is an app shell: no marketing footer there
+    <footer className={`${pathname.startsWith('/customer') ? 'hidden md:block' : ''} bg-[#faf8f2] border-t border-[#dde7dd]`}>
 
       {/* ── Booking strip ── */}
       <div className="bg-[#2e7a3a] px-6 md:px-10 py-10 md:py-12">

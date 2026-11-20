@@ -71,7 +71,7 @@ export function HeroSection() {
                   <dt className="sr-only">{f.label}</dt>
                   <dd>
                     <span
-                      className="block text-[1.35rem] sm:text-[1.6rem] text-[#1e2228] leading-none mb-1.5 tabular"
+                      className="block text-[1.12rem] sm:text-[1.6rem] text-[#1e2228] leading-none mb-1.5 tabular whitespace-nowrap"
                       style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       {f.value}

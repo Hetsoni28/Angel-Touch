@@ -48,7 +48,7 @@ export default async function VideoPlayerPage({ params }: PageProps) {
   if (!masterclass) {
     return (
       <div className="w-full text-center py-20">
-        <h1 className="text-2xl font-playfair text-[#1e2228] mb-4">Class not found</h1>
+        <h1 className="text-2xl font-playfair text-[#1e2228] mb-4">Class not <span className="accent-italic">found</span></h1>
         <Link href="/customer/library" className="text-[#2e7a3a] text-sm hover:underline">
           &larr; Back to Library
         </Link>

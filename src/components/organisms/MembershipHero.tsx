@@ -18,7 +18,7 @@ export function MembershipHero({ placeholder = false }: { placeholder?: boolean 
 
       <div className="relative z-10 py-16 md:py-28 px-6 md:px-10 max-w-7xl mx-auto text-center w-full">
         <Heading className="font-playfair text-[2.2rem] xs:text-[2.6rem] sm:text-4xl md:text-5xl lg:text-6xl text-[#1e2228] mb-6 leading-[1.1]">
-          The Ayurvedic Formulator Vault
+          The Ayurvedic Formulator <span className="accent-italic">Vault</span>
         </Heading>
         <p className="text-[#3c3a38] text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-4 font-medium">
           Membership provides exclusive, unlimited access to our <strong>entire library of past recorded Ayurvedic product-making classes.</strong>

@@ -2,50 +2,50 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { getDashboardNavItems } from './DashboardSidebar'
-import { LogOut } from 'lucide-react'
-import { logoutAction } from '@/app/actions/auth'
+import { getDashboardNavItems, isNavActive } from './DashboardSidebar'
 
+/**
+ * Phone tab bar for the customer portal — like a native app's bottom navigation:
+ * five large targets, readable labels, a pill behind the active icon, and padding
+ * for the iPhone home indicator. (Sign out lives on the Profile tab.)
+ */
 export function DashboardBottomBar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
-  const navItems = getDashboardNavItems(isAdmin)
+  // Keep the bar to five tabs on phones; the admin Studio link is on desktop.
+  const navItems = getDashboardNavItems(isAdmin).filter((i) => i.href !== '/studio')
 
   return (
-    <nav aria-label="Mobile Dashboard Navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#dde7dd] z-50 flex justify-around items-center px-2 py-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe overflow-x-auto">
-      {navItems.map((item) => {
-        const isActive = item.href === '/customer/dashboard' 
-          ? pathname === '/customer/dashboard' 
-          : pathname.startsWith(item.href)
-          
-        const Icon = item.icon
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-current={isActive ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center p-1.5 min-w-[52px] min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a] rounded ${
-              isActive ? 'text-[#2e7a3a]' : 'text-[#5c5a58]'
-            }`}
-          >
-            <Icon className={`w-5 h-5 mb-1 ${isActive ? 'fill-[#2e7a3a]/10' : ''}`} aria-hidden="true" />
-            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest uppercase text-center w-full truncate leading-tight">
-              {item.label.split(' ')[0]}
-            </span>
-          </Link>
-        )
-      })}
-      <form action={logoutAction} className="flex flex-col items-center justify-center min-w-[52px]">
-        <button
-          type="submit"
-          aria-label="Sign out of your account"
-          className="flex flex-col items-center justify-center p-1.5 min-w-[52px] min-h-[48px] text-[#5c5a58] hover:text-[#d32f2f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d32f2f] rounded"
-        >
-          <LogOut className="w-5 h-5 mb-1" aria-hidden="true" />
-          <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider sm:tracking-widest uppercase text-center leading-tight">
-            Sign Out
-          </span>
-        </button>
-      </form>
+    <nav
+      aria-label="Account tabs"
+      className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#dde7dd] shadow-[0_-8px_24px_-16px_rgba(30,34,40,0.25)]"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      <ul className="grid grid-cols-5 max-w-lg mx-auto">
+        {navItems.map((item) => {
+          const active = isNavActive(pathname, item.href)
+          const Icon = item.icon
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className="flex flex-col items-center justify-center gap-1 h-[62px] focus-visible:outline-none focus-visible:bg-[#e9f3e9]"
+              >
+                <span
+                  className={`flex items-center justify-center w-14 h-8 rounded-full transition-colors duration-200 ${
+                    active ? 'bg-[#e9f3e9] text-[#1e5f2e]' : 'text-[#6b6e68]'
+                  }`}
+                >
+                  <Icon className="w-[22px] h-[22px]" strokeWidth={active ? 2.2 : 1.7} aria-hidden="true" />
+                </span>
+                <span className={`text-[11px] leading-none ${active ? 'text-[#1e5f2e] font-semibold' : 'text-[#6b6e68] font-medium'}`}>
+                  {item.short}
+                </span>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
     </nav>
   )
 }

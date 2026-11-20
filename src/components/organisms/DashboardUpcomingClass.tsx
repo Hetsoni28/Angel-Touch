@@ -16,7 +16,7 @@ interface DashboardUpcomingClassProps {
 
 export function DashboardUpcomingClass({ nextClass }: DashboardUpcomingClassProps) {
   return (
-    <section className="bg-white border border-[#dde7dd] p-8" aria-label="Upcoming Masterclass">
+    <section className="bg-white border border-[#dde7dd] rounded-xl p-5 sm:p-7" aria-label="Upcoming Masterclass">
       <h2 className="text-[#5c5a58] text-[11px] font-semibold tracking-widest uppercase mb-6">Your Next Class</h2>
       
       {nextClass ? (
