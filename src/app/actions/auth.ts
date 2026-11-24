@@ -68,8 +68,9 @@ export async function registerAction(
   const supabase = await createClient()
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes('localhost'))
-    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
-    : 'https://angeltouch.in'
+    // Auth emails must always link over https, even if the env value was entered as http://
+    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '').replace(/^http:\/\//, 'https://')
+    : 'https://www.angeltouch.in'
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -191,8 +192,9 @@ export async function forgotPasswordAction(
   }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes('localhost'))
-    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
-    : 'https://angeltouch.in'
+    // Auth emails must always link over https, even if the env value was entered as http://
+    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '').replace(/^http:\/\//, 'https://')
+    : 'https://www.angeltouch.in'
 
   const supabase = await createClient()
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {

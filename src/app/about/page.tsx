@@ -26,9 +26,9 @@ const personSchema = {
   worksFor: {
     '@type': 'BeautySalon',
     name: 'Angel Touch',
-    url: 'https://angeltouch.in',
+    url: 'https://www.angeltouch.in',
   },
-  url: 'https://angeltouch.in/about',
+  url: 'https://www.angeltouch.in/about',
   knowsAbout: [
     'Ayurveda',
     'Ayurvedic cosmetic formulation',

@@ -5,7 +5,7 @@
 export const SITE_INFO = {
   businessName: 'Angel Touch by Heena Thaker',
   shortName: 'Angel Touch',
-  siteUrl: 'https://angeltouch.in',
+  siteUrl: 'https://www.angeltouch.in',
   phoneDisplay: '+91 97231 79638',
   phoneHref: 'tel:+919723179638',
   address: 'UGF-6, Policlinic Chamber, Opp. Judges Bunglow Road, Satellite, Ahmedabad, Gujarat 380015',

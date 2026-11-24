@@ -27,7 +27,7 @@ import { SITE_INFO } from '@/lib/siteInfo'
 import Script from 'next/script'
 import { INTRO_GATE_SCRIPT } from '@/lib/intro'
 
-const SITE_URL = 'https://angeltouch.in'
+const SITE_URL = 'https://www.angeltouch.in'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

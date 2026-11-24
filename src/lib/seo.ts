@@ -42,7 +42,7 @@ export function clampText(text: string, max: number): string {
   return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:—–-]+$/, '')}…`
 }
 
-/** Absolute URL for a site path ("/shop" → "https://angeltouch.in/shop"). */
+/** Absolute URL for a site path ("/shop" → "https://www.angeltouch.in/shop"). */
 export function absoluteUrl(path = '/'): string {
   if (/^https?:\/\//.test(path)) return path
   const clean = path === '/' ? '' : `/${path.replace(/^\/+/, '').replace(/\/+$/, '')}`

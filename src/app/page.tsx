@@ -50,13 +50,13 @@ const organizationSchema = {
   '@graph': [
     {
       '@type': 'Organization',
-      '@id': 'https://angeltouch.in/#organization',
+      '@id': 'https://www.angeltouch.in/#organization',
       name: 'Angel Touch',
       alternateName: ['Angel Touch by Heena Thaker', 'Angel Touch Salon Ahmedabad'],
-      url: 'https://angeltouch.in',
+      url: 'https://www.angeltouch.in',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://angeltouch.in/logo.svg',
+        url: 'https://www.angeltouch.in/logo.svg',
         width: 200,
         height: 60,
       },
@@ -64,7 +64,7 @@ const organizationSchema = {
         '@type': 'Person',
         name: 'Heena Thaker',
         jobTitle: 'Founder & Ayurvedic Expert',
-        url: 'https://angeltouch.in/about',
+        url: 'https://www.angeltouch.in/about',
       },
       contactPoint: {
         '@type': 'ContactPoint',
@@ -79,18 +79,18 @@ const organizationSchema = {
     },
     {
       '@type': ['BeautySalon', 'DaySpa', 'HealthAndBeautyBusiness'],
-      '@id': 'https://angeltouch.in/#business',
+      '@id': 'https://www.angeltouch.in/#business',
       name: 'Angel Touch by Heena Thaker',
       // First entry is the exact name on the Google Business Profile
       alternateName: [SITE_INFO.google.name, 'Angel Touch Ayurvedic Salon Satellite Ahmedabad'],
       description:
         "Top-rated women-only Ayurvedic salon, wellness spa, and certified beauty academy in Satellite, Ahmedabad. Specializing in authentic Shirodhara, Abhyanga, herbal facials, hair therapies, bridal styling, and handcrafted organic products.",
-      url: 'https://angeltouch.in',
+      url: 'https://www.angeltouch.in',
       telephone: '+91-97231-79638',
       priceRange: '₹₹ - ₹₹₹',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, Credit Card, Debit Card, UPI, Google Pay, PhonePe, Paytm, Net Banking',
-      image: 'https://angeltouch.in/images/og-default.jpg',
+      image: 'https://www.angeltouch.in/images/og-default.jpg',
       hasMap: SITE_INFO.google.placeUrl,
       address: {
         '@type': 'PostalAddress',
@@ -140,7 +140,7 @@ const organizationSchema = {
     },
     {
       '@type': 'FAQPage',
-      '@id': 'https://angeltouch.in/#faq',
+      '@id': 'https://www.angeltouch.in/#faq',
       mainEntity: [
         {
           '@type': 'Question',

@@ -40,7 +40,7 @@ const localBusinessSchema = {
   name: 'Angel Touch by Heena Thaker',
   // Name on the Google Business Profile — helps Google match the site to the listing
   alternateName: SITE_INFO.google.name,
-  url: 'https://angeltouch.in/contact',
+  url: 'https://www.angeltouch.in/contact',
   telephone: '+919723179638',
   priceRange: '₹₹ - ₹₹₹',
   hasMap: SITE_INFO.google.placeUrl,
