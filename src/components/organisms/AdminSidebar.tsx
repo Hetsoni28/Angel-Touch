@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Users, GraduationCap, Crown, CreditCard, LayoutDashboard, Database } from 'lucide-react'
+import { Users, GraduationCap, Crown, CreditCard, LayoutDashboard, Database, LogOut } from 'lucide-react'
+import { logoutAction } from '@/app/actions/auth'
 
 const navItems = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
@@ -43,6 +44,17 @@ export function AdminSidebar() {
               </Link>
             )
           })}
+
+          {/* Sign out: last item in the phone scroller, below a divider on desktop */}
+          <form action={logoutAction} className="shrink-0 md:mt-3 md:pt-3 md:border-t md:border-[#dde7dd]">
+            <button
+              type="submit"
+              className="w-full flex items-center min-h-[44px] px-3 md:px-4 py-2 md:py-2.5 text-[11px] md:text-[12px] font-semibold tracking-wider md:tracking-widest uppercase rounded whitespace-nowrap text-[#5c5a58] hover:bg-red-50 hover:text-red-700 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-1"
+            >
+              <LogOut className="w-4 h-4 mr-2 md:mr-3 shrink-0" aria-hidden="true" />
+              Sign out
+            </button>
+          </form>
         </nav>
       </div>
     </aside>

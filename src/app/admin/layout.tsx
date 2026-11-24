@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { requireAdmin } from '@/lib/supabase/auth'
 import { AdminSidebar } from '@/components/organisms/AdminSidebar'
 
@@ -6,6 +7,9 @@ export const metadata = {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  // Per-request: depends on the signed-in user (without this, the auth check runs
+  // during prerendering and Next.js errors on the session's Date.now()).
+  await connection()
   // Layer 2 Security: Double check admin role on server
   await requireAdmin()
 
