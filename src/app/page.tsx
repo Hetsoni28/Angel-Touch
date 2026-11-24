@@ -41,7 +41,7 @@ export const metadata: Metadata = pageMetadata({
     'Ayurvedic beauty parlour Satellite',
     'Organic skincare India',
     'Skincare formulation academy Ahmedabad',
-    'Ladies wellness centre Ahmedabad',
+    'Ladies wellness centre Ahmedabad',
   ],
 })
 
@@ -90,7 +90,7 @@ const organizationSchema = {
       priceRange: '₹₹ - ₹₹₹',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, Credit Card, Debit Card, UPI, Google Pay, PhonePe, Paytm, Net Banking',
-      image: 'https://www.angeltouch.in/images/og-default.jpg',
+      image: 'https://www.angeltouch.in/og/treatment_aroma_facial.jpg',
       hasMap: SITE_INFO.google.placeUrl,
       address: {
         '@type': 'PostalAddress',

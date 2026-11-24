@@ -18,15 +18,31 @@
  */
 import type { Metadata } from 'next'
 import { SITE_INFO } from './siteInfo'
+import { OG_IMAGE_COPIES } from './ogImages'
 
 export const SITE_URL = SITE_INFO.siteUrl
 export const SITE_NAME = SITE_INFO.businessName
 
-export const DEFAULT_OG_IMAGE = {
-  url: '/images/og-default.jpg',
-  width: 1200,
-  height: 630,
-  alt: "Angel Touch by Heena Thaker — women's Ayurvedic salon in Satellite, Ahmedabad",
+/** Default link-preview image: a real treatment photo with no third-party product labels. */
+export const DEFAULT_OG_IMAGE: SeoImage = {
+  url: '/images/treatment_aroma_facial.jpg',
+  alt: "Ayurvedic aroma facial at Angel Touch, women's salon in Satellite, Ahmedabad",
+}
+
+/**
+ * The image to put in og:image / twitter:image. Page photos are 700–900 KB and
+ * WhatsApp skips preview thumbnails that heavy, so use the light 1200×630 copy
+ * from /public/og (scripts/make-og-images.mjs), or ask Sanity's CDN for one.
+ */
+export function shareImage(image: SeoImage): SeoImage {
+  const copy = OG_IMAGE_COPIES[image.url]
+  if (copy) return { ...image, url: copy, width: 1200, height: 630 }
+  if (image.url.startsWith('https://cdn.sanity.io/images/')) {
+    const url = new URL(image.url)
+    for (const [k, v] of Object.entries({ w: '1200', h: '630', fit: 'crop', fm: 'jpg', q: '80' })) url.searchParams.set(k, v)
+    return { ...image, url: url.toString(), width: 1200, height: 630 }
+  }
+  return image
 }
 
 /** Search engines cut descriptions at ~160 characters; trim on a word boundary. */
@@ -71,7 +87,7 @@ export type PageSeoInput = {
 export function pageMetadata(input: PageSeoInput): Metadata {
   const description = clampText(input.description, MAX_DESCRIPTION)
   const url = absoluteUrl(input.path)
-  const image = input.image ?? DEFAULT_OG_IMAGE
+  const image = shareImage(input.image ?? DEFAULT_OG_IMAGE)
   // Only declare dimensions we actually know — wrong ones make previews crop badly.
   const ogImage = {
     url: image.url,

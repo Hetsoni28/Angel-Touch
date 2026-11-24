@@ -26,6 +26,10 @@ import { Toaster } from '@/components/atoms/Toaster'
 import { SITE_INFO } from '@/lib/siteInfo'
 import Script from 'next/script'
 import { INTRO_GATE_SCRIPT } from '@/lib/intro'
+import { DEFAULT_OG_IMAGE, shareImage } from '@/lib/seo'
+
+// Light 1200×630 link-preview image (see shareImage)
+const OG = shareImage(DEFAULT_OG_IMAGE)
 
 const SITE_URL = 'https://www.angeltouch.in'
 
@@ -83,14 +87,7 @@ export const metadata: Metadata = {
     title: 'Angel Touch by Heena Thaker | Ayurvedic Beauty & Wellness',
     description:
       'Premium women-only Ayurvedic salon, wellness centre, and beauty school. Authentic treatments, handcrafted products, and certified masterclasses.',
-    images: [
-      {
-        url: '/images/og-default.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Angel Touch by Heena Thaker — Ayurvedic Beauty & Wellness',
-      },
-    ],
+    images: [OG],
   },
 
   twitter: {
@@ -98,7 +95,7 @@ export const metadata: Metadata = {
     title: 'Angel Touch by Heena Thaker | Ayurvedic Beauty & Wellness',
     description:
       'Premium women-only Ayurvedic salon, wellness centre, and beauty school. Authentic treatments, handcrafted products, and certified masterclasses.',
-    images: ['/images/og-default.jpg'],
+    images: [{ url: OG.url, alt: OG.alt }],
   },
 
   robots: {
