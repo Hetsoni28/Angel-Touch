@@ -16,6 +16,25 @@ type FeaturedTreatment = {
   featured?: boolean
 }
 
+/**
+ * Studio photo for a treatment that has no image in Sanity, matched on words in
+ * its name. Order matters: "Bridal Hair Styling" is makeup/styling, not a hair spa.
+ */
+const TREATMENT_PHOTOS: [RegExp, string][] = [
+  [/make\s*-?up|bridal|bride|saree|sari|drap|hair\s*-?styl|mehndi|mehendi/, '/images/treatment_bridal_styling.jpg'],
+  [/clean\s*-?up|wax|thread|bleach|d-?tan|manicure|pedicure/, '/images/treatment_clean_up.jpg'],
+  [/shirodhara|abhyanga|massage|body|potli/, '/images/treatment_shirodhara.jpg'],
+  [/hair|scalp|keratin|smoothen|rebond/, '/images/treatment_hair_spa.jpg'],
+  [/facial|face|skin|peel|glow|acne|pimple|pigment|tan|blemish|dark\s*circle/, '/images/treatment_aroma_facial.jpg'],
+]
+
+function treatmentPhoto(name: string | undefined, index: number): string {
+  const n = (name || '').toLowerCase()
+  const hit = TREATMENT_PHOTOS.find(([re]) => re.test(n))
+  if (hit) return hit[1]
+  return index % 2 === 0 ? '/images/treatment_aroma_facial.jpg' : '/images/treatment_shirodhara.jpg'
+}
+
 export async function FeaturedTreatmentsSection() {
   let treatments: FeaturedTreatment[] = []
   try {
@@ -78,16 +97,7 @@ export async function FeaturedTreatmentsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {treatments.map((t, index) => {
-            const fallbackImage = (t.name || '').toLowerCase().includes('shirodhara')
-              ? '/images/treatment_shirodhara.jpg'
-              : (t.name || '').toLowerCase().includes('hair')
-              ? '/images/ayurvedic_hair_elixir.jpg'
-              : (t.name || '').toLowerCase().includes('facial')
-              ? '/images/treatment_aroma_facial.jpg'
-              : index % 2 === 0
-              ? '/images/treatment_aroma_facial.jpg'
-              : '/images/treatment_shirodhara.jpg'
-            const imgSrc = t.imageUrl || fallbackImage
+            const imgSrc = t.imageUrl || treatmentPhoto(t.name, index)
 
             return (
               <FadeIn key={t._id || index} delay={0.1 * (index + 1)} className="flex flex-col h-full">
@@ -95,7 +105,7 @@ export async function FeaturedTreatmentsSection() {
                   <div className="overflow-hidden bg-[#e9f3e9] img-zoom mb-7 aspect-[16/10] relative">
                     <Image
                       src={imgSrc}
-                      alt={`${t.name} treatment at Angel Touch Ayurvedic salon, Satellite, Ahmedabad`}
+                      alt={`${/treatment$/i.test(t.name.trim()) ? t.name.trim() : `${t.name} treatment`} at Angel Touch Ayurvedic salon, Satellite, Ahmedabad`}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="w-full h-full object-cover object-[center_35%]"

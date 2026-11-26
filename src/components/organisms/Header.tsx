@@ -362,7 +362,7 @@ export function Header() {
               </button>
             </form>
             <Link
-              href="/customer/dashboard"
+              href="/account"
               aria-label="My account"
               className="flex items-center justify-center text-[#1e2228] hover:text-[#2e7a3a] transition-colors w-10 h-10 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7a3a]"
             >
@@ -440,7 +440,7 @@ export function Header() {
 
             <div className="px-6 pt-5">
               <Link
-                href="/customer/dashboard"
+                href="/account"
                 className="flex items-center justify-between p-4 bg-white border border-[#dde7dd] hover:border-[#2e7a3a] transition-colors"
               >
                 <span className="flex items-center gap-3">
