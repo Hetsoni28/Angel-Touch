@@ -23,6 +23,7 @@ export const OG_IMAGE_COPIES: Record<string, string> = {
   '/images/recordings-hero-bg.png': '/og/recordings-hero-bg.jpg',
   '/images/shop_hero.jpg': '/og/shop_hero.jpg',
   '/images/skincare_oil.jpg': '/og/skincare_oil.jpg',
+  '/images/treatment_3d_makeup.jpg': '/og/treatment_3d_makeup.jpg',
   '/images/treatment_aroma_facial.jpg': '/og/treatment_aroma_facial.jpg',
   '/images/treatment_bridal_styling.jpg': '/og/treatment_bridal_styling.jpg',
   '/images/treatment_clean_up.jpg': '/og/treatment_clean_up.jpg',

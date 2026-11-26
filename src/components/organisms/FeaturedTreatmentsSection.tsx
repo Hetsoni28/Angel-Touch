@@ -21,7 +21,9 @@ type FeaturedTreatment = {
  * its name. Order matters: "Bridal Hair Styling" is makeup/styling, not a hair spa.
  */
 const TREATMENT_PHOTOS: [RegExp, string][] = [
-  [/make\s*-?up|bridal|bride|saree|sari|drap|hair\s*-?styl|mehndi|mehendi/, '/images/treatment_bridal_styling.jpg'],
+  [/bridal|bride|saree|sari|drap|hair\s*-?styl|mehndi|mehendi/, '/images/treatment_bridal_styling.jpg'],
+  // Close-up of sculpted eye makeup. Pexels photo by Manish Dhruw (free Pexels license, no attribution required)
+  [/make\s*-?up|lash|eye\s*-?liner|contour/, '/images/treatment_3d_makeup.jpg'],
   [/clean\s*-?up|wax|thread|bleach|d-?tan|manicure|pedicure/, '/images/treatment_clean_up.jpg'],
   [/shirodhara|abhyanga|massage|body|potli/, '/images/treatment_shirodhara.jpg'],
   [/hair|scalp|keratin|smoothen|rebond/, '/images/treatment_hair_spa.jpg'],
