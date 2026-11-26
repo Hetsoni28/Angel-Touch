@@ -21,6 +21,12 @@ export const academyCourse = defineType({
       validation: (Rule) => Rule.required().error('Please enter the course name'),
     }),
     defineField({
+      name: 'shortLabel',
+      title: 'Short Label (filter list)',
+      type: 'string',
+      description: 'Shorter name shown in the course filter, e.g. "1. Naturopathy & Spa". Leave empty to use "Number. Name".',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -84,6 +90,23 @@ export const academyCourse = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       description: 'List each topic covered in this course (as shown on the poster/PDF).',
+    }),
+    defineField({
+      name: 'subModules',
+      title: 'Modules (for multi-module courses)',
+      type: 'array',
+      description: 'Optional. For courses taught in modules (e.g. Courses 12 and 13): each module with its own topic list.',
+      of: [
+        {
+          type: 'object',
+          name: 'subModule',
+          fields: [
+            defineField({ name: 'title', title: 'Module Title', type: 'string', validation: (Rule) => Rule.required() }),
+            defineField({ name: 'topics', title: 'Topics', type: 'array', of: [{ type: 'string' }] }),
+          ],
+          preview: { select: { title: 'title', topics: 'topics' }, prepare: ({ title, topics }) => ({ title, subtitle: `${topics?.length ?? 0} topics` }) },
+        },
+      ],
     }),
     defineField({
       name: 'price',

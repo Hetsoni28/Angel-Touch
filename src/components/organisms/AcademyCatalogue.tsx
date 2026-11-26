@@ -4,7 +4,15 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import { FadeIn } from '@/components/atoms/FadeIn'
 import { Pagination } from '@/components/molecules/Pagination'
 
-import { OFFICIAL_ACADEMY_COURSES, ACADEMY_FILTER_CATEGORIES, type AcademyCourse } from '@/lib/academyCourses'
+import { type AcademyCourse } from '@/lib/academyCourses'
+import { generateWhatsAppLink } from '@/utils/whatsapp'
+
+/** Group filter buttons (labels unchanged); the course-number ranges and counts come from the courses. */
+const GROUP_FILTERS: { key: string; code: AcademyCourse['groupCode']; label: string; pill: string }[] = [
+  { key: 'group-b', code: 'B', label: 'Part B: New Pictures', pill: 'Part B' },
+  { key: 'group-c', code: 'C', label: 'Part C: Sparkz Graphics', pill: 'Part C' },
+  { key: 'group-d', code: 'D', label: 'Part D: Advanced Aesthetic', pill: 'Part D' },
+]
 
 export type { AcademyCourse, SubModule } from '@/lib/academyCourses'
 
@@ -278,7 +286,7 @@ export function AcademyCatalogue({
   initialCourses?: AcademyCourse[]
 }) {
   const defaultList = useMemo(() => {
-    return byCourseNumber(initialCourses && initialCourses.length > 0 ? initialCourses : OFFICIAL_ACADEMY_COURSES)
+    return byCourseNumber(initialCourses ?? [])
   }, [initialCourses])
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -291,6 +299,24 @@ export function AcademyCatalogue({
 
   // Reset the list when the source courses change (adjust state during render,
   // instead of an effect that triggers a second render).
+  // Filter options come from the courses themselves, so a course added in Sanity
+  // appears in the filters automatically. Existing courses keep their filter names.
+  const courseFilters = useMemo(
+    () =>
+      coursesList.map((c) => ({ key: c.categoryKey, label: `${c.num}. ${c.name}`, shortLabel: c.shortLabel })),
+    [coursesList]
+  )
+  // Group buttons with live counts and course-number ranges, e.g. "Part B: New Pictures (1–7)"
+  const groupFilters = useMemo(
+    () =>
+      GROUP_FILTERS.map((g) => {
+        const nums = coursesList.filter((c) => c.groupCode === g.code).map((c) => Number(c.num)).filter((x) => !Number.isNaN(x))
+        const range = nums.length ? (Math.min(...nums) === Math.max(...nums) ? `${Math.min(...nums)}` : `${Math.min(...nums)}–${Math.max(...nums)}`) : ''
+        return { ...g, count: nums.length, range, fullLabel: `${g.label} (${range})`, pillLabel: `${g.pill} (${range})` }
+      }).filter((g) => g.count > 0),
+    [coursesList]
+  )
+
   const [prevDefaultList, setPrevDefaultList] = useState(defaultList)
   if (prevDefaultList !== defaultList) {
     setPrevDefaultList(defaultList)
@@ -302,13 +328,14 @@ export function AcademyCatalogue({
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const catParam = params.get('category')
-    if (!catParam || !(catParam === 'all' || ACADEMY_FILTER_CATEGORIES.some(c => c.key === catParam))) return
+    const known = catParam === 'all' || ['group-b', 'group-c', 'group-d'].includes(catParam ?? '') || defaultList.some((c) => c.categoryKey === catParam)
+    if (!catParam || !known) return
     const frame = requestAnimationFrame(() => {
       setSelectedCategory(catParam)
       setCurrentPage(1)
     })
     return () => cancelAnimationFrame(frame)
-  }, [])
+  }, [defaultList])
 
   // Close dropdown on click outside or escape key
   useEffect(() => {
@@ -353,9 +380,11 @@ export function AcademyCatalogue({
   // Active category readable label
   const selectedCategoryLabel = useMemo(() => {
     if (selectedCategory === 'all') return 'All Academy Courses'
-    const found = ACADEMY_FILTER_CATEGORIES.find((c) => c.key === selectedCategory)
+    const group = groupFilters.find((g) => g.key === selectedCategory)
+    if (group) return group.fullLabel
+    const found = courseFilters.find((c) => c.key === selectedCategory)
     return found ? found.label : selectedCategory
-  }, [selectedCategory])
+  }, [selectedCategory, courseFilters, groupFilters])
 
   // Filtered courses by active category
   const filteredCourses = useMemo(() => {
@@ -381,6 +410,31 @@ export function AcademyCatalogue({
     return filteredCourses.slice(startIndex, startIndex + ITEMS_PER_PAGE)
   }, [filteredCourses, startIndex])
 
+  // No courses published in Sanity (or Sanity unreachable): point visitors to WhatsApp instead of an empty grid
+  if (coursesList.length === 0) {
+    return (
+      <section id={id} className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <p className="eyebrow mb-4">Academy courses</p>
+          <h2 className="text-[1.8rem] md:text-[2.2rem] font-medium text-[#1e2228] leading-tight mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
+            Course details are <span className="accent-italic">on the way</span>.
+          </h2>
+          <p className="text-[15.5px] text-[#4a4846] leading-[1.75] mb-8">
+            Message us on WhatsApp for the current course list, dates and fees.
+          </p>
+          <a
+            href={generateWhatsAppLink({ type: 'GENERAL', message: 'I would like to know about the academy courses.' })}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="at-btn"
+          >
+            Ask on WhatsApp <span className="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section id={id} ref={catalogueTopRef} className="bg-[#faf8f2] py-20 md:py-28 border-t border-[#dde7dd]/70">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -401,7 +455,7 @@ export function AcademyCatalogue({
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 <p className="text-[14px] sm:text-[15px] text-[#5c5a58]">
                   {selectedCategory === 'all'
-                    ? `${filteredCourses.length} courses across 3 syllabus groups, in course order.`
+                    ? `${filteredCourses.length} courses across ${groupFilters.length} syllabus groups, in course order.`
                     : `${filteredCourses.length} course${filteredCourses.length === 1 ? '' : 's'} in ${selectedCategoryLabel.replace(/^d+.s*/, '')}.`}
                 </p>
               </div>
@@ -452,7 +506,7 @@ export function AcademyCatalogue({
                   >
                     <span>All Academy Courses</span>
                     <span className="text-[11px] text-[#8a8d87]">
-                      ({OFFICIAL_ACADEMY_COURSES.length})
+                      ({coursesList.length})
                     </span>
                   </button>
 
@@ -462,11 +516,7 @@ export function AcademyCatalogue({
                   <div className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#8a8d87] bg-[#faf8f2]">
                     Filter by Group
                   </div>
-                  {[
-                    { key: 'group-b', label: 'Part B: New Pictures (1–7)', count: 7 },
-                    { key: 'group-c', label: 'Part C: Sparkz Graphics (8–11)', count: 4 },
-                    { key: 'group-d', label: 'Part D: Advanced Aesthetic (12–13)', count: 2 },
-                  ].map((grp) => {
+                  {groupFilters.map((g) => ({ key: g.key, label: g.fullLabel, count: g.count })).map((grp) => {
                     const isSelected = selectedCategory === grp.key
                     return (
                       <button
@@ -493,10 +543,10 @@ export function AcademyCatalogue({
 
                   {/* Individual Categories 1 to 13 */}
                   <div className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#8a8d87] bg-[#faf8f2]">
-                    Individual Courses (1 &ndash; 13)
+                    Individual Courses (1 &ndash; {coursesList.length})
                   </div>
-                  {ACADEMY_FILTER_CATEGORIES.slice(4).map((cat) => {
-                    const count = OFFICIAL_ACADEMY_COURSES.filter((c) => c.categoryKey === cat.key).length
+                  {courseFilters.map((cat) => {
+                    const count = coursesList.filter((c) => c.categoryKey === cat.key).length
                     const isSelected = selectedCategory === cat.key
 
                     return (
@@ -537,53 +587,33 @@ export function AcademyCatalogue({
                   : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
               }`}
             >
-              All Academy Courses (13)
+              All Academy Courses ({coursesList.length})
             </button>
 
             {/* Group Quick Tabs */}
-            <button
-              type="button"
-              onClick={() => handleSelectCategory('group-b')}
-              className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.08em] uppercase transition-all rounded-sm border flex items-center gap-1.5 ${
-                selectedCategory === 'group-b'
-                  ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
-                  : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
-              }`}
-            >
-              <span>Part B (1–7)</span>
-              <span className={`text-[10px] ${selectedCategory === 'group-b' ? 'text-white/80' : 'text-[#8a8d87]'}`}>(7)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSelectCategory('group-c')}
-              className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.08em] uppercase transition-all rounded-sm border flex items-center gap-1.5 ${
-                selectedCategory === 'group-c'
-                  ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
-                  : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
-              }`}
-            >
-              <span>Part C (8–11)</span>
-              <span className={`text-[10px] ${selectedCategory === 'group-c' ? 'text-white/80' : 'text-[#8a8d87]'}`}>(4)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSelectCategory('group-d')}
-              className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.08em] uppercase transition-all rounded-sm border flex items-center gap-1.5 ${
-                selectedCategory === 'group-d'
-                  ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
-                  : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
-              }`}
-            >
-              <span>Part D (12–13)</span>
-              <span className={`text-[10px] ${selectedCategory === 'group-d' ? 'text-white/80' : 'text-[#8a8d87]'}`}>(2)</span>
-            </button>
+            {groupFilters.map((g) => {
+              const isSelected = selectedCategory === g.key
+              return (
+                <button
+                  key={g.key}
+                  type="button"
+                  onClick={() => handleSelectCategory(g.key)}
+                  className={`shrink-0 px-4 py-2 text-[11px] font-semibold tracking-[0.08em] uppercase transition-all rounded-sm border flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-[#1e5f2e] text-white border-[#1e5f2e] shadow-sm'
+                      : 'bg-white text-[#5c5a58] hover:text-[#1e2228] border-[#dde7dd] hover:border-[#1e5f2e]'
+                  }`}
+                >
+                  <span>{g.pillLabel}</span>
+                  <span className={`text-[10px] ${isSelected ? 'text-white/80' : 'text-[#8a8d87]'}`}>({g.count})</span>
+                </button>
+              )
+            })}
 
             <span className="w-px h-6 bg-[#dde7dd] shrink-0 mx-1" aria-hidden="true" />
 
             {/* Individual Category Pills 1 to 13 */}
-            {ACADEMY_FILTER_CATEGORIES.slice(4).map((cat) => {
+            {courseFilters.map((cat) => {
               const isSelected = selectedCategory === cat.key
               return (
                 <button

@@ -1,5 +1,3 @@
-import { client } from '@/sanity/lib/client'
-import { ALL_ACADEMY_COURSES_QUERY } from '@/sanity/lib/queries'
 import { AcademyHero } from '@/components/organisms/AcademyHero'
 import { AcademyHallmarks } from '@/components/organisms/AcademyHallmarks'
 import { AcademyCatalogue } from '@/components/organisms/AcademyCatalogue'
@@ -8,7 +6,7 @@ import type { Metadata } from 'next'
 import { pageMetadata } from '@/lib/seo'
 import { JsonLd } from '@/components/atoms/JsonLd'
 import { breadcrumbJsonLd, absoluteUrl, ORGANIZATION_REF } from '@/lib/seo'
-import { OFFICIAL_ACADEMY_COURSES } from '@/lib/academyCourses'
+import { getAcademyCourses } from '@/lib/academyData'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Beauty & Cosmetology Courses in Ahmedabad',
@@ -36,10 +34,8 @@ export const metadata: Metadata = pageMetadata({
 export const instant = false
 
 export default async function AcademyPage() {
-  const sanityCourses = (await client.fetch(ALL_ACADEMY_COURSES_QUERY).catch(() => [])) || []
-
-  const courses: { name: string; description?: string }[] =
-    sanityCourses.length > 0 ? sanityCourses : OFFICIAL_ACADEMY_COURSES
+  // Edited in Sanity Studio → Academy Course (falls back to the built-in list)
+  const courses = await getAcademyCourses()
 
   // Course rich results need name, description and provider for every course.
   const coursesSchema = {
@@ -68,7 +64,7 @@ export default async function AcademyPage() {
       <JsonLd data={[breadcrumbJsonLd([{ name: 'Academy', path: '/academy' }]), coursesSchema]} />
       <AcademyHero />
       <AcademyHallmarks />
-      <AcademyCatalogue initialCourses={sanityCourses.length > 0 ? sanityCourses : undefined} />
+      <AcademyCatalogue initialCourses={courses} />
       <AcademyWorkshopBanner />
     </div>
   )

@@ -5,16 +5,19 @@ import { RevealLines } from '@/components/atoms/RevealLines'
 import { CinematicImage } from '@/components/atoms/CinematicImage'
 import { generateWhatsAppLink } from '@/utils/whatsapp'
 import { SITE_INFO } from '@/lib/siteInfo'
-import { OFFICIAL_ACADEMY_COURSES } from '@/lib/academyCourses'
+import { getAcademyCourses } from '@/lib/academyData'
 
 // Plain facts only — every one of these is true today and stated elsewhere on the site.
-const FACTS = [
+// The course count follows the courses in Sanity Studio.
+const facts = (courseCount: number) => [
   { value: 'Women-only', label: 'studio' },
   { value: 'Private', label: 'treatment rooms' },
-  { value: String(OFFICIAL_ACADEMY_COURSES.length), label: 'academy courses' },
+  // Hidden if Sanity has no published courses, so the hero never says "0 academy courses"
+  ...(courseCount > 0 ? [{ value: String(courseCount), label: 'academy courses' }] : []),
 ]
 
-export function HeroSection() {
+export async function HeroSection() {
+  const FACTS = facts((await getAcademyCourses()).length)
   const bookingLink = generateWhatsAppLink({
     type: 'GENERAL',
     message: 'I would like to book an appointment.',

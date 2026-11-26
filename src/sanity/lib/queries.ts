@@ -77,17 +77,19 @@ export const MASTERCLASS_BY_SLUG_QUERY = groq`
 // server-side after an access check (customer/library/[slug], api/recordings/access).
 
 export const ALL_ACADEMY_COURSES_QUERY = groq`
-  *[_type == "academyCourse"] {
+  *[_type == "academyCourse" && defined(name) && defined(num)] {
     _id,
     num,
     name,
+    shortLabel,
     "slug": slug.current,
     group,
     categoryKey,
     duration,
     description,
     syllabus,
+    subModules[]{ title, topics },
     price,
     featured
-  } | order(num asc)
+  }
 `
